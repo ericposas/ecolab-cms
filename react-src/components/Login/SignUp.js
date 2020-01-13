@@ -9,7 +9,8 @@ class SignUp extends Component {
     this.state = {
       nameValue: '',
       emailValue: '',
-      passwordValue: ''
+      passwordValue: '',
+      showUserCreatedMsg: false
     }
   }
 
@@ -45,7 +46,20 @@ class SignUp extends Component {
       password: this.state.passwordValue
     })
     .then(data => {
-      if (data.data == 'success') this.props.history.push('/login')
+      if (data.data == 'success') {
+        this.setState({
+          ...this.state,
+          showUserCreatedMsg: true
+        })
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            showUserCreatedMsg: false
+          })
+          this.props.history.push('/')
+        }, 2000)
+      }
+      else console.log(data.data)
     })
     .catch(err => console.log(err))
   }
@@ -53,6 +67,11 @@ class SignUp extends Component {
   render() {
     return (
       <>
+        {
+          this.state.showUserCreatedMsg
+          ? <><div>User created succesfully.</div><br/><br/></>
+          : null
+        }
         <div>Sign up</div>
         <div>
           <form method='post'>

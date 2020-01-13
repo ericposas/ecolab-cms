@@ -18,7 +18,12 @@ class AuthCheck extends Component {
     axios.post('/authCheck')
       .then(data => {
         console.log(data)
-        this.setState({ authResult: data.data })
+        this.setState({ authResult: data.data.auth })
+        if (data.data.auth == false) {
+          setTimeout(() => {
+            this.props.history.push('/login')
+          }, 2000)
+        }
       })
       .catch(err => console.log(err))
   }
@@ -26,7 +31,7 @@ class AuthCheck extends Component {
   render() {
     return (
       <>
-        {this.state.authResult}
+        {this.state.authResult == false ? 'false' : 'true'}
       </>
     )
   }
