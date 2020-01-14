@@ -4,6 +4,7 @@ import Login from './Login/Login'
 import AuthCheck from './Login/AuthCheck'
 import SignUp from './Login/SignUp'
 import Home from './Login/Home'
+import ViewUsers from './Pages/ViewUsers'
 import axios from 'axios'
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
             <Route path='/signup' component={SignUp}/>
             <Route path='/login' component={Login}/>
             <Route path='/authCheck' component={AuthCheck}/>
+            <Route path='/viewUsers' component={ViewUsers}/>
           </Switch>
         </Router>
       </>

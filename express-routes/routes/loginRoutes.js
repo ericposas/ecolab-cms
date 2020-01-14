@@ -1,6 +1,6 @@
 // import passport from 'passport'
 import { Router } from 'express'
-const dataRoutes = Router()
+const loginRoutes = Router()
 import {
   signup,
   authCheck,
@@ -26,10 +26,9 @@ import {
 //   res.send('logged out')
 // })
 
-// manually salting and hashing...
-dataRoutes.post('/signup', signup)
-dataRoutes.post('/authCheck', authCheck)
-dataRoutes.post('/login', login)
-dataRoutes.post('/logout', logout)
+loginRoutes.post('/signup', signup)
+loginRoutes.post('/authCheck', authCheck)
+loginRoutes.post('/login', login)
+loginRoutes.post('/logout', logout)
 
-export default dataRoutes
+export default loginRoutes

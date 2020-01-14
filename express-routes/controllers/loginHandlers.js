@@ -1,6 +1,7 @@
 import User from '../models/User'
 import bcrypt from 'bcrypt'
 
+// manually salting and hashing...
 const signup = (req, res) => {
   // console.log(req.body)
   let hash
@@ -12,7 +13,8 @@ const signup = (req, res) => {
       })
       .catch(err => console.log(err))
   }
-  if (req.session.admin == true) { // comment this out to create users without admin check
+  if (process.env.MODE == 'development' ||
+      process.env.MODE == 'production' && req.session.admin == true) {
     if (req.body.name && req.body.email && req.body.password) {
       let saltRounds = 10
       bcrypt.genSalt(saltRounds, (err, salt) => {
@@ -24,7 +26,7 @@ const signup = (req, res) => {
     } else {
       res.send('error occurred..')
     }
-  } else { res.send('must be admin to create new users') } // comment this out to create users without admin check
+  } else { res.send('must be admin to create new users') }
 }
 
 const authCheck = (req, res) => {

@@ -11,10 +11,12 @@ import uuid from 'uuid'
 // import passportLocal from 'passport-local'
 // const LocalStrategy = passportLocal.Strategy
 import User from './express-routes/models/User'
-import dataRoutes from './express-routes/routes/dataRoutes'
+import loginRoutes from './express-routes/routes/loginRoutes'
+import userRoutes from './express-routes/routes/userRoutes'
 
 dotenv.config()
 const {
+  MODE,
   MONGO_USER,
   MONGO_PASSWORD,
 } = process.env
@@ -42,6 +44,7 @@ app.use(session({
   rolling: true,
   saveUninitialized: false,
   cookie: {}
+  // cookie: MODE == 'development' ? {} : { secure: true }
   // cookie: { secure: true }
 }))
 
@@ -55,7 +58,9 @@ app.get('*', (req, res) => {
 
 // app.use('/test', router)
 
-app.use('/', dataRoutes)
+app.use('/', loginRoutes)
+
+app.use('/users', userRoutes)
 
 app.listen(port, err => {
   if (err) throw err

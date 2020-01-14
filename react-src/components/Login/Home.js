@@ -36,7 +36,7 @@ class Home extends Component {
           {
             this.state.loggedIn == true
             ? <><div>Welcome {this.state.name}</div></>
-            : <><div>Home</div></>
+            : <><div>Home - mode:{process.env.MODE}</div></>
           }
         </div>
       </>
