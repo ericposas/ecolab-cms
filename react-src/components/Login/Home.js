@@ -1,32 +1,24 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import axios from 'axios'
+import withAuthCheck from '../HOC/withAuthCheck'
 
 class Home extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {}
+  state = {
+    loggedIn: null
   }
 
   componentDidMount() {
-    this.checkAuth()
-  }
-
-  checkAuth = () => {
-    axios.post('/authCheck')
-      .then(data => {
-        console.log(data)
-        if (data.data.auth == true) {
-          this.setState({
-            ...this.state,
-            name: data.data.name,
-            email: data.data.email,
-            loggedIn: true
-          })
-        }
-      })
-      .catch(err => console.log(err))
+    this.props.checkAuth(data => {
+      if (data.data.auth == true) {
+        this.setState({
+          ...this.state,
+          sessionName: data.data.name,
+          sessionEmail: data.data.email,
+          loggedIn: true,
+        })
+      }
+    })
   }
 
   render() {
@@ -35,8 +27,13 @@ class Home extends Component {
         <div>
           {
             this.state.loggedIn == true
-            ? <><div>Welcome {this.state.name}</div></>
-            : <><div>Home - mode:{process.env.MODE}</div></>
+            ? <><div>Welcome {this.state.sessionName}</div></>
+            : <></>
+          }
+          {
+            this.state.loggedIn == false
+            ? <><div>Home - mode:{process.env.MODE}</div></>
+            : <></>
           }
         </div>
       </>
@@ -45,4 +42,4 @@ class Home extends Component {
 
 }
 
-export default Home
+export default withAuthCheck(Home)

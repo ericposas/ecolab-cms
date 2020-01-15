@@ -1,20 +1,25 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
+import withAuthCheck from '../HOC/withAuthCheck'
 import axios from 'axios'
 
 class Login extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      emailValue: '',
-      passwordValue: '',
-      loggedIn: false
-    }
+  
+  state = {
+    emailValue: '',
+    passwordValue: '',
+    loggedIn: false
   }
 
   componentDidMount() {
-    this.checkAuth()
+    this.props.checkAuth(data => {
+      if (data.data.auth == true) {
+        this.setState({
+          ...this.state,
+          loggedIn: true
+        })
+      }
+    })
   }
 
   onEmailInput = e => {
@@ -29,19 +34,6 @@ class Login extends Component {
       ...this.state,
       passwordValue: e.target.value
     })
-  }
-
-  checkAuth = () => {
-    axios.post('/authCheck')
-      .then(data => {
-        if (data.data.auth == true) {
-          this.setState({
-            ...this.state,
-            loggedIn: true
-          })
-        }
-      })
-      .catch(err => console.log(err))
   }
 
   logout = e => {
@@ -98,4 +90,4 @@ class Login extends Component {
 
 }
 
-export default withRouter(Login)
+export default withAuthCheck(withRouter(Login))
