@@ -5,7 +5,7 @@ import withAuthCheck from '../HOC/withAuthCheck'
 class Home extends Component {
 
   state = {
-    loggedIn: null
+    loggedIn: false
   }
 
   componentDidMount() {
@@ -28,12 +28,7 @@ class Home extends Component {
           {
             this.state.loggedIn == true
             ? <><div>Welcome {this.state.sessionName}</div></>
-            : <></>
-          }
-          {
-            this.state.loggedIn == false
-            ? <><div>Home - mode:{process.env.MODE}</div></>
-            : <></>
+            : <><div>Home - mode:{process.env.MODE}</div></>
           }
         </div>
       </>

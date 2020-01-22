@@ -11,7 +11,12 @@ import uuid from 'uuid'
 // import passportLocal from 'passport-local'
 // const LocalStrategy = passportLocal.Strategy
 import User from './express-routes/models/User'
-import loginRoutes from './express-routes/routes/loginRoutes'
+import {
+  signup,
+  login,
+  logout,
+  authCheck
+} from './express-routes/controllers/loginHandlers'
 import userRoutes from './express-routes/routes/userRoutes'
 
 dotenv.config()
@@ -54,11 +59,15 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/public/index.html'))
 })
 
-// app.get('/', (req, res) => res.send('test'))
+app.get('/', (req, res) => {
+  res.send('Home.')
+})
 
-// app.use('/test', router)
-
-app.use('/', loginRoutes)
+// Login -- at base URL
+app.post('/signup', signup)
+app.post('/authCheck', authCheck)
+app.post('/login', login)
+app.post('/logout', logout)
 
 app.use('/users', userRoutes)
 

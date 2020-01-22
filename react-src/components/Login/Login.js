@@ -4,7 +4,7 @@ import withAuthCheck from '../HOC/withAuthCheck'
 import axios from 'axios'
 
 class Login extends Component {
-  
+
   state = {
     emailValue: '',
     passwordValue: '',
@@ -54,7 +54,7 @@ class Login extends Component {
       password: this.state.passwordValue
     })
     .then(data => {
-      if (data.data == 'authorized') this.props.history.push('/authCheck')
+      if (data.data == 'authorized') this.props.history.push('/')
       else console.log(data.data)
     })
     .catch(err => console.log(err))

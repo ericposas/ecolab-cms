@@ -1,15 +1,29 @@
 import React, { Component, Fragment } from 'react'
+import withAuthCheck from '../HOC/withAuthCheck'
 import axios from 'axios'
 
 class ViewUsers extends Component {
 
-  constructor(props){
-    super(props)
-    this.state = {}
-  }
+  state = {}
 
   componentDidMount() {
-    this.getUsers()
+    this.props.checkAuth(data => {
+      console.log(data.data)
+      if (data.data.admin == true) {
+        this.setState({
+          ...this.state,
+          auth: true,
+          admin: true
+        })
+        this.getUsers()
+      } else if (data.data.auth == true && data.data.admin == false) {
+        this.setState({
+          ...this.state,
+          auth: true,
+          admin: false
+        })
+      }
+    })
   }
 
   getUsers = () => {
@@ -54,24 +68,29 @@ class ViewUsers extends Component {
           : null
         }
         {
-          this.state.users &&
-          this.state.users.map(user => (
-            <Fragment key={user._id}>
-              <div>
-                <div
-                  onClick={() => this.deleteUser(user._id)}
-                  style={{
-                    display:'inline-block',paddingRight:'10px',cursor:'pointer'
-                  }}>&#10060;</div>
-                <div
-                  style={{display:'inline-block'}}>
-                  <div>{user.name}</div>
-                  <div>{user.email}</div>
-                </div>
-              </div>
-              <br/>
-            </Fragment>
+          this.state.users && this.state.admin == true
+          ?
+            this.state.users.map(user => (
+              <Fragment key={user._id}>
+                <div>
+                  <div
+                    onClick={() => this.deleteUser(user._id)}
+                    style={{
+                      display:'inline-block',paddingRight:'10px',cursor:'pointer'
+                    }}>&#10060;</div>
+                    <div
+                      style={{display:'inline-block'}}>
+                      <div>{user.name}</div>
+                      <div>{user.email}</div>
+                    </div>
+                  </div>
+                  <br/>
+              </Fragment>
           ))
+          :
+            this.state.auth == true && this.state.admin == false
+            ? <div>You seem to be logged in, but you need admin priviledges to see this content</div>
+            : <div>You need to login</div>
         }
       </>
     )
@@ -79,4 +98,4 @@ class ViewUsers extends Component {
 
 }
 
-export default ViewUsers
+export default withAuthCheck(ViewUsers)

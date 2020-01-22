@@ -35,8 +35,9 @@ const authCheck = (req, res) => {
     // res.send('authenticated')
     res.send(JSON.stringify({
       auth: true,
+      admin: req.session.admin || false,
       name: req.session.name,
-      email: req.session.email,
+      email: req.session.email
     }))
   } else {
     res.send(JSON.stringify({
@@ -62,6 +63,7 @@ const login = (req, res) => {
           bcrypt.compare(req.body.password, data.password, (err, result) => {
             if (result == true) {
               if (data.admin == true) req.session.admin = true
+              else req.session.admin = false
               req.session.auth = true
               req.session.name = data.name
               req.session.email = data.email
