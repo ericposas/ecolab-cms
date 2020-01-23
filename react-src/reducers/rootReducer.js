@@ -1,4 +1,8 @@
 import { combineReducers } from 'redux'
+import IsAdmin from './IsAdmin'
+import AuthStatus from './AuthStatus'
+import UserData from './UserData'
+import Users from './Users'
 
 const test = (state = 'will test', action) => {
   switch (action.type) {
@@ -11,7 +15,11 @@ const test = (state = 'will test', action) => {
 }
 
 const rootReducer = combineReducers({
-  test
+  test,
+  IsAdmin,
+  AuthStatus,
+  UserData,
+  Users
 })
 
 export default rootReducer

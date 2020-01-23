@@ -8,7 +8,7 @@ import App from './components/App'
 const rootElement = document.getElementById('root')
 const store = createStore(rootReducer)
 
-store.subscribe(() => console.log('store updated'))
+store.subscribe(() => console.log(store.getState()))
 
 ReactDOM.render(
   <Provider store={store}>

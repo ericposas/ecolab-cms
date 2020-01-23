@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
+import { connect } from 'react-redux'
 import withAuthCheck from '../HOC/withAuthCheck'
+import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import axios from 'axios'
 
 class ViewUsers extends Component {
@@ -7,39 +9,33 @@ class ViewUsers extends Component {
   state = {}
 
   componentDidMount() {
-    this.props.checkAuth(data => {
-      console.log(data.data)
+    const { checkAuth, setAuthStatus, setAdminStatus, setUserData } = this.props
+    checkAuth(data => {
       if (data.data.admin == true) {
-        this.setState({
-          ...this.state,
-          auth: true,
-          admin: true
-        })
+        setAuthStatus(true)
+        setAdminStatus(true)
+        setUserData(data.data.name, data.data.email)
         this.getUsers()
       } else if (data.data.auth == true && data.data.admin == false) {
-        this.setState({
-          ...this.state,
-          auth: true,
-          admin: false
-        })
+        setAuthStatus(true)
+        setAdminStatus(false)
+        setUserData(data.data.name, data.data.email)
       }
     })
   }
 
   getUsers = () => {
-    axios.post('/users/view')
+    const { setUsers } = this.props
+    axios.post('/users/all')
       .then(data => {
-        console.log(data)
-        this.setState({
-          ...this.state,
-          users: data.data
-        })
+        console.log(data.data)
+        setUsers(data.data)
       })
       .catch(err => console.log(err))
   }
 
   deleteUser = id => {
-    axios.delete(`/users/delete/user/${id}`)
+    axios.delete(`/users/delete/${id}`)
       .then(data => {
         console.log(data)
         if (data.data.ok == 1) {
@@ -60,17 +56,19 @@ class ViewUsers extends Component {
   }
 
   render() {
+    const { AuthStatus, IsAdmin, Users } = this.props
+    const { showDeletedMsg } = this.state
     return (
       <>
         {
-          this.state.showDeletedMsg
+          showDeletedMsg
           ? <><div>User deleted.</div></>
           : null
         }
         {
-          this.state.users && this.state.admin == true
+          Users && IsAdmin
           ?
-            this.state.users.map(user => (
+            Users.map(user => (
               <Fragment key={user._id}>
                 <div>
                   <div
@@ -88,7 +86,7 @@ class ViewUsers extends Component {
               </Fragment>
           ))
           :
-            this.state.auth == true && this.state.admin == false
+            AuthStatus == true && IsAdmin == false
             ? <div>You seem to be logged in, but you need admin priviledges to see this content</div>
             : <div>You need to login</div>
         }
@@ -98,4 +96,4 @@ class ViewUsers extends Component {
 
 }
 
-export default withAuthCheck(ViewUsers)
+export default connect(mapState, mapDispatch)(withAuthCheck(ViewUsers))

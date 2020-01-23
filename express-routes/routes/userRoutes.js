@@ -2,10 +2,12 @@ import { Router } from 'express'
 const userRoutes = Router()
 import {
   viewUsers,
-  deleteUser
+  deleteUser,
+  createUser
 } from '../controllers/userHandlers'
 
-userRoutes.post('/view', viewUsers)
-userRoutes.delete('/delete/user/:id', deleteUser)
+userRoutes.post('/all', viewUsers)
+userRoutes.post('/create', createUser)
+userRoutes.delete('/delete/:id', deleteUser)
 
 export default userRoutes

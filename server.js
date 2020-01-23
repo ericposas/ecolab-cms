@@ -64,7 +64,6 @@ app.get('/', (req, res) => {
 })
 
 // Login -- at base URL
-app.post('/signup', signup)
 app.post('/authCheck', authCheck)
 app.post('/login', login)
 app.post('/logout', logout)

@@ -1,33 +1,31 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
+import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 
 class Home extends Component {
 
-  state = {
-    loggedIn: false
-  }
-
   componentDidMount() {
-    this.props.checkAuth(data => {
+    const { checkAuth, dispatch, setAuthStatus, setUserData } = this.props
+    checkAuth(data => {
       if (data.data.auth == true) {
-        this.setState({
-          ...this.state,
-          sessionName: data.data.name,
-          sessionEmail: data.data.email,
-          loggedIn: true,
-        })
+        setAuthStatus(true)
+        setUserData(data.data.name, data.data.email)
+      } else {
+        setAuthStatus(false)
       }
     })
   }
 
   render() {
+    const { AuthStatus, UserData } = this.props
     return (
       <>
         <div>
           {
-            this.state.loggedIn == true
-            ? <><div>Welcome {this.state.sessionName}</div></>
+            AuthStatus && UserData.name
+            ? <><div>Welcome {UserData.name}</div></>
             : <><div>Home - mode:{process.env.MODE}</div></>
           }
         </div>
@@ -37,4 +35,4 @@ class Home extends Component {
 
 }
 
-export default withAuthCheck(Home)
+export default connect(mapState, mapDispatch)(withAuthCheck(Home))
