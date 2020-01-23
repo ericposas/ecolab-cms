@@ -5,6 +5,7 @@
     http://www.passwordtool.hu/blowfish-password-hash-generator
 
 ##TODO
+  - regular users (end application users) will have a separate /auth route that the eventual frontend application will hit
   - begin styling home login
   - begin styling users table/list view
   - enable admin emails to new users to reset their password
