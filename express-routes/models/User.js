@@ -7,6 +7,10 @@ const User = model('User', new Schema({
     required: true,
     unique: true
   },
+  resetCode: {
+    type: String,
+    default: ''
+  },
   email: {
     type: String,
     required: true,

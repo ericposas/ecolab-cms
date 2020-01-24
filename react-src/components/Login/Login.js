@@ -1,27 +1,28 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
+import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import axios from 'axios'
 
 class Login extends Component {
 
   state = {
     emailValue: '',
-    passwordValue: '',
-    loggedIn: false
+    passwordValue: ''
   }
 
   componentDidMount() {
-    this.props.checkAuth(data => {
-      if (data.data.auth == true) {
-        this.setState({
-          ...this.state,
-          loggedIn: true
-        })
+    const { checkAuth, setUserData, setAuthStatus, setAdminStatus, history } = this.props
+    checkAuth(data => {
+      if (data.data.auth) {
+        setAuthStatus(data.data.auth)
+        setAdminStatus(data.data.admin)
+        setUserData(data.data.name, data.data.email)
       }
     })
   }
-
+  
   onEmailInput = e => {
     this.setState({
       ...this.state,
@@ -61,13 +62,14 @@ class Login extends Component {
   }
 
   render() {
+    const { UserData, AuthStatus } = this.props
     return (
       <>
         {
-          this.state.loggedIn
+          AuthStatus
           ?
             <>
-              <div>You're already logged in</div>
+              <div>You're already logged in as {UserData.name}</div>
               <button style={{position:'absolute',top:0,right:0}} onClick={this.logout}>log out</button>
             </>
           :
@@ -90,4 +92,4 @@ class Login extends Component {
 
 }
 
-export default withAuthCheck(withRouter(Login))
+export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(Login)))
