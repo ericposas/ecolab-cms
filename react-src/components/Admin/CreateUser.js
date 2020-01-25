@@ -15,13 +15,12 @@ class CreateUser extends Component {
   }
 
   componentDidMount() {
-    const { checkAuth, IsAdmin, AuthStatus, setAuthStatus, setAdminStatus, setUserData, history } = this.props
+    const { checkAuth, setUserData, history } = this.props
     checkAuth(data => {
-      if (data.data.auth) {
-        setAuthStatus(data.data.auth)
-        setAdminStatus(data.data.admin)
-        setUserData(data.data.name, data.data.email)
-        if (data.data.admin == false) {
+      const { auth, admin, name, email } = data.data
+      if (auth) {
+        setUserData(auth, admin, name, email)
+        if (admin == false) {
           setTimeout(() => history.push('/'), 2000)
         }
       } else {
@@ -78,7 +77,7 @@ class CreateUser extends Component {
   }
 
   render() {
-    const { IsAdmin } = this.props
+    const { UserData } = this.props
     const { showUserCreatedMsg } = this.state
     return (
       <>
@@ -88,7 +87,7 @@ class CreateUser extends Component {
           : null
         }
         {
-          IsAdmin
+          UserData.admin
           ?
             <>
               <div>Admin - Create New User</div>

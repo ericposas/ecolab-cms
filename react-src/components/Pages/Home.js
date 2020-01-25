@@ -7,24 +7,24 @@ import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 class Home extends Component {
 
   componentDidMount() {
-    const { checkAuth, dispatch, setAuthStatus, setUserData } = this.props
+    const { checkAuth, setUserData } = this.props
     checkAuth(data => {
-      if (data.data.auth == true) {
-        setAuthStatus(true)
-        setUserData(data.data.name, data.data.email)
-      } else {
-        setAuthStatus(false)
+      const { auth, admin, name, email } = data.data
+      if (data.data.auth) {
+        // setAuthStatus(data.data.auth)
+        // setAdminStatus(data.data.admin)
+        setUserData(auth, admin, name, email)
       }
     })
   }
 
   render() {
-    const { AuthStatus, UserData } = this.props
+    const { UserData } = this.props
     return (
       <>
         <div>
           {
-            AuthStatus && UserData.name
+            UserData.auth && UserData.name
             ? <><div>Welcome {UserData.name}</div></>
             : <><div>Home - mode:{process.env.MODE}</div></>
           }

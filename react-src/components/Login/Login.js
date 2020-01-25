@@ -13,16 +13,15 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const { checkAuth, setUserData, setAuthStatus, setAdminStatus, history } = this.props
+    const { checkAuth, setUserData, history } = this.props
     checkAuth(data => {
+      const { auth, admin, name, email } = data.data
       if (data.data.auth) {
-        setAuthStatus(data.data.auth)
-        setAdminStatus(data.data.admin)
-        setUserData(data.data.name, data.data.email)
+        setUserData(auth, admin, name, email)
       }
     })
   }
-  
+
   onEmailInput = e => {
     this.setState({
       ...this.state,
@@ -38,12 +37,12 @@ class Login extends Component {
   }
 
   logout = e => {
+    const { history, setUserData } = this.props
     e.preventDefault()
     axios.post('/logout')
       .then(data => {
-        if (data.data == 'logged out') {
-          this.props.history.push('/')
-        }
+        setUserData(null, null, null, null)
+        if (data.data == 'logged out') history.push('/')
       })
       .catch(err => console.log(err))
   }
@@ -62,11 +61,11 @@ class Login extends Component {
   }
 
   render() {
-    const { UserData, AuthStatus } = this.props
+    const { UserData } = this.props
     return (
       <>
         {
-          AuthStatus
+          UserData.auth
           ?
             <>
               <div>You're already logged in as {UserData.name}</div>

@@ -14,6 +14,18 @@ class UserPasswordReset extends Component {
     passwordVal2: ''
   }
 
+  componentDidMount() {
+    const { checkAuth, setUserData, history } = this.props
+    checkAuth(data => {
+      const { auth, admin, name, email } = data.data
+      if (auth) {
+        // setAuthStatus(data.data.auth)
+        // setAdminStatus(data.data.admin)
+        setUserData(auth, admin, name, email)
+      }
+    })
+  }
+
   submitCode = () => {
     axios.post('/password/code', { code: this.state.codeVal })
       .then(data => {
@@ -29,7 +41,7 @@ class UserPasswordReset extends Component {
       })
       .catch(err => console.log(err))
   }
-  
+
   updatePassword = () => {
     const { UserData } = this.props
     const { passwordVal, passwordVal2 } = this.state
@@ -104,4 +116,4 @@ class UserPasswordReset extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(withRouter(UserPasswordReset))
+export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(UserPasswordReset)))

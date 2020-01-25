@@ -9,18 +9,11 @@ class ViewUsers extends Component {
   state = {}
 
   componentDidMount() {
-    const { checkAuth, setAuthStatus, setAdminStatus, setUserData } = this.props
+    const { checkAuth, setUserData } = this.props
     checkAuth(data => {
-      if (data.data.admin == true) {
-        setAuthStatus(true)
-        setAdminStatus(true)
-        setUserData(data.data.name, data.data.email)
-        this.getUsers()
-      } else if (data.data.auth == true && data.data.admin == false) {
-        setAuthStatus(true)
-        setAdminStatus(false)
-        setUserData(data.data.name, data.data.email)
-      }
+      const { auth, admin, name, email } = data.data
+      setUserData(auth, admin, name, email)
+      if (admin == true) this.getUsers()
     })
   }
 
@@ -28,12 +21,12 @@ class ViewUsers extends Component {
     const { setUsers } = this.props
     axios.post('/users/all')
       .then(data => {
-        console.log(data.data)
+        // console.log(data.data)
         setUsers(data.data)
       })
       .catch(err => console.log(err))
   }
-
+  
   deleteUser = id => {
     axios.delete(`/users/delete/${id}`)
       .then(data => {
@@ -56,7 +49,7 @@ class ViewUsers extends Component {
   }
 
   render() {
-    const { AuthStatus, IsAdmin, Users } = this.props
+    const { UserData, Users } = this.props
     const { showDeletedMsg } = this.state
     return (
       <>
@@ -66,7 +59,7 @@ class ViewUsers extends Component {
           : null
         }
         {
-          Users && IsAdmin
+          Users && UserData.admin
           ?
             Users.map(user => (
               <Fragment key={user._id}>
@@ -86,7 +79,7 @@ class ViewUsers extends Component {
               </Fragment>
           ))
           :
-            AuthStatus == true && IsAdmin == false
+            UserData.auth == true && UserData.admin == false
             ? <div>You seem to be logged in, but you need admin priviledges to see this content</div>
             : <div>You need to login</div>
         }
