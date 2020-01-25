@@ -19,7 +19,7 @@ class App extends Component {
             <Route exact path='/' component={Home}/>
             <Route path='/resetUserPassword' component={AdminPasswordReset}/>
             <Route path='/resetMyPassword' component={UserPasswordReset}/>
-            <Route path='/users/create' component={CreateUser}/>
+            <Route path='/createUser' component={CreateUser}/>
             <Route path='/login' component={Login}/>
             <Route path='/logout' component={Logout}/>
             <Route path='/users' component={ViewUsers}/>

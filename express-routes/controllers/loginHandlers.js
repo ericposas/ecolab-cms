@@ -40,7 +40,7 @@ const login = (req, res) => {
               // req.session.cookie.expires
               req.session.cookie.maxAge = 1000 * 60 * 15 // 15 min.
               req.session.save()
-              res.send('authorized')
+              res.send({ auth: true, admin: data.admin, name: data.name, email: data.email })
             } else {
               res.send('invalid data')
             }

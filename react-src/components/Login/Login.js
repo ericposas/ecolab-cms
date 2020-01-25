@@ -9,16 +9,15 @@ class Login extends Component {
 
   state = {
     emailValue: '',
-    passwordValue: ''
+    passwordValue: '',
+    userMsg: false
   }
 
   componentDidMount() {
     const { checkAuth, setUserData, history } = this.props
     checkAuth(data => {
       const { auth, admin, name, email } = data.data
-      if (data.data.auth) {
-        setUserData(auth, admin, name, email)
-      }
+      if (auth) setUserData(auth, admin, name, email)
     })
   }
 
@@ -54,8 +53,12 @@ class Login extends Component {
       password: this.state.passwordValue
     })
     .then(data => {
-      if (data.data == 'authorized') this.props.history.push('/')
-      else console.log(data.data)
+      const { auth, admin, name, email } = data.data
+      if (auth && admin) this.props.history.push('/')
+      else {
+        this.setState({ ...this.state, userMsg: true })
+        setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
+      }
     })
     .catch(err => console.log(err))
   }
@@ -65,7 +68,7 @@ class Login extends Component {
     return (
       <>
         {
-          UserData.auth
+          UserData.auth && UserData.admin
           ?
             <>
               <div>You're already logged in as {UserData.name}</div>
@@ -73,6 +76,15 @@ class Login extends Component {
             </>
           :
             <>
+              {
+                this.state.userMsg
+                ?
+                  <div>
+                    You need admin priviledges to access the admin panel.
+                    Use the supplied /auth route for your application.
+                  </div>
+                : null
+              }
               <div>log in</div>
               <div>
                 <form method='post'>
