@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt'
 const authCheck = (req, res) => {
   console.log(req.session)
   if (req.session && req.session.auth == true) {
-    // res.send('authenticated')
     res.send(JSON.stringify({
       auth: true,
       admin: req.session.admin || false,
@@ -26,7 +25,6 @@ const logout = (req, res) => {
 }
 
 const login = (req, res) => {
-  // let pass = req.body.password
   if (req.body.email && req.body.password) {
     User.findOne({ email: req.body.email })
       .then(data => {

@@ -69,46 +69,57 @@ class UserPasswordReset extends Component {
   }
 
   render() {
+    const { UserData } = this.props
     return (
       <>
       {
-        this.state.formState == 'default'
+        UserData.admin
         ?
-        <>
-          <form>
-            <input type='text' onChange={e => this.setState({ codeVal: e.target.value })} value={this.state.codeVal}/>
-          </form>
-          <button onClick={this.submitCode}>submit reset code</button>
+          <>
+            <div>You are an admin, this url is used to reset a user account. Please log out and log back in as a regular user to use this service.</div>
+          </>
+        :
+          <>
+            {
+              this.state.formState == 'default'
+              ?
+                <>
+                  <form>
+                    <input type='text' onChange={e => this.setState({ codeVal: e.target.value })} value={this.state.codeVal}/>
+                  </form>
+                  <button onClick={this.submitCode}>submit reset code</button>
+                </>
+              : null
+            }
+            {
+              this.state.formState == 'codeResetSuccess'
+              ?
+                <>
+                  {
+                    this.state.passwordsMatch == false
+                    ?
+                      <>
+                        <div>Passwords do not match</div>
+                      </>
+                    : null
+                  }
+                  <form>
+                    <input type='password' onChange={e => this.setState({ passwordVal: e.target.value })} value={this.state.passwordVal}/>
+                    <input type='password' onChange={e => this.setState({ passwordVal2: e.target.value })} value={this.state.passwordVal2}/>
+                  </form>
+                  <button onClick={this.updatePassword}>update password</button>
+                </>
+              : null
+            }
+            {
+              this.state.formState == 'passwordResetSuccess'
+              ?
+                <>
+                  <div>Password has been successfully set!</div>
+                </>
+              : null
+            }
         </>
-        : null
-      }
-      {
-        this.state.formState == 'codeResetSuccess'
-        ?
-        <>
-          {
-            this.state.passwordsMatch == false
-            ?
-              <>
-                <div>Passwords do not match</div>
-              </>
-            : null
-          }
-          <form>
-            <input type='password' onChange={e => this.setState({ passwordVal: e.target.value })} value={this.state.passwordVal}/>
-            <input type='password' onChange={e => this.setState({ passwordVal2: e.target.value })} value={this.state.passwordVal2}/>
-          </form>
-          <button onClick={this.updatePassword}>update password</button>
-        </>
-        : null
-      }
-      {
-        this.state.formState == 'passwordResetSuccess'
-        ?
-        <>
-          <div>Password has been successfully set!</div>
-        </>
-        : null
       }
       </>
     )
