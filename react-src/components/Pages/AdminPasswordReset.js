@@ -13,15 +13,11 @@ class AdminPasswordReset extends Component {
   }
 
   componentDidMount() {
-    const { checkAuth, setUserData, history } = this.props
+    const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
-      const { auth, admin, name, email } = data.data
-      if (auth) {
-        setUserData(auth, admin, name, email)
-        if (admin == false) setTimeout(() => history.push('/'), 2000)
-      } else {
-        history.push('/')
-      }
+      const { auth, name, email } = data.data
+      if (auth) setAdminData(auth, name, email)
+      else history.push('/')
     })
   }
 
@@ -40,11 +36,11 @@ class AdminPasswordReset extends Component {
   }
 
   render() {
-    const { UserData } = this.props
+    const { AdminData } = this.props
     return (
       <>
       {
-        UserData.admin
+        AdminData.auth
         ?
           <>
           {

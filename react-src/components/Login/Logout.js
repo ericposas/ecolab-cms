@@ -12,10 +12,10 @@ class Logout extends Component {
   }
 
   logout = () => {
-    const { history, setUserData } = this.props
+    const { history, setAdminData } = this.props
     axios.post('/logout')
       .then(data => {
-        setUserData(null, null, null, null)
+        setAdminData(null, null, null)
         if (data.data == 'logged out') setTimeout(() => history.push('/'), 1000)
       })
       .catch(err => console.log(err))

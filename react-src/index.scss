@@ -33,6 +33,7 @@ body {
 
 // User <Component>
 .user-component-container {
+  padding: 10px 0 10px 0;
   position: relative;
 }
 
@@ -44,7 +45,7 @@ body {
 
 .user-component-checkbox {
   position: absolute;
-  top: 4px; left: 4px;
+  top: 14px; left: 7px;
   transform: scale(1.5);
 }
 

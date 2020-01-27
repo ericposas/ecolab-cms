@@ -45,19 +45,14 @@ class User extends Component {
                 &#10060;
             </div>
           */}
-          <div className={'col-5'}>
-            <div className={'user-component-name'}>{user.name}</div>
-          </div>
-          <div className={'col-5'}>
-            <div className={'user-component-email'}>{user.email}</div>
-          </div>
+          <div className={'col-5 user-component-name'}>{user.name}</div>
+          <div className={'col-5 user-component-email'}>{user.email}</div>
           <input
             type='checkbox'
             className={'user-component-checkbox'}
-            onChange={() => this.toggleCheckBox(user.name)}
-            checked={BulkActionSelectedUsers.includes(user.name)}/>
+            onChange={() => this.toggleCheckBox(user._id)}
+            checked={BulkActionSelectedUsers.includes(user._id)}/>
         </div>
-        <br/>
       </>
     )
   }

@@ -15,10 +15,10 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const { checkAuth, setUserData, history } = this.props
+    const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
-      const { auth, admin, name, email } = data.data
-      if (auth) setUserData(auth, admin, name, email)
+      const { auth, name, email } = data.data
+      if (auth) setAdminData(auth, name, email)
     })
   }
 
@@ -37,11 +37,11 @@ class Login extends Component {
   }
 
   logout = e => {
-    const { history, setUserData } = this.props
+    const { history, setAdminData } = this.props
     e.preventDefault()
     axios.post('/logout')
       .then(data => {
-        setUserData(null, null, null, null)
+        setAdminData(null, null, null)
         if (data.data == 'logged out') history.push('/')
       })
       .catch(err => console.log(err))
@@ -54,8 +54,8 @@ class Login extends Component {
       password: this.state.passwordValue
     })
     .then(data => {
-      const { auth, admin, name, email } = data.data
-      if (auth && admin) this.props.history.push('/')
+      const { auth, name, email } = data.data
+      if (auth) this.props.history.push('/')
       else {
         this.setState({ ...this.state, userMsg: true })
         setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
@@ -65,15 +65,15 @@ class Login extends Component {
   }
 
   render() {
-    const { UserData } = this.props
+    const { AdminData } = this.props
     return (
       <>
         <TitleBar title={process.env.APP_NAME}/>
         {
-          UserData.auth && UserData.admin
+          AdminData && AdminData.auth
           ?
             <>
-              <div>You're already logged in as {UserData.name}</div>
+              <div>You're already logged in as {AdminData.name}</div>
               <button style={{position:'absolute',top:0,right:0}} onClick={this.logout}>log out</button>
             </>
           :

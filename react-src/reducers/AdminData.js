@@ -1,6 +1,6 @@
-const UserData = (state = {}, action) => {
+const AdminData = (state = {}, action) => {
   switch (action.type) {
-    case 'USER_DATA':
+    case 'ADMIN_DATA':
       return action.payload
       break;
     default:
@@ -8,4 +8,4 @@ const UserData = (state = {}, action) => {
   }
 }
 
-export default UserData
+export default AdminData

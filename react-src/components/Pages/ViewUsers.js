@@ -13,14 +13,15 @@ class ViewUsers extends Component {
   state = {
     showAdminUsers: false,
     adminsButtonSelected: false,
-    usersButtonSelected: true
+    usersButtonSelected: true,
+    bulkAction: null
   }
 
   componentDidMount() {
-    const { checkAuth, setUserData, history } = this.props
+    const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
-      const { auth, admin, name, email } = data.data
-      if (admin == true) { this.getUsers(); setUserData(auth, admin, name, email); }
+      const { auth, name, email } = data.data
+      if (auth) { this.getUsers(); setUserData(auth, name, email); }
       else history.push('/')
     })
   }
@@ -32,25 +33,42 @@ class ViewUsers extends Component {
       .catch(err => console.log(err))
   }
 
-  deleteUser = id => {
-    axios.delete(`/users/delete/${id}`)
-      .then(data => {
-        console.log(data)
-        if (data.data.ok == 1) {
-          this.getUsers()
+  deleteUser = async id => {
+    try {
+      let data = await axios.delete(`/users/delete/${id}`)
+      // .then(data => {
+      console.log(data)
+      if (data.data.ok == 1) {
+        this.getUsers()
+        this.setState({
+          ...this.state,
+          showDeletedMsg: true
+        })
+        setTimeout(() => {
           this.setState({
             ...this.state,
-            showDeletedMsg: true
+            showDeletedMsg: false
           })
-          setTimeout(() => {
-            this.setState({
-              ...this.state,
-              showDeletedMsg: false
-            })
-          }, 2000)
+        }, 2000)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  executeBulkAction = async () => {
+    const { BulkActionSelectedUsers, deselectUserForBulkAction } = this.props
+    switch (this.state.bulkAction) {
+      case 'DELETE':
+        for (let i = 0; i < BulkActionSelectedUsers.length; i++) {
+          await this.deleteUser(BulkActionSelectedUsers[i])
+          deselectUserForBulkAction(BulkActionSelectedUsers[i])
         }
-      })
-      .catch(err => console.log(err))
+        console.log(BulkActionSelectedUsers.length + ' deleted.')
+        break;
+      default:
+        //
+    }
   }
 
   // toggleAdminView = () => {
@@ -61,7 +79,7 @@ class ViewUsers extends Component {
   // }
 
   render() {
-    const { UserData, Users } = this.props
+    const { AdminData, Users } = this.props
     const { showDeletedMsg, usersButtonSelected, adminsButtonSelected } = this.state
     return (
       <>
@@ -71,12 +89,12 @@ class ViewUsers extends Component {
             className={'col-2 left-side-panel'}
             style={{}}>
             {
-              UserData.auth && !UserData.admin
+              AdminData && AdminData.auth
               ? <div>You need to login as an admin user</div>
               : null
             }
             {
-              !UserData.auth
+              !AdminData
               ? <div>Please login to continue</div>
               : <>
                   <div
@@ -110,15 +128,29 @@ class ViewUsers extends Component {
               : null
             }
             {
-              UserData.admin
+              AdminData && AdminData.auth
               ? <>
                   <div className={'user-bulk-actions-and-search-container row'}>
-                    <select className='col-5'>
+                    <select
+                      className='col-4'
+                      onChange={e => {
+                        this.setState({
+                          ...this.state,
+                          bulkAction: e.target.value
+                        })
+                      }}>
                       <option value=''>Bulk Actions</option>
-                      <option value='Delete'>Delete Users</option>
+                      <option value='DELETE'>Delete Users</option>
                     </select>
-                    <div style={{display:'inline-block'}}>Search: &nbsp;</div>
-                    <input className='col-5' type='text'/>
+                    <button
+                      className={'col-2 user-bulk-action-dropdown'}
+                      onClick={this.executeBulkAction}>
+                      {this.state.bulkAction ? this.state.bulkAction : 'No Action'}
+                    </button>
+                    <div className='col-6'>
+                      <div className='user-search-box'>Search: &nbsp;</div>
+                      <input type='text'/>
+                    </div>
                   </div>
                   <br/>
                   <br/>
@@ -126,7 +158,7 @@ class ViewUsers extends Component {
               : null
             }
             {
-              UserData.admin
+              AdminData && AdminData.auth
               ? <>
                   <div className={'users-list-labels-container row'}>
                     <div className={'users-list-label-name col-5'}>Name</div>
@@ -136,23 +168,20 @@ class ViewUsers extends Component {
               : null
             }
             {
-              Users && UserData.admin && this.state.usersButtonSelected
+              Users && this.state.usersButtonSelected
               ?
                 Users.map((user, idx) => (
                   <Fragment key={user._id}>
-                    {
-                      !user.admin
-                      ? <User count={idx} user={user} deleteUser={() => this.deleteUser(user._id)}/>
-                      : null
-                    }
+                    <User count={idx} user={user}/>
                   </Fragment>
                 ))
               : null
             }
             {
-              Users && UserData.admin && this.state.adminsButtonSelected
+              /*
+              Admins && this.state.adminsButtonSelected
               ?
-                Users.map((user, idx) => (
+                Admins.map((user, idx) => (
                   <Fragment key={user._id}>
                     {
                       user.admin
@@ -162,7 +191,7 @@ class ViewUsers extends Component {
                   </Fragment>
                 ))
               : null
-            }
+            */}
           </div>
         </div>
       </>

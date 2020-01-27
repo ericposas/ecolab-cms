@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer'
 import User from '../models/User'
 
 const sendMail = async (res, email, code) => {
-  let testAccount = await nodemailer.createTestAccount()
+  // let testAccount = await nodemailer.createTestAccount()
   let transporter = nodemailer.createTransport({
     // host: 'sector5digital-com.mail.protection.outlook.com',
     service: 'gmail',

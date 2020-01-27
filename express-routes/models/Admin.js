@@ -1,14 +1,10 @@
 import { model, Schema } from 'mongoose'
 
-const User = model('User', new Schema({
+const Admin = model('Admin', new Schema({
   name: {
     type: String,
     required: true,
     unique: true
-  },
-  resetCode: {
-    type: String,
-    default: ''
   },
   email: {
     type: String,
@@ -19,7 +15,7 @@ const User = model('User', new Schema({
     type: String,
     required: true
   },
-  peer: {
+  fullaccess: {
     type: Boolean,
     default: false
   },
@@ -29,4 +25,4 @@ const User = model('User', new Schema({
   }
 }))
 
-export default User
+export default Admin

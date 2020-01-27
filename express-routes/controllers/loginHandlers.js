@@ -1,4 +1,4 @@
-import User from '../models/User'
+import Admin from '../models/Admin'
 import bcrypt from 'bcrypt'
 
 const authCheck = (req, res) => {
@@ -6,7 +6,7 @@ const authCheck = (req, res) => {
   if (req.session && req.session.auth == true) {
     res.send(JSON.stringify({
       auth: true,
-      admin: req.session.admin || false,
+      // admin: req.session.admin || false,
       name: req.session.name,
       email: req.session.email
     }))
@@ -26,21 +26,21 @@ const logout = (req, res) => {
 
 const login = (req, res) => {
   if (req.body.email && req.body.password) {
-    User.findOne({ email: req.body.email })
+    Admin.findOne({ email: req.body.email })
       .then(data => {
         if (data && data.password) {
-          console.log(data.password)
+          // console.log(data.password)
           bcrypt.compare(req.body.password, data.password, (err, result) => {
             if (result == true) {
-              if (data.admin == true) req.session.admin = true
-              else req.session.admin = false
+              // if (data.admin == true) req.session.admin = true
+              // else req.session.admin = false
               req.session.auth = true
               req.session.name = data.name
               req.session.email = data.email
               // req.session.cookie.expires
               req.session.cookie.maxAge = 1000 * 60 * 15 // 15 min.
               req.session.save()
-              res.send({ auth: true, admin: data.admin, name: data.name, email: data.email })
+              res.send({ auth: true, name: data.name, email: data.email })
             } else {
               res.send('invalid data')
             }

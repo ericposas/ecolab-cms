@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
-import UserData from './UserData'
 import Users from './Users'
+import AdminData from './AdminData'
 import BulkActionSelectedUsers from './BulkActionSelectedUsers'
 
 const rootReducer = combineReducers({
-  UserData,
   Users,
+  AdminData,
   BulkActionSelectedUsers
 })
 
