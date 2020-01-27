@@ -11,7 +11,7 @@ class Home extends Component {
     const { checkAuth, setUserData, history } = this.props
     checkAuth(data => {
       const { auth, admin, name, email } = data.data
-      if (auth) setUserData(auth, admin, name, email)
+      if (auth) { setUserData(auth, admin, name, email); history.push('/users') }
       else history.push('/login')
     })
   }

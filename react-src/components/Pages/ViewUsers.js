@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
@@ -10,15 +11,17 @@ import User from '../User'
 class ViewUsers extends Component {
 
   state = {
-    showAdminUsers: false
+    showAdminUsers: false,
+    adminsButtonSelected: false,
+    usersButtonSelected: true
   }
 
   componentDidMount() {
-    const { checkAuth, setUserData } = this.props
+    const { checkAuth, setUserData, history } = this.props
     checkAuth(data => {
       const { auth, admin, name, email } = data.data
-      setUserData(auth, admin, name, email)
-      if (admin == true) this.getUsers()
+      if (admin == true) { this.getUsers(); setUserData(auth, admin, name, email); }
+      else history.push('/')
     })
   }
 
@@ -50,22 +53,22 @@ class ViewUsers extends Component {
       .catch(err => console.log(err))
   }
 
-  toggleAdminView = () => {
-    this.setState({
-      ...this.state,
-      showAdminUsers: !this.state.showAdminUsers
-    })
-  }
+  // toggleAdminView = () => {
+  //   this.setState({
+  //     ...this.state,
+  //     showAdminUsers: !this.state.showAdminUsers
+  //   })
+  // }
 
   render() {
     const { UserData, Users } = this.props
-    const { showDeletedMsg } = this.state
+    const { showDeletedMsg, usersButtonSelected, adminsButtonSelected } = this.state
     return (
       <>
         <TitleBar title={process.env.APP_NAME}/>
         <div className={'row'}>
           <div
-            className={'col-4 left-side-panel'}
+            className={'col-2 left-side-panel'}
             style={{}}>
             {
               UserData.auth && !UserData.admin
@@ -76,12 +79,20 @@ class ViewUsers extends Component {
               !UserData.auth
               ? <div>Please login to continue</div>
               : <>
-                  <div className={'left-side-panel-button'}>Users</div>
-                  <div className={'left-side-panel-button'}>Admins</div>
+                  <div
+                    onClick={() => {
+                      this.setState({ ...this.state, usersButtonSelected: true, adminsButtonSelected: false })
+                    }}
+                    className={'left-side-panel-button'}>Users</div>
+                  <div
+                    onClick={() => {
+                      this.setState({ ...this.state, usersButtonSelected: false, adminsButtonSelected: true })
+                    }}
+                    className={'left-side-panel-button'}>Admins</div>
                 </>
             }
           </div>
-          <div className='col-8'>
+          <div className='col-10'>
             {
               /*
               UserData.admin
@@ -101,11 +112,13 @@ class ViewUsers extends Component {
             {
               UserData.admin
               ? <>
-                  <div className={'user-bulk-actions-and-search-container'}>
-                    <select style={{ float: 'left' }}>
-                      <option>Bulk Actions</option>
+                  <div className={'user-bulk-actions-and-search-container row'}>
+                    <select className='col-5'>
+                      <option value=''>Bulk Actions</option>
+                      <option value='Delete'>Delete Users</option>
                     </select>
-                    <input type='text' style={{ float: 'right' }}/>
+                    <div style={{display:'inline-block'}}>Search: &nbsp;</div>
+                    <input className='col-5' type='text'/>
                   </div>
                   <br/>
                   <br/>
@@ -113,16 +126,38 @@ class ViewUsers extends Component {
               : null
             }
             {
-              Users && UserData.admin
+              UserData.admin
+              ? <>
+                  <div className={'users-list-labels-container row'}>
+                    <div className={'users-list-label-name col-5'}>Name</div>
+                    <div className={'users-list-label-email col-5'}>Email</div>
+                  </div>
+                </>
+              : null
+            }
+            {
+              Users && UserData.admin && this.state.usersButtonSelected
+              ?
+                Users.map((user, idx) => (
+                  <Fragment key={user._id}>
+                    {
+                      !user.admin
+                      ? <User count={idx} user={user} deleteUser={() => this.deleteUser(user._id)}/>
+                      : null
+                    }
+                  </Fragment>
+                ))
+              : null
+            }
+            {
+              Users && UserData.admin && this.state.adminsButtonSelected
               ?
                 Users.map((user, idx) => (
                   <Fragment key={user._id}>
                     {
                       user.admin
-                      ? this.state.showAdminUsers
-                        ? <User count={idx} user={user} deleteUser={() => this.deleteUser(user._id)}/>
-                        : null
-                      : <User count={idx} user={user} deleteUser={() => this.deleteUser(user._id)}/>
+                      ? <User count={idx} user={user} deleteUser={() => this.deleteUser(user._id)}/>
+                      : null
                     }
                   </Fragment>
                 ))
@@ -136,4 +171,4 @@ class ViewUsers extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(withAuthCheck(ViewUsers))
+export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(ViewUsers)))

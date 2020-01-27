@@ -44,20 +44,18 @@ body {
 
 .user-component-checkbox {
   position: absolute;
-  top: 10px; left: 10px;
+  top: 4px; left: 4px;
   transform: scale(1.5);
 }
 
 .user-component-name {
-  padding-right: 20px;
-  display: inline-block;
-  border-right: 1px solid black;
+  margin-left: 20px;
 }
 
 .user-component-email {
-  margin-left: 20px;
-  display: inline-block;
+  // border-left: 1px solid black;
 }
+
 
 // .user-component-delete-button {
 //   cursor: pointer;
@@ -67,4 +65,16 @@ body {
 
 // ViewUsers <Component>
 .user-bulk-actions-and-search-container {
+}
+
+.users-list-labels-container {
+  color: #fff;
+  background-color: #000;
+}
+
+.users-list-label-name {
+  margin-left: 20px;
+}
+
+.users-list-label-email {
 }
