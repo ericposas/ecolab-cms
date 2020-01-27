@@ -8,12 +8,11 @@
     - S5D CMS is the new "strapi" layer
     - End-user CMS-like application for administering the ecolab modules
     - Both connected to same DB instance
+    - create new /component subdirectory for the user-facing part of the application (/EcoLabApp)
+    - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - create new /component subdirectory for the user-facing part of the application (/EcoLabApp)
-  - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS 
-  - begin styling home login
-  - begin styling users table/list view
-  - enable admin emails to new users to reset their password
   - move/rearrange user signup route to be accessible from admin panel
   - add error message(s) upon user register fail
+  - add "Bulk Actions" Delete
+  - add "Search" filtering on users list view
