@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import axios from 'axios'
+import TitleBar from '../UIcomponents/TitleBar'
 
 class Login extends Component {
 
@@ -67,6 +68,7 @@ class Login extends Component {
     const { UserData } = this.props
     return (
       <>
+        <TitleBar title={process.env.APP_NAME}/>
         {
           UserData.auth && UserData.admin
           ?
@@ -81,19 +83,27 @@ class Login extends Component {
                 ?
                   <div>
                     You need admin priviledges to access the admin panel.
-                    Use the supplied /auth route for your application.
+                    Regular users should use the supplied /auth route for your application.
                   </div>
                 : null
               }
-              <div>log in</div>
-              <div>
-                <form method='post'>
-                  <label>email: &nbsp;</label>
-                  <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
-                  <label>password: &nbsp;</label>
-                  <input onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>
-                  <input onClick={this.logIn} type='submit' value='log in'/>
-                </form>
+              <div
+                className='center-float'
+                style={{
+                  width: '400px',
+                  height: '200px',
+                  padding: '20px'
+                }}>
+                <div>log in</div>
+                <div>
+                  <form method='post'>
+                    <label>email: &nbsp;</label>
+                    <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
+                    <label>password: &nbsp;</label>
+                    <input onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>
+                    <input onClick={this.logIn} type='submit' value='log in'/>
+                  </form>
+                </div>
               </div>
             </>
         }

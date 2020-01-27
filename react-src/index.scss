@@ -1,0 +1,70 @@
+html,
+body {
+  overflow-x: hidden;
+}
+
+.ui-title-bar {
+  width: 100%;
+  padding: 20px;
+  background-color: lightblue;
+}
+
+.center-float {
+  margin: auto;
+  top: 0; right: 0; bottom: 0; left: 0;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  position: absolute;
+  // specify width and height in component
+}
+
+// LeftSidePanel <Component>
+.left-side-panel {
+  height: 100vh;
+  background-color: #d6d6d6;
+}
+
+.left-side-panel-button {
+  cursor: pointer;
+  margin: 5px 0 5px 10px;
+  padding: 10px 0 10px 20px;
+  background-color: #ededed;
+}
+
+// User <Component>
+.user-component-container {
+  position: relative;
+}
+
+.user-component-details-container {
+  padding: 10px;
+  display: inline-block;
+  margin-left: 40px;
+}
+
+.user-component-checkbox {
+  position: absolute;
+  top: 10px; left: 10px;
+  transform: scale(1.5);
+}
+
+.user-component-name {
+  padding-right: 20px;
+  display: inline-block;
+  border-right: 1px solid black;
+}
+
+.user-component-email {
+  margin-left: 20px;
+  display: inline-block;
+}
+
+// .user-component-delete-button {
+//   cursor: pointer;
+//   display: block;
+//   position: absolute;
+// }
+
+// ViewUsers <Component>
+.user-bulk-actions-and-search-container {
+}

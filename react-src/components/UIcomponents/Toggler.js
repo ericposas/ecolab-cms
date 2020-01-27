@@ -16,14 +16,18 @@ class Toggler extends Component {
             height: '12px',
             cursor: 'pointer',
             borderRadius: '10px',
-            backgroundColor: this.props.showAdminUsers ? 'lightblue' : 'red'
+            border: '1px solid #ccc',
+            backgroundColor: this.props.showAdminUsers ? 'lightblue' : '#555'
           }}>
           <div
             style={{
               width: '12px',
               height: '12px',
               borderRadius: '10px',
+              border: '1px solid #ccc',
               backgroundColor: 'white',
+              marginLeft: '-2px',
+              marginTop: '-1px',
               marginLeft: this.props.showAdminUsers ? '18px' : '0px',
             }}>
           </div>

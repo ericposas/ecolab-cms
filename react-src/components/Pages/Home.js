@@ -3,18 +3,16 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
+import TitleBar from '../UIcomponents/TitleBar'
 
 class Home extends Component {
 
   componentDidMount() {
-    const { checkAuth, setUserData } = this.props
+    const { checkAuth, setUserData, history } = this.props
     checkAuth(data => {
       const { auth, admin, name, email } = data.data
-      if (data.data.auth) {
-        // setAuthStatus(data.data.auth)
-        // setAdminStatus(data.data.admin)
-        setUserData(auth, admin, name, email)
-      }
+      if (auth) setUserData(auth, admin, name, email)
+      else history.push('/login')
     })
   }
 
@@ -22,11 +20,12 @@ class Home extends Component {
     const { UserData } = this.props
     return (
       <>
+        <TitleBar title={process.env.APP_NAME}/>
         <div>
           {
-            UserData.auth && UserData.name
+            UserData.auth
             ? <><div>Welcome {UserData.name}</div></>
-            : <><div>Home - mode:{process.env.MODE}</div></>
+            : null
           }
         </div>
       </>
@@ -35,4 +34,4 @@ class Home extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(withAuthCheck(Home))
+export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(Home)))
