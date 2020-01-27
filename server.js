@@ -13,6 +13,7 @@ import {
   authCheck
 } from './express-routes/controllers/loginHandlers'
 import userRoutes from './express-routes/routes/userRoutes'
+import adminRoutes from './express-routes/routes/adminRoutes'
 import passwordResetRoutes from './express-routes/routes/passwordResetRoutes'
 
 dotenv.config()
@@ -68,6 +69,8 @@ app.post('/login', login)
 app.post('/logout', logout)
 
 app.use('/users', userRoutes)
+
+app.use('/admins', adminRoutes)
 
 app.listen(port, err => {
   if (err) throw err

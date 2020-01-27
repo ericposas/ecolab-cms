@@ -2,11 +2,11 @@ import Admin from '../models/Admin'
 import bcrypt from 'bcrypt'
 
 const authCheck = (req, res) => {
-  console.log(req.session)
-  if (req.session && req.session.auth == true) {
+  // console.log(req.session)
+  if (req.session && req.session.auth) {
     res.send(JSON.stringify({
-      auth: true,
       // admin: req.session.admin || false,
+      auth: true,
       name: req.session.name,
       email: req.session.email
     }))

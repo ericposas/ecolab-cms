@@ -7,6 +7,7 @@ import axios from 'axios'
 import Toggler from '../UIcomponents/Toggler'
 import TitleBar from '../UIcomponents/TitleBar'
 import User from '../User'
+import Admin from '../Admin'
 
 class ViewUsers extends Component {
 
@@ -21,7 +22,7 @@ class ViewUsers extends Component {
     const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
       const { auth, name, email } = data.data
-      if (auth) { this.getUsers(); setUserData(auth, name, email); }
+      if (auth) { this.getUsers(); setAdminData(auth, name, email); }
       else history.push('/')
     })
   }
@@ -29,15 +30,22 @@ class ViewUsers extends Component {
   getUsers = () => {
     const { setUsers } = this.props
     axios.post('/users/all')
-      .then(data => setUsers(data.data))
+      .then(data => {
+        setUsers(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+
+  getAdmins = () => {
+    const { setAdmins } = this.props
+    axios.post('/admins/all')
+      .then(data => setAdmins(data.data))
       .catch(err => console.log(err))
   }
 
   deleteUser = async id => {
     try {
       let data = await axios.delete(`/users/delete/${id}`)
-      // .then(data => {
-      console.log(data)
       if (data.data.ok == 1) {
         this.getUsers()
         this.setState({
@@ -56,7 +64,28 @@ class ViewUsers extends Component {
     }
   }
 
-  executeBulkAction = async () => {
+  deleteAdmin = async id => {
+    try {
+      let data = await axios.delete(`/admins/delete/${id}`)
+      if (data.data.ok == 1) {
+        this.getAdmins()
+        this.setState({
+          ...this.state,
+          showDeletedMsg: true
+        })
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            showDeletedMsg: false
+          })
+        }, 2000)
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  executeBulkActionUsers = async () => {
     const { BulkActionSelectedUsers, deselectUserForBulkAction } = this.props
     switch (this.state.bulkAction) {
       case 'DELETE':
@@ -71,6 +100,21 @@ class ViewUsers extends Component {
     }
   }
 
+  executeBulkActionAdmins = async () => {
+    const { BulkActionSelectedAdmins, deselectAdminForBulkAction } = this.props
+    switch (this.state.bulkAction) {
+      case 'DELETE':
+        for (let i = 0; i < BulkActionSelectedAdmins.length; i++) {
+          await this.deleteAdmin(BulkActionSelectedAdmins[i])
+          deselectAdminForBulkAction(BulkActionSelectedAdmins[i])
+        }
+        console.log(BulkActionSelectedAdmins.length + ' deleted.')
+        break;
+      default:
+        //
+    }
+  }
+
   // toggleAdminView = () => {
   //   this.setState({
   //     ...this.state,
@@ -78,8 +122,18 @@ class ViewUsers extends Component {
   //   })
   // }
 
+  usersButtonClick = () => {
+    this.setState({ ...this.state, usersButtonSelected: true, adminsButtonSelected: false })
+    this.getUsers()
+  }
+
+  adminsButtonClick = () => {
+    this.setState({ ...this.state, usersButtonSelected: false, adminsButtonSelected: true })
+    this.getAdmins()
+  }
+  
   render() {
-    const { AdminData, Users } = this.props
+    const { AdminData, Users, Admins, history } = this.props
     const { showDeletedMsg, usersButtonSelected, adminsButtonSelected } = this.state
     return (
       <>
@@ -90,38 +144,18 @@ class ViewUsers extends Component {
             style={{}}>
             {
               AdminData && AdminData.auth
-              ? <div>You need to login as an admin user</div>
-              : null
-            }
-            {
-              !AdminData
-              ? <div>Please login to continue</div>
-              : <>
+              ? <>
                   <div
-                    onClick={() => {
-                      this.setState({ ...this.state, usersButtonSelected: true, adminsButtonSelected: false })
-                    }}
+                    onClick={this.usersButtonClick}
                     className={'left-side-panel-button'}>Users</div>
                   <div
-                    onClick={() => {
-                      this.setState({ ...this.state, usersButtonSelected: false, adminsButtonSelected: true })
-                    }}
+                    onClick={this.adminsButtonClick}
                     className={'left-side-panel-button'}>Admins</div>
                 </>
+              : <div>You need to login as an admin user</div>
             }
           </div>
           <div className='col-10'>
-            {
-              /*
-              UserData.admin
-              ?
-                <>
-                  <div>show admin users?</div>
-                  <Toggler clickHandler={this.toggleAdminView} showAdminUsers={this.state.showAdminUsers}/>
-                </>
-              : null
-              */
-            }
             {
               showDeletedMsg
               ? <><div>User deleted.</div></>
@@ -140,11 +174,11 @@ class ViewUsers extends Component {
                         })
                       }}>
                       <option value=''>Bulk Actions</option>
-                      <option value='DELETE'>Delete Users</option>
+                      <option value='DELETE'>Delete {this.state.usersButtonSelected ? ' Users' : ' Admins'}</option>
                     </select>
                     <button
                       className={'col-2 user-bulk-action-dropdown'}
-                      onClick={this.executeBulkAction}>
+                      onClick={this.state.usersButtonSelected ? this.executeBulkActionUsers : this.executeBulkActionAdmins}>
                       {this.state.bulkAction ? this.state.bulkAction : 'No Action'}
                     </button>
                     <div className='col-6'>
@@ -152,14 +186,11 @@ class ViewUsers extends Component {
                       <input type='text'/>
                     </div>
                   </div>
+                  <div className={'row'}>
+                    <button onClick={() => history.push('/createUser')}>Create new user</button>
+                  </div>
                   <br/>
                   <br/>
-                </>
-              : null
-            }
-            {
-              AdminData && AdminData.auth
-              ? <>
                   <div className={'users-list-labels-container row'}>
                     <div className={'users-list-label-name col-5'}>Name</div>
                     <div className={'users-list-label-email col-5'}>Email</div>
@@ -178,20 +209,15 @@ class ViewUsers extends Component {
               : null
             }
             {
-              /*
               Admins && this.state.adminsButtonSelected
               ?
-                Admins.map((user, idx) => (
-                  <Fragment key={user._id}>
-                    {
-                      user.admin
-                      ? <User count={idx} user={user} deleteUser={() => this.deleteUser(user._id)}/>
-                      : null
-                    }
+                Admins.map((admin, idx) => (
+                  <Fragment key={admin._id}>
+                    <Admin count={idx} admin={admin}/>
                   </Fragment>
                 ))
               : null
-            */}
+            }
           </div>
         </div>
       </>

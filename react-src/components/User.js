@@ -4,9 +4,7 @@ import { mapState, mapDispatch } from '../mapStateMapDispatch'
 
 class User extends Component {
 
-  state = {
-    // checkBoxState: false
-  }
+  state = {}
 
   toggleCheckBox = user => {
     const {
@@ -16,35 +14,18 @@ class User extends Component {
     } = this.props
     if (BulkActionSelectedUsers.includes(user)) {
       deselectUserForBulkAction(user)
-      // this.setState({
-      //   ...this.state,
-      //   checkBoxState: false
-      // })
     } else {
       selectUserForBulkAction(user)
-      // this.setState({
-      //   ...this.state,
-      //   checkBoxState: true
-      // })
     }
   }
 
   render() {
-    const { count, deleteUser, user, BulkActionSelectedUsers } = this.props
+    const { count, user, BulkActionSelectedUsers } = this.props
+    console.log(count)
     return (
       <>
         <div
-          className={'user-component-container row'}
-          style={{
-            backgroundColor: count % 2 == 0 && count != 0 ? '#ccc' : '#ededed'
-          }}>
-          {/*
-            <div
-              className={'user-component-delete-button'}
-              onClick={deleteUser}>
-                &#10060;
-            </div>
-          */}
+          className={'user-component-container row'}>
           <div className={'col-5 user-component-name'}>{user.name}</div>
           <div className={'col-5 user-component-email'}>{user.email}</div>
           <input

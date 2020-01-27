@@ -30,8 +30,7 @@ const createUser = (req, res) => {
 }
 
 const viewUsers = (req, res) => {
-  if (process.env.MODE == 'development' ||
-      process.env.MODE == 'production' && req.session.auth == true) {
+  if (req.session.auth) {
     User.find()
       .then(data => res.send(data))
       .catch(err => console.log(err))

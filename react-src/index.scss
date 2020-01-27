@@ -31,9 +31,11 @@ body {
   background-color: #ededed;
 }
 
-// User <Component>
+// User <Component> & Admin <Component>
 .user-component-container {
   padding: 10px 0 10px 0;
+  background-color: #ededed;
+  border: 1px solid #888;
   position: relative;
 }
 

@@ -18,10 +18,6 @@ const Admin = model('Admin', new Schema({
   fullaccess: {
     type: Boolean,
     default: false
-  },
-  updated: {
-    type: Date,
-    default: Date.now
   }
 }))
 

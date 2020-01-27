@@ -1,6 +1,6 @@
-const AdminData = (state = {}, action) => {
+const Admins = (state = null, action) => {
   switch (action.type) {
-    case 'SET_ADMIN_DATA':
+    case 'SET_ADMINS':
       return action.payload
       break;
     default:
@@ -8,4 +8,4 @@ const AdminData = (state = {}, action) => {
   }
 }
 
-export default AdminData
+export default Admins
