@@ -9,9 +9,9 @@ const createUser = (req, res) => {
     User({ name: req.body.name, email: req.body.email, password: hash })
       .save()
       .then(() => {
-        res.send('success')
+        res.send({ success: 'user created' })
       })
-      .catch(err => console.log(err))
+      .catch(err => res.send({ error: err.errmsg }))
   }
   if (process.env.MODE == 'development' ||
       process.env.MODE == 'production' && req.session.admin == true) {
@@ -24,16 +24,16 @@ const createUser = (req, res) => {
         })
       })
     } else {
-      res.send('error occurred..')
+      res.send({ error: 'error occurred..' })
     }
-  } else { res.send('must be admin to create new users') }
+  } else { res.send({ error: 'must be admin to create new users' }) }
 }
 
 const viewUsers = (req, res) => {
   if (req.session.auth) {
     User.find()
       .then(data => res.send(data))
-      .catch(err => console.log(err))
+      .catch(err => res.send({ error: err.errmsg }))
   }
 }
 
@@ -41,7 +41,7 @@ const deleteUser = (req, res) => {
   if (req.params.id) {
     User.deleteOne({ _id: req.params.id })
       .then(data => res.send(data))
-      .catch(err => console.log(err))
+      .catch(err => res.send({ error: err.errmsg }))
   }
 }
 

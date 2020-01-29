@@ -18,6 +18,11 @@ body {
   // specify width and height in component
 }
 
+.x-symbol {
+  cursor: pointer;
+  display: inline-block;
+}
+
 // LeftSidePanel <Component>
 .left-side-panel {
   height: 100vh;

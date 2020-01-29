@@ -45,14 +45,18 @@ class CreateUser extends Component {
   }
 
   submitForm = e => {
+    const { history } = this.props
+    const { nameValue, emailValue, passwordValue } = this.state
     e.preventDefault()
     axios.post('/users/create', {
-      name: this.state.nameValue,
-      email: this.state.emailValue,
-      password: this.state.passwordValue
+      name: nameValue,
+      email: emailValue,
+      password: passwordValue
     })
     .then(data => {
-      if (data.data == 'success') {
+      const { success } = data.data
+      if (success) {
+        console.log(success)
         this.setState({
           ...this.state,
           showUserCreatedMsg: true
@@ -62,19 +66,34 @@ class CreateUser extends Component {
             ...this.state,
             showUserCreatedMsg: false
           })
-          this.props.history.push('/')
+          history.push('/')
+        }, 2000)
+      } else {
+        this.setState({
+          ...this.state,
+          showUserCreateError: true
+        })
+        setTimeout(() => {
+          this.setState({
+            ...this.state,
+            showUserCreateError: false
+          })
         }, 2000)
       }
-      else console.log(data.data)
     })
-    .catch(err => console.log(err))
+    .catch(err => { error: err.errmsg })
   }
-
+  
   render() {
     const { AdminData } = this.props
-    const { showUserCreatedMsg } = this.state
+    const { showUserCreatedMsg, showUserCreateError } = this.state
     return (
       <>
+        {
+          showUserCreateError
+          ? <><div>User could not be created.</div></>
+          : null
+        }
         {
           showUserCreatedMsg
           ? <><div>User created succesfully.</div><br/><br/></>

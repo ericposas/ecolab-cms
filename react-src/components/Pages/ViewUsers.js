@@ -15,7 +15,8 @@ class ViewUsers extends Component {
     showAdminUsers: false,
     adminsButtonSelected: false,
     usersButtonSelected: true,
-    bulkAction: null
+    bulkAction: null,
+    searchFilter: ''
   }
 
   componentDidMount() {
@@ -123,18 +124,32 @@ class ViewUsers extends Component {
   // }
 
   usersButtonClick = () => {
-    this.setState({ ...this.state, usersButtonSelected: true, adminsButtonSelected: false })
+    this.setState({
+      ...this.state,
+      usersButtonSelected: true,
+      adminsButtonSelected: false,
+      searchFilter: ''
+    })
     this.getUsers()
   }
 
   adminsButtonClick = () => {
-    this.setState({ ...this.state, usersButtonSelected: false, adminsButtonSelected: true })
+    this.setState({
+      ...this.state,
+      usersButtonSelected: false,
+      adminsButtonSelected: true,
+      searchFilter: ''
+    })
     this.getAdmins()
   }
+
+  setSearchFilter = e => this.setState({ ...this.state, searchFilter: e.target.value })
+
+  clearSearchFilter = () => this.setState({ ...this.state, searchFilter: '' })
   
   render() {
     const { AdminData, Users, Admins, history } = this.props
-    const { showDeletedMsg, usersButtonSelected, adminsButtonSelected } = this.state
+    const { showDeletedMsg, usersButtonSelected, adminsButtonSelected, searchFilter } = this.state
     return (
       <>
         <TitleBar title={process.env.APP_NAME}/>
@@ -183,7 +198,11 @@ class ViewUsers extends Component {
                     </button>
                     <div className='col-6'>
                       <div className='user-search-box'>Search: &nbsp;</div>
-                      <input type='text'/>
+                      <input
+                        type='text'
+                        value={searchFilter}
+                        onChange={this.setSearchFilter}/>
+                      <div className='x-symbol' onClick={this.clearSearchFilter}>&#10006;</div>
                     </div>
                   </div>
                   <div className={'row'}>
@@ -201,21 +220,31 @@ class ViewUsers extends Component {
             {
               Users && this.state.usersButtonSelected
               ?
-                Users.map((user, idx) => (
-                  <Fragment key={user._id}>
-                    <User count={idx} user={user}/>
-                  </Fragment>
-                ))
+                Users.map((user, idx) =>
+                  (
+                    user.name.indexOf(searchFilter) > -1
+                    ?
+                      <Fragment key={user._id}>
+                        <User count={idx} user={user}/>
+                      </Fragment>
+                    : null
+                  )
+                )
               : null
             }
             {
               Admins && this.state.adminsButtonSelected
               ?
-                Admins.map((admin, idx) => (
-                  <Fragment key={admin._id}>
-                    <Admin count={idx} admin={admin}/>
-                  </Fragment>
-                ))
+                Admins.map((admin, idx) =>
+                  (
+                    admin.name.indexOf(searchFilter) > -1
+                    ?
+                      <Fragment key={admin._id}>
+                        <Admin count={idx} admin={admin}/>
+                      </Fragment>
+                    : null
+                  )
+                )
               : null
             }
           </div>

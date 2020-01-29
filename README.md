@@ -12,7 +12,3 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - move/rearrange user signup route to be accessible from admin panel
-  - add error message(s) upon user register fail
-  - add "Bulk Actions" Delete
-  - add "Search" filtering on users list view
