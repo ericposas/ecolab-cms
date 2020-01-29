@@ -3,6 +3,18 @@ body {
   overflow-x: hidden;
 }
 
+.padding-div-10 {
+  padding: 10px;
+}
+
+.fullscreen-darken {
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.35);
+  position: absolute;
+}
+
 .ui-title-bar {
   width: 100%;
   padding: 20px;
@@ -12,7 +24,7 @@ body {
 .center-float {
   margin: auto;
   top: 0; right: 0; bottom: 0; left: 0;
-  border: 1px solid #ccc;
+  border: 1px solid #888;
   background-color: #fff;
   position: absolute;
   // specify width and height in component
@@ -64,6 +76,14 @@ body {
   // border-left: 1px solid black;
 }
 
+.user-edit-clickable-region {
+  top: 0;
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  cursor: pointer;
+}
+
 
 // .user-component-delete-button {
 //   cursor: pointer;
@@ -85,4 +105,14 @@ body {
 }
 
 .users-list-label-email {
+}
+
+// MODALS
+// UserEditView <Component>
+.modal-user-edit-view-container {
+}
+.modal-user-edit-title-ribbon {
+  padding: 10px;
+  background-color: #ccc;
+  border-bottom: 1px solid #888;
 }

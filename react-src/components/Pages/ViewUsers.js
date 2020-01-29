@@ -10,6 +10,7 @@ import Toggler from '../UIcomponents/Toggler'
 import TitleBar from '../UIcomponents/TitleBar'
 import User from '../ListItems/User'
 import Admin from '../ListItems/Admin'
+import UserEditView from '../Modals/UserEditView'
 const entities = new Entities()
 
 class ViewUsers extends Component {
@@ -313,7 +314,17 @@ class ViewUsers extends Component {
               Admins && this.state.adminsButtonSelected
               ?
                 Admins
-                  .sort(this.getSortFunction)
+                  .sort((a, b) => (
+                    this.state.sort.indexOf('descending') > -1
+                    ?
+                      this.state.sort.indexOf('name') > -1
+                      ? this.sortDesc_Name(a, b)
+                      : this.sortDesc_Email(a, b)
+                    :
+                      this.state.sort.indexOf('name') > -1
+                      ? this.sortAsc_Name(a, b)
+                      : this.sortAsc_Email(a, b)
+                  ))
                   .map((admin, idx) =>
                   (
                     admin.name.indexOf(searchFilter) > -1
@@ -328,6 +339,11 @@ class ViewUsers extends Component {
             }
           </div>
         </div>
+        {
+          this.props.SelectedUserForEditing
+          ? <UserEditView refreshUsersList={this.getUsers}/>
+          : null
+        }
       </>
     )
   }

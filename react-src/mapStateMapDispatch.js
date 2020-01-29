@@ -1,10 +1,7 @@
 import { bindActionCreators } from 'redux'
 import actions from './actions/ActionCreators'
 
-const mapState = state => {
-  const { AdminData, Users, Admins, BulkActionSelectedUsers, BulkActionSelectedAdmins } = state
-  return { AdminData, Users, Admins, BulkActionSelectedUsers, BulkActionSelectedAdmins }
-}
+const mapState = state => state
 
 const mapDispatch = dispatch => bindActionCreators(actions, dispatch)
 

@@ -45,8 +45,31 @@ const deleteUser = (req, res) => {
   }
 }
 
+const updateUser = (req, res) => {
+  if (req.params.id) {
+    User.findOne({ _id: req.params.id })
+      .then(doc => {
+        // console.log(doc)
+        if (doc) {
+          doc.name = req.body.name
+          doc.email = req.body.email
+          doc.active = req.body.active
+          doc.save()
+            .then(doc => res.send({ success: 'successfully updated user.' }))
+            .catch(err => res.send({ error: 'error updating user.' }))
+        } else {
+          res.send({ error: 'no user found.' })
+        }
+      })
+      .catch(err => res.send({ error: 'error occurred.' }))
+  } else {
+    res.send({ error: 'no id parameter supplied.' })
+  }
+}
+
 export {
   viewUsers,
   deleteUser,
-  createUser
+  createUser,
+  updateUser
 }

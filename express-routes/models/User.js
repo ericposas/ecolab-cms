@@ -23,6 +23,10 @@ const User = model('User', new Schema({
     type: Boolean,
     default: false
   },
+  active: {
+    type: Boolean,
+    default: true
+  },
   updated: {
     type: Date,
     default: Date.now

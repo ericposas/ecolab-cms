@@ -12,3 +12,4 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
+  - clarify create user flow

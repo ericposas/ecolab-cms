@@ -19,15 +19,23 @@ class User extends Component {
     }
   }
 
+  userEditClick = user => {
+    console.log('should go into edit user mode for ' + user.name)
+    this.props.setSelectedUserForEditing(user)
+    // this.props.showUserEditView()
+  }
+
   render() {
     const { count, user, BulkActionSelectedUsers } = this.props
-    // console.log(count)
     return (
       <>
         <div
           className={'user-component-container row'}>
           <div className={'col-5 user-component-name'}>{user.name}</div>
           <div className={'col-5 user-component-email'}>{user.email}</div>
+          <div
+            className='user-edit-clickable-region'
+            onClick={() => this.userEditClick(user)}></div>
           <input
             type='checkbox'
             className={'user-component-checkbox'}

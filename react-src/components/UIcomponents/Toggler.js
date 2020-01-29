@@ -14,21 +14,21 @@ class Toggler extends Component {
           style={{
             width: '30px',
             height: '12px',
+            transform: this.props.scale ? `scale(${this.props.scale})` : 'scale(1.0)',
             cursor: 'pointer',
             borderRadius: '10px',
-            border: '1px solid #ccc',
-            backgroundColor: this.props.showAdminUsers ? 'lightblue' : '#555'
+            border: '1px solid #555',
+            backgroundColor: this.props.toggleValue ? 'lightblue' : '#777'
           }}>
           <div
             style={{
               width: '12px',
               height: '12px',
               borderRadius: '10px',
-              border: '1px solid #ccc',
+              border: '1px solid #555',
               backgroundColor: 'white',
-              marginLeft: '-2px',
               marginTop: '-1px',
-              marginLeft: this.props.showAdminUsers ? '18px' : '0px',
+              marginLeft: this.props.toggleValue ? '18px' : '-2px',
             }}>
           </div>
         </div>
