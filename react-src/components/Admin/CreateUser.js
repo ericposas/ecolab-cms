@@ -10,7 +10,7 @@ class CreateUser extends Component {
   state = {
     nameValue: '',
     emailValue: '',
-    passwordValue: '',
+    // passwordValue: '',
     showUserCreatedMsg: false
   }
 
@@ -37,21 +37,21 @@ class CreateUser extends Component {
     })
   }
 
-  onPasswordInput = e => {
-    this.setState({
-      ...this.state,
-      passwordValue: e.target.value
-    })
-  }
+  // onPasswordInput = e => {
+  //   this.setState({
+  //     ...this.state,
+  //     passwordValue: e.target.value
+  //   })
+  // }
 
   submitForm = e => {
     const { history } = this.props
-    const { nameValue, emailValue, passwordValue } = this.state
+    const { nameValue, emailValue } = this.state //, passwordValue } = this.state
     e.preventDefault()
     axios.post('/users/create', {
       name: nameValue,
-      email: emailValue,
-      password: passwordValue
+      email: emailValue
+      // password: passwordValue
     })
     .then(data => {
       const { success } = data.data
@@ -81,9 +81,9 @@ class CreateUser extends Component {
         }, 2000)
       }
     })
-    .catch(err => { error: err.errmsg })
+    .catch(err => console.log({ error: err.errmsg }))
   }
-  
+
   render() {
     const { AdminData } = this.props
     const { showUserCreatedMsg, showUserCreateError } = this.state
@@ -110,8 +110,8 @@ class CreateUser extends Component {
                   <input onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
                   <label>email: &nbsp;</label>
                   <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
-                  <label>password: &nbsp;</label>
-                  <input onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>
+                  {/*<label>password: &nbsp;</label>
+                  <input onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>*/}
                   <input onClick={this.submitForm} type='submit' value='Create User'/>
                 </form>
               </div>

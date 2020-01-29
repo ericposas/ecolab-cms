@@ -72,6 +72,7 @@ app.use('/users', userRoutes)
 
 app.use('/admins', adminRoutes)
 
+
 app.listen(port, err => {
   if (err) throw err
   else console.log('server started in ES6!')

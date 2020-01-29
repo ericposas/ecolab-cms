@@ -7,6 +7,7 @@ import Home from './Pages/Home'
 import ViewUsers from './Pages/ViewUsers'
 import AdminPasswordReset from './Pages/AdminPasswordReset'
 import UserPasswordReset from './Pages/UserPasswordReset'
+import AppAuth from './EcoLab/AppAuth'
 import axios from 'axios'
 
 class App extends Component {
@@ -23,6 +24,9 @@ class App extends Component {
             <Route path='/login' component={Login}/>
             <Route path='/logout' component={Logout}/>
             <Route path='/users' component={ViewUsers}/>
+
+            <Route path='/appauth' component={AppAuth}/>
+
           </Switch>
         </Router>
       </>

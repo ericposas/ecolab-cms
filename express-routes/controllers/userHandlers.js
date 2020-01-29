@@ -1,9 +1,37 @@
 import User from '../models/User'
 import bcrypt from 'bcrypt'
+import uuid from 'uuid'
+
+// For application login..
+const appLogin = (req, res) => {
+  console.log(req.body)
+  if (req.body.email && req.body.password) {
+    User.findOne({ email: req.body.email })
+      .then(doc => {
+        console.log(doc)
+        bcrypt.compare(req.body.password, doc.password, (err, result) => {
+          if (result == true) {
+            // add session for application user
+            req.session.auth = true
+            req.session.name = doc.name
+            req.session.email = doc.email
+            req.session.maxAge = 1000 * 60 * 15
+            req.session.save()
+            res.send({ auth: true, name: doc.name, email: doc.email })
+          } else {
+            res.send({ error: 'wrong password.' })
+          }
+        })
+      })
+      .catch(err => res.send({ error: err }))
+  } else {
+    res.send({ error: 'no body params provided.' })
+  }
+}
 
 // manually salting and hashing...
 const createUser = (req, res) => {
-  // console.log(req.body)
+  console.log(req.body)
   let hash
   const insertNewUser = () => {
     User({ name: req.body.name, email: req.body.email, password: hash })
@@ -13,20 +41,17 @@ const createUser = (req, res) => {
       })
       .catch(err => res.send({ error: err.errmsg }))
   }
-  if (process.env.MODE == 'development' ||
-      process.env.MODE == 'production' && req.session.admin == true) {
-    if (req.body.name && req.body.email && req.body.password) {
-      let saltRounds = 10
-      bcrypt.genSalt(saltRounds, (err, salt) => {
-        bcrypt.hash(req.body.password, salt, (err, _hash) => {
-          hash = _hash
-          insertNewUser()
-        })
+  if (req.body.name && req.body.email) {
+    let saltRounds = 10
+    bcrypt.genSalt(saltRounds, (err, salt) => {
+      bcrypt.hash(uuid(), salt, (err, _hash) => {
+        hash = _hash
+        insertNewUser()
       })
-    } else {
-      res.send({ error: 'error occurred..' })
-    }
-  } else { res.send({ error: 'must be admin to create new users' }) }
+    })
+  } else {
+    res.send({ error: 'error occurred..' })
+  }
 }
 
 const viewUsers = (req, res) => {
@@ -71,5 +96,6 @@ export {
   viewUsers,
   deleteUser,
   createUser,
-  updateUser
+  updateUser,
+  appLogin
 }
