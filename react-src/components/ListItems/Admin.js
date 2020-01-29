@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { mapState, mapDispatch } from '../mapStateMapDispatch'
+import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 
 class Admin extends Component {
 

@@ -3,11 +3,14 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
+// import alphaSort from 'alpha-sort'
 import axios from 'axios'
+import { XmlEntities as Entities } from 'html-entities'
 import Toggler from '../UIcomponents/Toggler'
 import TitleBar from '../UIcomponents/TitleBar'
-import User from '../User'
-import Admin from '../Admin'
+import User from '../ListItems/User'
+import Admin from '../ListItems/Admin'
+const entities = new Entities()
 
 class ViewUsers extends Component {
 
@@ -16,7 +19,8 @@ class ViewUsers extends Component {
     adminsButtonSelected: false,
     usersButtonSelected: true,
     bulkAction: null,
-    searchFilter: ''
+    searchFilter: '',
+    sort: 'by-name-ascending'
   }
 
   componentDidMount() {
@@ -146,7 +150,50 @@ class ViewUsers extends Component {
   setSearchFilter = e => this.setState({ ...this.state, searchFilter: e.target.value })
 
   clearSearchFilter = () => this.setState({ ...this.state, searchFilter: '' })
-  
+
+  sortByName = () => {
+    this.setState({
+      ...this.state,
+      sort: this.state.sort == 'by-name-descending' ? 'by-name-ascending' : 'by-name-descending'
+    })
+  }
+
+  sortByEmail = () => {
+    this.setState({
+      ...this.state,
+      sort: this.state.sort == 'by-email-descending' ? 'by-email-ascending' : 'by-email-descending'
+    })
+  }
+
+  sortAsc_Name = (a, b) => {
+    if (a.name > b.name) return 1
+    if (a.name < b.name) return -1
+    return 0
+  }
+
+  sortDesc_Name = (a, b) => {
+    if (a.name > b.name) return -1
+    if (a.name < b.name) return 1
+    return 0
+  }
+
+  sortAsc_Email = (a, b) => {
+    if (a.email > b.email) return 1
+    if (a.email < b.email) return -1
+    return 0
+  }
+
+  sortDesc_Email = (a, b) => {
+    if (a.email > b.email) return -1
+    if (a.email < b.email) return 1
+    return 0
+  }
+
+  // getSortFunction = () => {
+  //   if (this.state.sort.indexOf('descending') > -1) return alphaSort.descending
+  //   else return alphaSort.ascending
+  // }
+
   render() {
     const { AdminData, Users, Admins, history } = this.props
     const { showDeletedMsg, usersButtonSelected, adminsButtonSelected, searchFilter } = this.state
@@ -205,14 +252,34 @@ class ViewUsers extends Component {
                       <div className='x-symbol' onClick={this.clearSearchFilter}>&#10006;</div>
                     </div>
                   </div>
+                  <br/>
                   <div className={'row'}>
-                    <button onClick={() => history.push('/createUser')}>Create new user</button>
+                    <button
+                      style={{ padding: '10px' }}
+                      onClick={() => history.push('/createUser')}>Create new user</button>
                   </div>
                   <br/>
-                  <br/>
                   <div className={'users-list-labels-container row'}>
-                    <div className={'users-list-label-name col-5'}>Name</div>
-                    <div className={'users-list-label-email col-5'}>Email</div>
+                    <div
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                      className={'users-list-label-name col-5'}
+                      onClick={this.sortByName}>
+                      Name<span>{
+                        this.state.sort.indexOf('name') > -1
+                        ? this.state.sort.indexOf('descending') > -1 ? entities.decode('&#8593;') : entities.decode('&#8595;')
+                        : null
+                      }</span>
+                    </div>
+                    <div
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                      className={'users-list-label-email col-5'}
+                      onClick={this.sortByEmail}>
+                      Email<span>{
+                        this.state.sort.indexOf('email') > -1
+                        ? this.state.sort.indexOf('descending') > -1 ? entities.decode('&#8593;') : entities.decode('&#8595;')
+                        : null
+                      }</span>
+                    </div>
                   </div>
                 </>
               : null
@@ -220,22 +287,34 @@ class ViewUsers extends Component {
             {
               Users && this.state.usersButtonSelected
               ?
-                Users.map((user, idx) =>
-                  (
+                Users
+                  .sort((a, b) => (
+                    this.state.sort.indexOf('descending') > -1
+                    ?
+                      this.state.sort.indexOf('name') > -1
+                      ? this.sortDesc_Name(a, b)
+                      : this.sortDesc_Email(a, b)
+                    :
+                      this.state.sort.indexOf('name') > -1
+                      ? this.sortAsc_Name(a, b)
+                      : this.sortAsc_Email(a, b)
+                  ))
+                  .map((user, idx) => (
                     user.name.indexOf(searchFilter) > -1
                     ?
                       <Fragment key={user._id}>
                         <User count={idx} user={user}/>
                       </Fragment>
                     : null
-                  )
-                )
+                  ))
               : null
             }
             {
               Admins && this.state.adminsButtonSelected
               ?
-                Admins.map((admin, idx) =>
+                Admins
+                  .sort(this.getSortFunction)
+                  .map((admin, idx) =>
                   (
                     admin.name.indexOf(searchFilter) > -1
                     ?

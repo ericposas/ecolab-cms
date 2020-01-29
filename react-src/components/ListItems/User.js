@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { mapState, mapDispatch } from '../mapStateMapDispatch'
+import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 
 class User extends Component {
 
@@ -21,7 +21,7 @@ class User extends Component {
 
   render() {
     const { count, user, BulkActionSelectedUsers } = this.props
-    console.log(count)
+    // console.log(count)
     return (
       <>
         <div
