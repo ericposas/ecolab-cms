@@ -4,24 +4,20 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import Toggler from '../UIcomponents/Toggler'
 import axios from 'axios'
-// import bcrypt from 'bcrypt'
 
 class UserEditView extends Component {
 
   state = {
     userName: '',
     userEmail: '',
-    // userPassword: '',
     userActive: true,
     emailSentMsg: false
   }
 
   componentDidMount() {
-    // console.log(this.props.SelectedUserForEditing)
     this.setState({
       userName: this.props.SelectedUserForEditing.name,
       userEmail: this.props.SelectedUserForEditing.email,
-      // userPassword: this.props.SelectedUserForEditing.password,
       userActive: this.props.SelectedUserForEditing.active
     })
   }
@@ -39,13 +35,6 @@ class UserEditView extends Component {
       userEmail: e.target.value
     })
   }
-
-  // setUserPassword = e => {
-  //   this.setState({
-  //     ...this.state,
-  //     userPassword: e.target.value
-  //   })
-  // }
 
   sendForgotEmail = () => {
     axios.post('/password/forgot', { email: this.state.userEmail })
@@ -66,10 +55,6 @@ class UserEditView extends Component {
       })
       .catch(err => console.log(err))
   }
-
-  // generateHash = () => {
-  //   //
-  // }
 
   userActiveToggle = () => {
     console.log(!this.state.userActive)
@@ -119,10 +104,6 @@ class UserEditView extends Component {
             <div>Email</div>
             <input type='text' onChange={this.setUserEmail} value={this.state.userEmail}/>
           </div>
-          {/*<div className='padding-div-10'>
-            <div>Password</div>
-            <input type='text' onChange={this.setUserPassword} value={this.state.userPassword}/>
-          </div>*/}
           <div className='padding-div-10'>
             <button onClick={this.sendForgotEmail}>Reset {this.state.userName}'s password</button>
           </div>
