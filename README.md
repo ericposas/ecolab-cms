@@ -12,6 +12,7 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - add Logout button for Admin page
+  - add edit view for admins
+  - add toggles within the edit view for admins (owner?) and users (full access?)
   - email validation on frontend for users and admins
   - clarify create user flow
