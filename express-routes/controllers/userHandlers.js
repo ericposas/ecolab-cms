@@ -1,7 +1,7 @@
 import User from '../models/User'
 import bcrypt from 'bcrypt'
 import uuid from 'uuid'
-import { sendMail } from './passwordResetHandlers'
+import { sendMail, code } from './passwordResetHandlers'
 
 // Check for valid user session..
 const sessionCheck = (req, res) => {
@@ -26,11 +26,15 @@ const appLogin = (req, res) => {
             req.session.save()
             res.send({ auth: true, name: doc.name, email: doc.email })
           } else {
-            res.send({ error: 'wrong password.' })
+            // try login via code
+            code(req, res, () => {
+              res.send({ reset: 'correct reset code provided.' })
+            })
+            // res.send({ error: 'wrong password.' })
           }
         })
       })
-      .catch(err => res.send({ error: err }))
+      .catch(err => res.send({ error: 'error occurred.' }))
   } else {
     res.send({ error: 'no body params provided.' })
   }

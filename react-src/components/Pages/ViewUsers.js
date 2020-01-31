@@ -90,7 +90,7 @@ class ViewUsers extends Component {
       console.log(err)
     }
   }
-  
+
   executeBulkActionUsers = async () => {
     const { BulkActionSelectedUsers, deselectUserForBulkAction } = this.props
     switch (this.state.bulkAction) {
@@ -194,6 +194,10 @@ class ViewUsers extends Component {
   //   if (this.state.sort.indexOf('descending') > -1) return alphaSort.descending
   //   else return alphaSort.ascending
   // }
+
+  logout = () => {
+    this.props.history.push('/logout/admin')
+  }
 
   render() {
     const { AdminData, Users, Admins, history } = this.props
@@ -344,6 +348,12 @@ class ViewUsers extends Component {
           ? <UserEditView refreshUsersList={this.getUsers}/>
           : null
         }
+        <button
+          style={{
+            top: '10px', right: '10px',
+            position: 'absolute'
+          }}
+          onClick={this.logout}>log out</button>
       </>
     )
   }

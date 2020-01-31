@@ -48,16 +48,18 @@ const forgot = (req, res) => {
     .catch(err => console.log(err))
 }
 
-const code = (req, res) => {
-  let submittedCode = req.body.code.trim()
+const code = (req, res, cb) => {
+  let submittedCode = req.body.password.trim()
   User.findOne({ resetCode: submittedCode })
     .then(doc => {
       if (doc == null) {
         res.send({ error: 'invalid code' })
       } else {
-        req.session.name = doc.name
         if (submittedCode == doc.resetCode) {
-          res.send({ success: 'allow user to reset password -- redirect to password reset page' })
+          req.session.appusername = doc.name
+          req.session.appuseremail = doc.email
+          if (cb) cb()
+          else res.send({ success: 'allow user to reset password -- redirect to password reset page' })
         } else {
           res.send({ error: 'incorrect data supplied' })
         }
@@ -69,11 +71,12 @@ const code = (req, res) => {
 const update = (req, res) => {
   // update the user db object here
   const updatePass = hashedPass => {
-    User.findOne({ name: req.session.name })
+    User.findOne({ name: req.session.appusername, email: req.session.appuseremail })
       .then(doc => {
         console.log(doc)
         // expire the reset code and delete session variable
-        delete req.session.name
+        delete req.session.appusername
+        delete req.session.appuseremail
         doc.resetCode = null
         doc.password = hashedPass
         doc.save(err => {

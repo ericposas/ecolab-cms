@@ -15,6 +15,13 @@ class UserPasswordReset extends Component {
   }
 
   componentDidMount() {
+    if (this.props.match.params.formState) {
+      this.setState({
+        ...this.state,
+        formState: this.props.match.params.formState
+      })
+      console.log(true)
+    }
   }
 
   submitCode = () => {
@@ -88,9 +95,12 @@ class UserPasswordReset extends Component {
                 : null
               }
               <form>
+                <div>New Password</div>
                 <input type='password' onChange={e => this.setState({ passwordVal: e.target.value })} value={this.state.passwordVal}/>
+                <div>Confirm Password</div>
                 <input type='password' onChange={e => this.setState({ passwordVal2: e.target.value })} value={this.state.passwordVal2}/>
               </form>
+              <br/>
               <button onClick={this.updatePassword}>update password</button>
             </>
           : null

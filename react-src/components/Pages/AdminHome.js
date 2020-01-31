@@ -5,7 +5,7 @@ import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import TitleBar from '../UIcomponents/TitleBar'
 
-class Home extends Component {
+class AdminHome extends Component {
 
   componentDidMount() {
     const { checkAuth, setAdminData, history } = this.props
@@ -15,7 +15,7 @@ class Home extends Component {
       else history.push('/admin')
     })
   }
-  
+
   render() {
     const { AdminData } = this.props
     return (
@@ -34,4 +34,4 @@ class Home extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(Home)))
+export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(AdminHome)))

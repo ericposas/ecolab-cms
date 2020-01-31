@@ -12,6 +12,7 @@ class AppAuth extends Component {
     password: '',
     displayUserDataError: false,
     displayUserAuthenticatedMsg: false,
+    // showResetUserPassword: false
   }
 
   onEmailInput = e => {
@@ -29,15 +30,17 @@ class AppAuth extends Component {
   }
 
   onFormSubmit = e => {
-    const { setAppUserData } = this.props
+    const { setAppUserData, history } = this.props
     e.preventDefault()
     axios.post('/users/appauth', { email: this.state.email, password: this.state.password })
       .then(data => {
-        // console.log(data)
         const { auth, name, email } = data.data
+        console.log(data.data)
         if (auth && name && email) {
           setAppUserData(auth, name, email)
           this.showUserAuthenticatedMsg()
+        } else if (data.data.reset) {
+          history.push(`/reset-my-password/${'codeResetSuccess'}`)
         } else {
           this.showUserDataError()
         }
@@ -81,7 +84,9 @@ class AppAuth extends Component {
         <br/>
         <div className='padding-div-10'>
           <form>
+            <div>Email address:</div>
             <input type='text' onChange={this.onEmailInput} value={this.state.email}/>
+            <div>Password:</div>
             <input type='password' onChange={this.onPasswordInput} value={this.state.password}/>
           </form>
           <br/>

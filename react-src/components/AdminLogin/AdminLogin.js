@@ -6,7 +6,7 @@ import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import axios from 'axios'
 import TitleBar from '../UIcomponents/TitleBar'
 
-class Login extends Component {
+class AdminLogin extends Component {
 
   state = {
     emailValue: '',
@@ -113,4 +113,4 @@ class Login extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(Login)))
+export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(AdminLogin)))
