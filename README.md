@@ -12,4 +12,5 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
+  - email validation on frontend
   - clarify create user flow

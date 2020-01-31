@@ -10,7 +10,11 @@ class TitleBar extends Component {
   render () {
     return (
       <>
-        <div className={'ui-title-bar'}>
+        <div
+          className={'ui-title-bar'}
+          style={{
+            backgroundColor: this.props.color || 'lightblue'
+          }}>
           {this.props.title}
         </div>
       </>

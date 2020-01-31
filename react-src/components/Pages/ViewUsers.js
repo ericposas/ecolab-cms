@@ -29,7 +29,7 @@ class ViewUsers extends Component {
     checkAuth(data => {
       const { auth, name, email } = data.data
       if (auth) { this.getUsers(); setAdminData(auth, name, email); }
-      else history.push('/')
+      else history.push('/admin')
     })
   }
 
@@ -63,7 +63,7 @@ class ViewUsers extends Component {
             ...this.state,
             showDeletedMsg: false
           })
-        }, 2000)
+        }, 1000)
       }
     } catch (err) {
       console.log(err)
@@ -84,13 +84,13 @@ class ViewUsers extends Component {
             ...this.state,
             showDeletedMsg: false
           })
-        }, 2000)
+        }, 1000)
       }
     } catch (err) {
       console.log(err)
     }
   }
-
+  
   executeBulkActionUsers = async () => {
     const { BulkActionSelectedUsers, deselectUserForBulkAction } = this.props
     switch (this.state.bulkAction) {
@@ -257,7 +257,7 @@ class ViewUsers extends Component {
                   <div className={'row'}>
                     <button
                       style={{ padding: '10px' }}
-                      onClick={() => history.push('/createUser')}>Create new user</button>
+                      onClick={() => history.push('/create-user')}>Create new user</button>
                   </div>
                   <br/>
                   <div className={'users-list-labels-container row'}>

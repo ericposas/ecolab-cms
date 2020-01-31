@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import nodemailer from 'nodemailer'
 import User from '../models/User'
 
-const sendMail = async (res, email, code) => {
+const sendMail = async (res, email, code, cb) => {
   // let testAccount = await nodemailer.createTestAccount()
   let transporter = nodemailer.createTransport({
     // host: 'sector5digital-com.mail.protection.outlook.com',
@@ -25,7 +25,8 @@ const sendMail = async (res, email, code) => {
       <b>${code}</b>
     `
   })
-  res.send({ success: 'message sent!' })
+  if (cb) cb()
+  else res.send({ success: 'message sent!' })
 }
 
 const forgot = (req, res) => {
@@ -93,5 +94,6 @@ const update = (req, res) => {
 export {
   forgot,
   code,
-  update
+  update,
+  sendMail
 }

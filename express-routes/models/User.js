@@ -27,6 +27,10 @@ const User = model('User', new Schema({
     type: Boolean,
     default: true
   },
+  creator_id: {
+    type: Schema.ObjectId,
+    default: null
+  },
   updated: {
     type: Date,
     default: Date.now

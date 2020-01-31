@@ -12,7 +12,7 @@ class AuthCheck extends Component {
     this.props.checkAuth(data => {
       this.setState({ authResult: data.data.auth })
       if (data.data.auth == false) {
-        setTimeout(() => this.props.history.push('/login'), 2000)
+        setTimeout(() => this.props.history.push('/admin'), 2000)
       }
     })
   }

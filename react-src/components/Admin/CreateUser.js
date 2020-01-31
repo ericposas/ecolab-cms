@@ -66,7 +66,7 @@ class CreateUser extends Component {
             ...this.state,
             showUserCreatedMsg: false
           })
-          history.push('/')
+          history.push('/users')
         }, 2000)
       } else {
         this.setState({

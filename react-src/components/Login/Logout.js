@@ -16,7 +16,7 @@ class Logout extends Component {
     axios.post('/logout')
       .then(data => {
         setAdminData(null, null, null)
-        if (data.data == 'logged out') setTimeout(() => history.push('/'), 1000)
+        if (data.data == 'logged out') setTimeout(() => history.push('/admin'), 1000)
       })
       .catch(err => console.log(err))
   }

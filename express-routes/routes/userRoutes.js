@@ -5,7 +5,8 @@ import {
   deleteUser,
   createUser,
   updateUser,
-  appLogin
+  appLogin,
+  sessionCheck
 } from '../controllers/userHandlers'
 
 userRoutes.post('/all', viewUsers)
@@ -14,5 +15,6 @@ userRoutes.delete('/delete/:id', deleteUser)
 userRoutes.put('/update/:id', updateUser)
 
 userRoutes.post('/appauth', appLogin)
+userRoutes.post('/sessioncheck', sessionCheck)
 
 export default userRoutes

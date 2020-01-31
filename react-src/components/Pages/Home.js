@@ -12,7 +12,7 @@ class Home extends Component {
     checkAuth(data => {
       const { auth, name, email } = data.data
       if (auth) { setAdminData(auth, name, email); history.push('/users'); }
-      else history.push('/login')
+      else history.push('/admin')
     })
   }
 

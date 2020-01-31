@@ -6,6 +6,7 @@ import {
   DESELECT_ADMIN_FOR_BULK_ACTION,
   SELECT_ADMIN_FOR_BULK_ACTION,
   SET_ADMIN_DATA,
+  SET_APP_USER_DATA,
   SET_ADMINS,
   SET_USERS,
   // SHOW_USER_EDIT_VIEW,
@@ -14,6 +15,7 @@ import {
 } from '../constants/constants'
 
 const setAdminData = (auth, name, email) => ({ type: SET_ADMIN_DATA, payload: { auth, name, email } })
+const setAppUserData = (auth, name, email) => ({ type: SET_APP_USER_DATA, payload: { auth, name, email } })
 const setAdmins = admins => ({ type: SET_ADMINS, payload: admins })
 const setUsers = users => ({ type: SET_USERS, payload: users })
 const selectUserForBulkAction = user => ({ type: SELECT_USER_FOR_BULK_ACTION, payload: user })
@@ -30,6 +32,7 @@ export default {
   setUsers,
   setAdmins,
   setAdminData,
+  setAppUserData,
   deselectUserForBulkAction,
   selectUserForBulkAction,
   clearUsersForBulkAction,

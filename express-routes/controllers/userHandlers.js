@@ -1,6 +1,13 @@
 import User from '../models/User'
 import bcrypt from 'bcrypt'
 import uuid from 'uuid'
+import { sendMail } from './passwordResetHandlers'
+
+// Check for valid user session..
+const sessionCheck = (req, res) => {
+  if (req.session.appuserauth) res.send({ auth: true, name: req.session.appusername, email: req.session.appuseremail })
+  else res.send({ error: false })
+}
 
 // For application login..
 const appLogin = (req, res) => {
@@ -12,9 +19,9 @@ const appLogin = (req, res) => {
         bcrypt.compare(req.body.password, doc.password, (err, result) => {
           if (result == true) {
             // add session for application user
-            req.session.auth = true
-            req.session.name = doc.name
-            req.session.email = doc.email
+            req.session.appuserauth = true
+            req.session.appusername = doc.name
+            req.session.appuseremail = doc.email
             req.session.maxAge = 1000 * 60 * 15
             req.session.save()
             res.send({ auth: true, name: doc.name, email: doc.email })
@@ -32,12 +39,15 @@ const appLogin = (req, res) => {
 // manually salting and hashing...
 const createUser = (req, res) => {
   console.log(req.body)
-  let hash
+  let hash,
+      code = uuid()
   const insertNewUser = () => {
-    User({ name: req.body.name, email: req.body.email, password: hash })
+    User({ name: req.body.name, email: req.body.email, password: hash, resetCode: code, creator_id: req.session.adminId })
       .save()
       .then(() => {
-        res.send({ success: 'user created' })
+        sendMail(res, req.body.email, code, () => {
+          res.send({ success: 'user created' })
+        })
       })
       .catch(err => res.send({ error: err.errmsg }))
   }
@@ -46,7 +56,8 @@ const createUser = (req, res) => {
     bcrypt.genSalt(saltRounds, (err, salt) => {
       bcrypt.hash(uuid(), salt, (err, _hash) => {
         hash = _hash
-        insertNewUser()
+        if (req.session.adminId) insertNewUser()
+        else res.send({ error: 'no admin creator id found' })
       })
     })
   } else {
@@ -97,5 +108,6 @@ export {
   deleteUser,
   createUser,
   updateUser,
-  appLogin
+  appLogin,
+  sessionCheck
 }

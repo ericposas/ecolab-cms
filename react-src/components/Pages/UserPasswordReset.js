@@ -47,6 +47,9 @@ class UserPasswordReset extends Component {
               ...this.state,
               formState: 'passwordResetSuccess'
             })
+            setTimeout(() => this.props.history.push('/login'), 1500)
+          } else {
+            console.log('error occurred setting password.')
           }
         })
         .catch(err => console.log(err))
@@ -57,7 +60,7 @@ class UserPasswordReset extends Component {
       })
     }
   }
-  
+
   render() {
     return (
       <>

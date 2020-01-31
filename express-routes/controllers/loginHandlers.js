@@ -37,6 +37,7 @@ const login = (req, res) => {
               req.session.auth = true
               req.session.name = data.name
               req.session.email = data.email
+              req.session.adminId = data._id
               // req.session.cookie.expires
               req.session.cookie.maxAge = 1000 * 60 * 15 // 15 min.
               req.session.save()

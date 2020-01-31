@@ -55,7 +55,7 @@ class Login extends Component {
     })
     .then(data => {
       const { auth, name, email } = data.data
-      if (auth) this.props.history.push('/')
+      if (auth) this.props.history.push('/users')
       else {
         this.setState({ ...this.state, userMsg: true })
         setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
