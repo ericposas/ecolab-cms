@@ -261,7 +261,11 @@ class ViewUsers extends Component {
                   <div className={'row'}>
                     <button
                       style={{ padding: '10px' }}
-                      onClick={() => history.push('/create-user')}>Create new user</button>
+                      onClick={() => {
+                        this.state.usersButtonSelected
+                        ? history.push('/create-user')
+                        : history.push('/create-admin')
+                      }}>Create new {this.state.usersButtonSelected ? 'user' : 'admin'}</button>
                   </div>
                   <br/>
                   <div className={'users-list-labels-container row'}>

@@ -15,6 +15,14 @@ const Admin = model('Admin', new Schema({
     type: String,
     required: true
   },
+  resetCode: {
+    type: String,
+    default: null
+  },
+  creator_id: {
+    type: Schema.ObjectId,
+    default: null
+  },
   owner: {
     type: Boolean,
     default: false

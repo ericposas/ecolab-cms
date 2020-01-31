@@ -51,11 +51,13 @@ class AdminLogin extends Component {
     e.preventDefault()
     axios.post('/login', {
       email: this.state.emailValue,
-      password: this.state.passwordValue
+      password: this.state.passwordValue,
+      admin: true
     })
     .then(data => {
-      const { auth, name, email } = data.data
+      const { auth, name, email, reset } = data.data
       if (auth) this.props.history.push('/users')
+      else if (reset) this.props.history.push('/reset-password/adminCodeResetSuccess')
       else {
         this.setState({ ...this.state, userMsg: true })
         setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)

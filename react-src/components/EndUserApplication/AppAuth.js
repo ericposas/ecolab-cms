@@ -40,7 +40,7 @@ class AppAuth extends Component {
           setAppUserData(auth, name, email)
           this.showUserAuthenticatedMsg()
         } else if (data.data.reset) {
-          history.push(`/reset-my-password/${'codeResetSuccess'}`)
+          history.push(`/reset-password/${'codeResetSuccess'}`)
         } else {
           this.showUserDataError()
         }

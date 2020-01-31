@@ -5,7 +5,7 @@ import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import axios from 'axios'
 
-class UserPasswordReset extends Component {
+class PasswordReset extends Component {
 
   state = {
     formState: 'default',
@@ -40,21 +40,25 @@ class UserPasswordReset extends Component {
       .catch(err => console.log(err))
   }
 
-  updatePassword = () => {
+  updatePassword = adminBool => {
     const { passwordVal, passwordVal2 } = this.state
     if (passwordVal == passwordVal2) {
       this.setState({
         ...this.state,
         passwordsMatch: true
       })
-      axios.post('/password/update', { password: passwordVal })
+      axios.post('/password/update', { password: passwordVal, admin: adminBool ? true : false })
         .then(data => {
           if (data.data.success) {
             this.setState({
               ...this.state,
               formState: 'passwordResetSuccess'
             })
-            setTimeout(() => this.props.history.push('/login'), 1500)
+            setTimeout(() => {
+              adminBool
+              ? this.props.history.push('/admin')
+              : this.props.history.push('/login')
+            }, 1500)
           } else {
             console.log('error occurred setting password.')
           }
@@ -106,6 +110,29 @@ class UserPasswordReset extends Component {
           : null
         }
         {
+          this.state.formState == 'adminCodeResetSuccess'
+          ?
+            <>
+              {
+                this.state.passwordsMatch == false
+                ?
+                  <>
+                    <div>Passwords do not match</div>
+                  </>
+                : null
+              }
+              <form>
+                <div>New Password</div>
+                <input type='password' onChange={e => this.setState({ passwordVal: e.target.value })} value={this.state.passwordVal}/>
+                <div>Confirm Password</div>
+                <input type='password' onChange={e => this.setState({ passwordVal2: e.target.value })} value={this.state.passwordVal2}/>
+              </form>
+              <br/>
+              <button onClick={() => this.updatePassword(true)}>update password</button>
+            </>
+          : null
+        }
+        {
           this.state.formState == 'passwordResetSuccess'
           ?
             <>
@@ -119,4 +146,4 @@ class UserPasswordReset extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(UserPasswordReset)))
+export default connect(mapState, mapDispatch)(withAuthCheck(withRouter(PasswordReset)))

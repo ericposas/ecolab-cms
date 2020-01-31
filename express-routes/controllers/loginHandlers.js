@@ -1,5 +1,6 @@
 import Admin from '../models/Admin'
 import bcrypt from 'bcrypt'
+import { code } from './passwordResetHandlers'
 
 const authCheck = (req, res) => {
   // console.log(req.session)
@@ -25,7 +26,7 @@ const logout = (req, res) => {
 }
 
 const login = (req, res) => {
-  if (req.body.email && req.body.password) {
+  if (req.body.email && req.body.password && req.body.admin) {
     Admin.findOne({ email: req.body.email })
       .then(data => {
         if (data && data.password) {
@@ -43,7 +44,10 @@ const login = (req, res) => {
               req.session.save()
               res.send({ auth: true, name: data.name, email: data.email })
             } else {
-              res.send('invalid data')
+              // try login via code
+              code(req, res, () => {
+                res.send({ reset: 'correct reset code provided.' })
+              })
             }
           })
         } else {
