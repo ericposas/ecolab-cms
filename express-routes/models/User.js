@@ -31,6 +31,10 @@ const User = model('User', new Schema({
     type: Schema.ObjectId,
     default: null
   },
+  full_access: {
+    type: Boolean,
+    default: false
+  },
   updated: {
     type: Date,
     default: Date.now

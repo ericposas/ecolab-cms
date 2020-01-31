@@ -15,7 +15,7 @@ const Admin = model('Admin', new Schema({
     type: String,
     required: true
   },
-  fullaccess: {
+  owner: {
     type: Boolean,
     default: false
   }
