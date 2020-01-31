@@ -15,7 +15,7 @@ class Home extends Component {
       else history.push('/admin')
     })
   }
-
+  
   render() {
     const { AdminData } = this.props
     return (

@@ -18,7 +18,7 @@ class Login extends Component {
     const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
       const { auth, name, email } = data.data
-      if (auth) setAdminData(auth, name, email)
+      if (auth) { setAdminData(auth, name, email); history.push('/users'); }
     })
   }
 
