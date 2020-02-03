@@ -22,9 +22,8 @@ class User extends Component {
   userEditClick = user => {
     console.log('should go into edit user mode for ' + user.name)
     this.props.setSelectedUserForEditing(user)
-    // this.props.showUserEditView()
   }
-
+  
   render() {
     const { count, user, BulkActionSelectedUsers } = this.props
     return (

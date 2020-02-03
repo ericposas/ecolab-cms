@@ -5,7 +5,7 @@ import { sendMail, code } from './passwordResetHandlers'
 
 // Check for valid user session..
 const sessionCheck = (req, res) => {
-  if (req.session.appuserauth) res.send({ auth: true, name: req.session.appusername, email: req.session.appuseremail })
+  if (req.session.appuserauth) res.send({ auth: true, fullaccess: req.session.appuserfullaccess, peer: req.session.appuserpeer, name: req.session.appusername, email: req.session.appuseremail })
   else res.send({ error: false })
 }
 
@@ -22,9 +22,12 @@ const appLogin = (req, res) => {
             req.session.appuserauth = true
             req.session.appusername = doc.name
             req.session.appuseremail = doc.email
+            req.session.appuserfullaccess = doc.full_access
+            console.log(doc.full_access, req.session.appuserfullaccess)
+            req.session.appuserpeer = doc.peer
             req.session.maxAge = 1000 * 60 * 15
             req.session.save()
-            res.send({ auth: true, name: doc.name, email: doc.email })
+            res.send({ auth: true, fullaccess: doc.full_access, peer: doc.peer, name: doc.name, email: doc.email })
           } else {
             // try login via code
             code(req, res, () => {
@@ -94,6 +97,8 @@ const updateUser = (req, res) => {
           doc.name = req.body.name
           doc.email = req.body.email
           doc.active = req.body.active
+          doc.full_access = req.body.fullaccess
+          doc.peer = req.body.peer
           doc.save()
             .then(doc => res.send({ success: 'successfully updated user.' }))
             .catch(err => res.send({ error: 'error updating user.' }))

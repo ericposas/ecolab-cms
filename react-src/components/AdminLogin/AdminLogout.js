@@ -15,8 +15,8 @@ class AdminLogout extends Component {
     const { history, setAdminData, setAppUserData } = this.props
     axios.post('/logout')
       .then(data => {
-        setAdminData(null, null, null)
-        setAppUserData(null, null, null)
+        setAdminData(null, null, null, null, null)
+        setAppUserData(null, null, null, null, null)
         if (data.data == 'logged out') {
           if (this.props.match.params.type == 'admin') setTimeout(() => history.push('/admin'), 1000)
           else setTimeout(() => history.push('/'), 1000)

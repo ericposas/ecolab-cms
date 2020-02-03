@@ -19,6 +19,11 @@ class Admin extends Component {
     }
   }
 
+  adminEditClick = admin => {
+    console.log('should go into edit admin mode for ' + admin.name)
+    this.props.setSelectedAdminForEditing(admin)
+  }
+  
   render() {
     const { count, admin, BulkActionSelectedAdmins } = this.props
     return (
@@ -27,6 +32,9 @@ class Admin extends Component {
           className={'user-component-container row'}>
           <div className={'col-5 user-component-name'}>{admin.name}</div>
           <div className={'col-5 user-component-email'}>{admin.email}</div>
+          <div
+            className='user-edit-clickable-region'
+            onClick={() => this.adminEditClick(admin)}></div>
           <input
             type='checkbox'
             className={'user-component-checkbox'}

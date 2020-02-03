@@ -48,8 +48,32 @@ const deleteAdmin = (req, res) => {
   }
 }
 
+const updateAdmin = (req, res) => {
+  console.log(req.params)
+  if (req.params.id) {
+    Admin.findOne({ _id: req.params.id })
+      .then(doc => {
+        // console.log(doc)
+        if (doc) {
+          doc.name = req.body.name
+          doc.email = req.body.email
+          doc.owner = req.body.owner
+          doc.save()
+            .then(doc => res.send({ success: 'successfully updated admin.' }))
+            .catch(err => res.send({ error: 'error updating admin.' }))
+        } else {
+          res.send({ error: 'no admin found.' })
+        }
+      })
+      .catch(err => res.send({ error: 'error occurred.' }))
+  } else {
+    res.send({ error: 'no id parameter supplied.' })
+  }
+}
+
 export {
   getAdmins,
   deleteAdmin,
-  createAdmin
+  createAdmin,
+  updateAdmin
 }

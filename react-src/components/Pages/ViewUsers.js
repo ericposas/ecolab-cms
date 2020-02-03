@@ -10,6 +10,7 @@ import TitleBar from '../UIcomponents/TitleBar'
 import User from '../ListItems/User'
 import Admin from '../ListItems/Admin'
 import UserEditView from '../Modals/UserEditView'
+import AdminEditView from '../Modals/AdminEditView'
 const entities = new Entities()
 
 class ViewUsers extends Component {
@@ -24,10 +25,10 @@ class ViewUsers extends Component {
   }
 
   componentDidMount() {
-    const { checkAuth, setAdminData, history } = this.props
+    const { checkAuth, setAdminData, history, getUsers } = this.props
     checkAuth(data => {
-      const { auth, name, email } = data.data
-      if (auth) { this.getUsers(); setAdminData(auth, name, email); }
+      const { auth, owner, name, email } = data.data
+      if (auth) { getUsers(); setAdminData(auth, owner, name, email); }
       else history.push('/admin')
     })
   }
@@ -37,27 +38,12 @@ class ViewUsers extends Component {
     if (this.deletedAdminMsgTimer) clearTimeout(this.deletedAdminMsgTimer)
   }
 
-  getUsers = () => {
-    const { setUsers } = this.props
-    axios.post('/users/all')
-      .then(data => {
-        setUsers(data.data)
-      })
-      .catch(err => console.log(err))
-  }
-
-  getAdmins = () => {
-    const { setAdmins } = this.props
-    axios.post('/admins/all')
-      .then(data => setAdmins(data.data))
-      .catch(err => console.log(err))
-  }
-
   deleteUser = async id => {
+    const { getUsers } = this.props
     try {
       let data = await axios.delete(`/users/delete/${id}`)
       if (data.data.ok == 1) {
-        this.getUsers()
+        getUsers()
         this.setState({
           ...this.state,
           showDeletedMsg: true
@@ -75,10 +61,11 @@ class ViewUsers extends Component {
   }
 
   deleteAdmin = async id => {
+    const { getAdmins } = this.props
     try {
       let data = await axios.delete(`/admins/delete/${id}`)
       if (data.data.ok == 1) {
-        this.getAdmins()
+        getAdmins()
         this.setState({
           ...this.state,
           showDeletedMsg: true
@@ -125,31 +112,26 @@ class ViewUsers extends Component {
     }
   }
 
-  // toggleAdminView = () => {
-  //   this.setState({
-  //     ...this.state,
-  //     showAdminUsers: !this.state.showAdminUsers
-  //   })
-  // }
-
   usersButtonClick = () => {
+    const { getUsers } = this.props
     this.setState({
       ...this.state,
       usersButtonSelected: true,
       adminsButtonSelected: false,
       searchFilter: ''
     })
-    this.getUsers()
+    getUsers()
   }
 
   adminsButtonClick = () => {
+    const { getAdmins } = this.props
     this.setState({
       ...this.state,
       usersButtonSelected: false,
       adminsButtonSelected: true,
       searchFilter: ''
     })
-    this.getAdmins()
+    getAdmins()
   }
 
   setSearchFilter = e => this.setState({ ...this.state, searchFilter: e.target.value })
@@ -194,17 +176,12 @@ class ViewUsers extends Component {
     return 0
   }
 
-  // getSortFunction = () => {
-  //   if (this.state.sort.indexOf('descending') > -1) return alphaSort.descending
-  //   else return alphaSort.ascending
-  // }
-
   logout = () => {
     this.props.history.push('/logout/admin')
   }
 
   render() {
-    const { AdminData, Users, Admins, history } = this.props
+    const { AdminData, Users, Admins, history, getUsers, getAdmins } = this.props
     const { showDeletedMsg, usersButtonSelected, adminsButtonSelected, searchFilter } = this.state
     return (
       <>
@@ -353,7 +330,12 @@ class ViewUsers extends Component {
         </div>
         {
           this.props.SelectedUserForEditing
-          ? <UserEditView refreshUsersList={this.getUsers}/>
+          ? <UserEditView refreshUsersList={getUsers}/>
+          : null
+        }
+        {
+          this.props.SelectedAdminForEditing
+          ? <AdminEditView refreshAdminsList={getAdmins}/>
           : null
         }
         <button

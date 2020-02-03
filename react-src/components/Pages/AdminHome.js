@@ -10,8 +10,8 @@ class AdminHome extends Component {
   componentDidMount() {
     const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
-      const { auth, name, email } = data.data
-      if (auth) { setAdminData(auth, name, email); history.push('/users'); }
+      const { auth, owner, name, email } = data.data
+      if (auth) { setAdminData(auth, owner, name, email); history.push('/users'); }
       else history.push('/admin')
     })
   }

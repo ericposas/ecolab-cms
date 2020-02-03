@@ -12,10 +12,10 @@ class AppHome extends Component {
     const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
       console.log(data.data)
-      const { auth, name, email } = data.data
+      const { auth, fullaccess, peer, name, email } = data.data
       if (!auth) history.push('/login')
       else {
-        if (!AppUserData.auth) setAppUserData(auth, name, email)
+        if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
       }
     })
   }

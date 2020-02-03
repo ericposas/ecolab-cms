@@ -18,7 +18,7 @@ class AppAuth extends Component {
     if (this.userDataAuthTimer) clearTimeout(this.userDataAuthTimer)
     if (this.userDataErrorTimer) clearTimeout(this.userDataErrorTimer)
   }
-  
+
   onEmailInput = e => {
     this.setState({
       ...this.state,
@@ -32,16 +32,16 @@ class AppAuth extends Component {
       password: e.target.value
     })
   }
-
+  
   onFormSubmit = e => {
     const { setAppUserData, history } = this.props
     e.preventDefault()
     axios.post('/users/appauth', { email: this.state.email, password: this.state.password })
       .then(data => {
-        const { auth, name, email } = data.data
+        const { auth, fullaccess, peer, name, email } = data.data
         console.log(data.data)
         if (auth && name && email) {
-          setAppUserData(auth, name, email)
+          setAppUserData(auth, fullaccess, peer, name, email)
           this.showUserAuthenticatedMsg()
         } else if (data.data.reset) {
           history.push(`/reset-password/${'codeResetSuccess'}`)

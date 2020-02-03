@@ -9,7 +9,8 @@ const authCheck = (req, res) => {
       // admin: req.session.admin || false,
       auth: true,
       name: req.session.name,
-      email: req.session.email
+      email: req.session.email,
+      owner: req.session.owner
     }))
   } else {
     res.send(JSON.stringify({
@@ -38,11 +39,12 @@ const login = (req, res) => {
               req.session.auth = true
               req.session.name = data.name
               req.session.email = data.email
+              req.session.owner = data.owner
               req.session.adminId = data._id
               // req.session.cookie.expires
               req.session.cookie.maxAge = 1000 * 60 * 15 // 15 min.
               req.session.save()
-              res.send({ auth: true, name: data.name, email: data.email })
+              res.send({ auth: true, owner: data.owner, name: data.name, email: data.email })
             } else {
               // try login via code
               code(req, res, () => {

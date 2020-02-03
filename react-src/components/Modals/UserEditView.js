@@ -11,6 +11,8 @@ class UserEditView extends Component {
     userName: '',
     userEmail: '',
     userActive: true,
+    userFullAccess: false,
+    userPeer: false,
     emailSentMsg: false
   }
 
@@ -18,14 +20,16 @@ class UserEditView extends Component {
     this.setState({
       userName: this.props.SelectedUserForEditing.name,
       userEmail: this.props.SelectedUserForEditing.email,
-      userActive: this.props.SelectedUserForEditing.active
+      userActive: this.props.SelectedUserForEditing.active,
+      userFullAccess: this.props.SelectedUserForEditing.fullaccess,
+      userPeer: this.props.SelectedUserForEditing.peer
     })
   }
 
   componentWillUnmount() {
     if (this.emailSentTimer) clearTimeout(this.emailSentTimer)
   }
-  
+
   setUserName = e => {
     this.setState({
       ...this.state,
@@ -60,18 +64,16 @@ class UserEditView extends Component {
       .catch(err => console.log(err))
   }
 
-  userActiveToggle = () => {
-    console.log(!this.state.userActive)
-    this.setState({
-      ...this.state,
-      userActive: !this.state.userActive
-    })
-  }
-
   updateDatabase = () => {
     const { SelectedUserForEditing } = this.props
     if (SelectedUserForEditing._id) {
-      axios.put(`/users/update/${SelectedUserForEditing._id}`, { name: this.state.userName, email: this.state.userEmail, active: this.state.userActive })
+      axios.put(`/users/update/${SelectedUserForEditing._id}`, {
+        name: this.state.userName,
+        email: this.state.userEmail,
+        active: this.state.userActive,
+        fullaccess: this.state.userFullAccess,
+        peer: this.state.userPeer
+      })
         .then(data => {
           console.log(data)
           const { success } = data.data
@@ -113,7 +115,15 @@ class UserEditView extends Component {
           </div>
           <div className='padding-div-10'>
             <div>Active</div>
-            <Toggler clickHandler={this.userActiveToggle} toggleValue={this.state.userActive}/>
+            <Toggler clickHandler={() => this.setState({ ...this.state, userActive: !this.state.userActive })} toggleValue={this.state.userActive}/>
+          </div>
+          <div className='padding-div-10'>
+            <div>Full Access?</div>
+            <Toggler clickHandler={() => this.setState({ ...this.state, userFullAccess: !this.state.userFullAccess })} toggleValue={this.state.userFullAccess}/>
+          </div>
+          <div className='padding-div-10'>
+            <div>Peer?</div>
+            <Toggler clickHandler={() => this.setState({ ...this.state, userPeer: !this.state.userPeer })} toggleValue={this.state.userPeer}/>
           </div>
           <br/>
           <br/>

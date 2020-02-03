@@ -17,15 +17,15 @@ class AdminLogin extends Component {
   componentDidMount() {
     const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
-      const { auth, name, email } = data.data
-      if (auth) { setAdminData(auth, name, email); history.push('/users'); }
+      const { auth, owner, name, email } = data.data
+      if (auth) { setAdminData(auth, owner, name, email); history.push('/users'); }
     })
   }
 
   componentWillUnmount() {
     if (this.userMsgTimer) clearTimeout(this.userMsgTimer)
   }
-  
+
   onEmailInput = e => {
     this.setState({
       ...this.state,
@@ -59,7 +59,7 @@ class AdminLogin extends Component {
       admin: true
     })
     .then(data => {
-      const { auth, name, email, reset } = data.data
+      const { auth, owner, name, email, reset } = data.data
       if (auth) this.props.history.push('/users')
       else if (reset) this.props.history.push('/reset-password/adminCodeResetSuccess')
       else {
