@@ -1,0 +1,26 @@
+import { model, Schema } from 'mongoose'
+
+const Segment = model('Segment', new Schema({
+  name: {
+    type: String,
+    default: ''
+  },
+  offerings: {
+    type: Array,
+    default: []
+  },
+  tablet_thumb_url: {
+    type: String,
+    default: ''
+  },
+  enabled: {
+    type: Boolean,
+    default: true
+  },
+  creator_id: {
+    type: Schema.ObjectId,
+    default: null
+  }
+}))
+
+export default Segment
