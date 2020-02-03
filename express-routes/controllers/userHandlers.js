@@ -23,7 +23,7 @@ const appLogin = (req, res) => {
             req.session.appusername = doc.name
             req.session.appuseremail = doc.email
             req.session.appuserfullaccess = doc.full_access
-            console.log(doc.full_access, req.session.appuserfullaccess)
+            // console.log(doc.full_access, req.session.appuserfullaccess)
             req.session.appuserpeer = doc.peer
             req.session.maxAge = 1000 * 60 * 15
             req.session.save()

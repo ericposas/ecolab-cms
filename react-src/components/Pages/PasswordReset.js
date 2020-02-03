@@ -27,7 +27,7 @@ class PasswordReset extends Component {
   componentWillUnmount() {
     if (this._timer) clearTimeout(this._timer)
   }
-  
+
   submitCode = () => {
     axios.post('/password/code', { code: this.state.codeVal })
       .then(data => {
@@ -51,7 +51,7 @@ class PasswordReset extends Component {
         ...this.state,
         passwordsMatch: true
       })
-      axios.post('/password/update', { password: passwordVal, admin: adminBool ? true : false })
+      axios.post('/password/update', { password: passwordVal, admin: adminBool })
         .then(data => {
           if (data.data.success) {
             this.setState({
@@ -109,7 +109,7 @@ class PasswordReset extends Component {
                 <input type='password' onChange={e => this.setState({ passwordVal2: e.target.value })} value={this.state.passwordVal2}/>
               </form>
               <br/>
-              <button onClick={this.updatePassword}>update password</button>
+              <button onClick={() => this.updatePassword(false)}>update password</button>
             </>
           : null
         }

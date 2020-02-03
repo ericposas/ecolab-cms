@@ -13,9 +13,9 @@ class CreateAdmin extends Component {
     emailValue: '',
     showAdminCreatedMsg: false,
     showAdminCreateError: false,
-
+    showInvalidEmailError: false
   }
-
+  
   componentDidMount() {
     const { checkAuth, setAdminData, history } = this.props
     checkAuth(data => {
@@ -72,7 +72,7 @@ class CreateAdmin extends Component {
       })
     }, 2000)
   }
-  
+
   displayInvalidEmailError = () => {
     this.setState({
       ...this.state,

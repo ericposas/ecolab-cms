@@ -21,7 +21,8 @@ class ViewUsers extends Component {
     usersButtonSelected: true,
     bulkAction: null,
     searchFilter: '',
-    sort: 'by-name-ascending'
+    sort: 'by-name-ascending',
+    lastTypeSelected: 'USERS'
   }
 
   componentDidMount() {
@@ -118,7 +119,7 @@ class ViewUsers extends Component {
       ...this.state,
       usersButtonSelected: true,
       adminsButtonSelected: false,
-      searchFilter: ''
+      searchFilter: '',
     })
     getUsers()
   }
@@ -129,7 +130,7 @@ class ViewUsers extends Component {
       ...this.state,
       usersButtonSelected: false,
       adminsButtonSelected: true,
-      searchFilter: ''
+      searchFilter: '',
     })
     getAdmins()
   }
@@ -181,7 +182,7 @@ class ViewUsers extends Component {
   }
 
   render() {
-    const { AdminData, Users, Admins, history, getUsers, getAdmins } = this.props
+    const { AdminData, Users, Admins, history, getUsers, getAdmins, BulkActionSelectedUsers, BulkActionSelectedAdmins } = this.props
     const { showDeletedMsg, usersButtonSelected, adminsButtonSelected, searchFilter } = this.state
     return (
       <>
@@ -206,9 +207,40 @@ class ViewUsers extends Component {
           <div className='col-10'>
             {
               showDeletedMsg
-              ? <><div>User deleted.</div></>
+              ? <>
+                  <div>
+                    {
+                      usersButtonSelected
+                      ? 'selected users deleted.'
+                      :
+                        adminsButtonSelected
+                        ? 'selected Admins deleted.'
+                        : null
+                    }
+                  </div>
+                </>
               : null
             }
+            {/*
+              showDeletedMsg
+              ? <>
+                  <div>
+                  {
+                    this.state.lastTypeSelected == 'USERS'
+                    ? BulkActionSelectedUsers.map(user_id => (
+                        <Fragment key={user_id}>
+                          <div>{user_id},</div>
+                        </Fragment>
+                      ))
+                    : BulkActionSelectedAdmins.map(admin_id => (
+                        <Fragment key={admin_id}>
+                          <div>{admin_id},</div>
+                        </Fragment>
+                      ))
+                  } deleted.
+                  </div></>
+              : null
+            */}
             {
               AdminData && AdminData.auth
               ? <>

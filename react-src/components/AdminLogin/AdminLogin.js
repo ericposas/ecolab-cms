@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import axios from 'axios'
+import validator from 'email-validator'
 import TitleBar from '../UIcomponents/TitleBar'
 
 class AdminLogin extends Component {
@@ -11,7 +12,8 @@ class AdminLogin extends Component {
   state = {
     emailValue: '',
     passwordValue: '',
-    userMsg: false
+    userMsg: false,
+    showInvalidEmailError: false
   }
 
   componentDidMount() {
@@ -24,6 +26,7 @@ class AdminLogin extends Component {
 
   componentWillUnmount() {
     if (this.userMsgTimer) clearTimeout(this.userMsgTimer)
+    if (this.displayInvalidEmailErrorTimer) clearTimeout(this.displayInvalidEmailErrorTimer)
   }
 
   onEmailInput = e => {
@@ -51,30 +54,55 @@ class AdminLogin extends Component {
       .catch(err => console.log(err))
   }
 
-  logIn = e => {
-    e.preventDefault()
-    axios.post('/login', {
-      email: this.state.emailValue,
-      password: this.state.passwordValue,
-      admin: true
+  displayInvalidEmailError = () => {
+    this.setState({
+      ...this.state,
+      showInvalidEmailError: true
     })
-    .then(data => {
-      const { auth, owner, name, email, reset } = data.data
-      if (auth) this.props.history.push('/users')
-      else if (reset) this.props.history.push('/reset-password/adminCodeResetSuccess')
-      else {
-        this.setState({ ...this.state, userMsg: true })
-        this.userMsgTimer = setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
-      }
-    })
-    .catch(err => console.log(err))
+    this.displayInvalidEmailErrorTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showInvalidEmailError: false
+      })
+    }, 2000)
   }
 
+  logIn = e => {
+    e.preventDefault()
+    if (validator.validate(this.state.emailValue)) {
+      axios.post('/login', {
+        email: this.state.emailValue,
+        password: this.state.passwordValue,
+        admin: true
+      })
+      .then(data => {
+        const { auth, owner, name, email, reset } = data.data
+        if (auth) this.props.history.push('/users')
+        else if (reset) this.props.history.push('/reset-password/adminCodeResetSuccess')
+        else {
+          this.setState({ ...this.state, userMsg: true })
+          this.userMsgTimer = setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
+        }
+      })
+      .catch(err => console.log(err))
+    } else {
+      this.displayInvalidEmailError()
+    }
+  }
+  
   render() {
     const { AdminData } = this.props
     return (
       <>
         <TitleBar title={process.env.APP_NAME}/>
+        {
+          this.state.showInvalidEmailError
+          ?
+            <>
+              <div>Invalid e-mail address</div>
+            </>
+          : null
+        }
         {
           AdminData && AdminData.auth
           ?

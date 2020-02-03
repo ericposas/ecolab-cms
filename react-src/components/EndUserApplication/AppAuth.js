@@ -2,21 +2,24 @@ import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
-import TitleBar from '../UIcomponents/TitleBar'
 import axios from 'axios'
+import validator from 'email-validator'
+import TitleBar from '../UIcomponents/TitleBar'
 
 class AppAuth extends Component {
 
   state = {
     email: '',
     password: '',
-    displayUserDataError: false,
-    displayUserAuthenticatedMsg: false
+    showUserDataError: false,
+    showUserAuthenticatedMsg: false,
+    showInvalidEmailError: false
   }
 
   componentWillUnmount() {
     if (this.userDataAuthTimer) clearTimeout(this.userDataAuthTimer)
     if (this.userDataErrorTimer) clearTimeout(this.userDataErrorTimer)
+    if (this.invalidEmailErrorTimer) clearTimeout(this.invalidEmailErrorTimer)
   }
 
   onEmailInput = e => {
@@ -32,52 +35,69 @@ class AppAuth extends Component {
       password: e.target.value
     })
   }
-  
+
   onFormSubmit = e => {
     const { setAppUserData, history } = this.props
     e.preventDefault()
-    axios.post('/users/appauth', { email: this.state.email, password: this.state.password })
-      .then(data => {
-        const { auth, fullaccess, peer, name, email } = data.data
-        console.log(data.data)
-        if (auth && name && email) {
-          setAppUserData(auth, fullaccess, peer, name, email)
-          this.showUserAuthenticatedMsg()
-        } else if (data.data.reset) {
-          history.push(`/reset-password/${'codeResetSuccess'}`)
-        } else {
-          this.showUserDataError()
-        }
-      })
-      .catch(err => this.showUserDataError)
+    if (validator.validate(this.state.email)) {
+      axios.post('/users/appauth', { email: this.state.email, password: this.state.password })
+        .then(data => {
+          const { auth, fullaccess, peer, name, email } = data.data
+          console.log(data.data)
+          if (auth && name && email) {
+            setAppUserData(auth, fullaccess, peer, name, email)
+            this.displayUserAuthenticatedMsg()
+          } else if (data.data.reset) {
+            history.push(`/reset-password/${'codeResetSuccess'}`)
+          } else {
+            this.displayUserDataError()
+          }
+        })
+        .catch(err => this.showUserDataError)
+    } else {
+      this.displayInvalidEmailError()
+    }
   }
 
-  showUserDataError = () => {
+  displayUserDataError = () => {
     this.setState({
       ...this.state,
-      displayUserDataError: true
+      showUserDataError: true
     })
     this.userDataErrorTimer = setTimeout(() => {
       this.setState({
         ...this.state,
-        displayUserDataError: false
+        showUserDataError: false
       })
     }, 2000)
   }
 
-  showUserAuthenticatedMsg = () => {
+  displayUserAuthenticatedMsg = () => {
     const { history } = this.props
     this.setState({
       ...this.state,
-      displayUserAuthenticatedMsg: true
+      showUserAuthenticatedMsg: true
     })
     this.userDataAuthTimer = setTimeout(() => {
       this.setState({
         ...this.state,
-        displayUserAuthenticatedMsg: false
+        showUserAuthenticatedMsg: false
       })
       // redirect
       history.push('/')
+    }, 2000)
+  }
+
+  displayInvalidEmailError = () => {
+    this.setState({
+      ...this.state,
+      showInvalidEmailError: true
+    })
+    this.invalidEmailErrorTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showInvalidEmailError: false
+      })
     }, 2000)
   }
 
@@ -97,7 +117,14 @@ class AppAuth extends Component {
           <button onClick={this.onFormSubmit}>submit</button>
         </div>
         {
-          this.state.displayUserDataError
+          this.state.showInvalidEmailError
+          ? <>
+              <div className='padding-div-10'>Invalid Email.</div>
+            </>
+          : null
+        }
+        {
+          this.state.showUserDataError
           ?
             <>
               <div className='padding-div-10'>Invalid credentials.</div>
@@ -105,7 +132,7 @@ class AppAuth extends Component {
           : null
         }
         {
-          this.props.AppUserData.name && this.state.displayUserAuthenticatedMsg
+          this.props.AppUserData.name && this.state.showUserAuthenticatedMsg
           ?
             <>
               <div className='padding-div-10'>{this.props.AppUserData.name}, you are now authenticated.</div>

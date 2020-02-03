@@ -42,7 +42,7 @@ const forgot = (req, res) => {
           doc.resetCode = code
           doc.save(err => {
             if (err) res.send({ error: 'error occurred setting reset code in User object' })
-            else sendMail(res, email, code).catch(console.error)
+            else sendMail(res, email, code, null, doc.name).catch(console.error)
           })
         } else {
           res.send({ error: 'no user identified by that email address' })
@@ -57,7 +57,7 @@ const forgot = (req, res) => {
           doc.resetCode = code
           doc.save(err => {
             if (err) res.send({ error: 'error occurred setting reset code in Admin object' })
-            else sendMail(res, email, code).catch(console.error)
+            else sendMail(res, email, code, null, doc.name, true).catch(console.error)
           })
         } else {
           res.send({ error: 'no admin identified by that email address' })
@@ -106,9 +106,20 @@ const code = (req, res, cb) => {
 }
 
 const update = (req, res) => {
+  console.log(req.session.appusername, req.session.appuseremail)
+  // let name, email
+  // if (!req.body.admin) {
+  //   name = req.session.appusername
+  //   email = req.session.appuseremail
+  // } else {
+  //   name = req.session.name
+  //   email = req.session.email
+  // }
+  // console.log(name, email)
   // update the user db object here
   const updatePass = hashedPass => {
     if (!req.body.admin) {
+      console.log(req.session)
       User.findOne({ name: req.session.appusername, email: req.session.appuseremail })
         .then(doc => {
           console.log(doc)
@@ -144,6 +155,7 @@ const update = (req, res) => {
   bcrypt.genSalt(saltRounds, (err, salt) => {
     bcrypt.hash(req.body.password, salt, (err, hash) => {
       updatePass(hash)
+
     })
   })
 }
