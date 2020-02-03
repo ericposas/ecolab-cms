@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import Toggler from '../UIcomponents/Toggler'
+import { validate } from 'email-validator'
 import axios from 'axios'
 
 class AdminEditView extends Component {
@@ -11,7 +12,8 @@ class AdminEditView extends Component {
     adminName: '',
     adminEmail: '',
     adminOwner: true,
-    emailSentMsg: false
+    emailSentMsg: false,
+    showInvalidEmailErr: false
   }
 
   componentDidMount() {
@@ -40,7 +42,7 @@ class AdminEditView extends Component {
       adminEmail: e.target.value
     })
   }
-  
+
   sendForgotEmail = () => {
     axios.post('/password/forgot', { email: this.state.adminEmail, admin: true })
       .then(data => {
@@ -69,22 +71,40 @@ class AdminEditView extends Component {
     })
   }
 
+  // save function
   updateDatabase = () => {
     const { SelectedAdminForEditing } = this.props
     if (SelectedAdminForEditing._id) {
-      axios.put(`/admins/update/${SelectedAdminForEditing._id}`, { name: this.state.adminName, email: this.state.adminEmail, owner: this.state.adminOwner })
-        .then(data => {
-          console.log(data)
-          const { success } = data.data
-          if (data.data.success) {
-            this.props.setSelectedAdminForEditing(null)
-            this.props.refreshAdminsList()
-          } else {
-            console.log('something went wrong.')
-          }
-        })
-        .catch(err => console.log(err))
+      if (validate(this.state.adminEmail)) {
+        axios.put(`/admins/update/${SelectedAdminForEditing._id}`, { name: this.state.adminName, email: this.state.adminEmail, owner: this.state.adminOwner })
+          .then(data => {
+            console.log(data)
+            const { success } = data.data
+            if (data.data.success) {
+              this.props.setSelectedAdminForEditing(null)
+              this.props.refreshAdminsList()
+            } else {
+              console.log('something went wrong.')
+            }
+          })
+          .catch(err => console.log(err))
+      } else {
+        this.displayInvalidEmailError()
+      }
     }
+  }
+
+  displayInvalidEmailError = () => {
+    this.setState({
+      ...this.state,
+      showInvalidEmailErr: true
+    })
+    this.displayInvalidEmailErrorTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showInvalidEmailErr: false
+      })
+    }, 2000)
   }
 
   render() {
@@ -126,9 +146,18 @@ class AdminEditView extends Component {
         {
           this.state.emailSentMsg
           ?
-            <div className='center-float'>
+            <div className='center-float' style={{ width: '300px', height: '200px' }}>
               Password reset instructions have been sent to {this.state.adminName}'s email address
             </div>
+          : null
+        }
+        {
+          this.state.showInvalidEmailErr
+          ? <>
+              <div className='center-float' style={{ width: '300px', height: '200px' }}>
+                Invalid email, please input a correct email address.
+              </div>
+            </>
           : null
         }
       </>

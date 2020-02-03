@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import Toggler from '../UIcomponents/Toggler'
+import { validate } from 'email-validator'
 import axios from 'axios'
 
 class UserEditView extends Component {
@@ -13,7 +14,8 @@ class UserEditView extends Component {
     userActive: true,
     userFullAccess: false,
     userPeer: false,
-    emailSentMsg: false
+    emailSentMsg: false,
+    showInvalidEmailErr: false
   }
 
   componentDidMount() {
@@ -67,25 +69,42 @@ class UserEditView extends Component {
   updateDatabase = () => {
     const { SelectedUserForEditing } = this.props
     if (SelectedUserForEditing._id) {
-      axios.put(`/users/update/${SelectedUserForEditing._id}`, {
-        name: this.state.userName,
-        email: this.state.userEmail,
-        active: this.state.userActive,
-        fullaccess: this.state.userFullAccess,
-        peer: this.state.userPeer
-      })
-        .then(data => {
-          console.log(data)
-          const { success } = data.data
-          if (data.data.success) {
-            this.props.setSelectedUserForEditing(null)
-            this.props.refreshUsersList()
-          } else {
-            console.log('something went wrong.')
-          }
+      if (validate(this.state.userEmail)) {
+        axios.put(`/users/update/${SelectedUserForEditing._id}`, {
+          name: this.state.userName,
+          email: this.state.userEmail,
+          active: this.state.userActive,
+          fullaccess: this.state.userFullAccess,
+          peer: this.state.userPeer
         })
-        .catch(err => console.log(err))
+          .then(data => {
+            console.log(data)
+            const { success } = data.data
+            if (data.data.success) {
+              this.props.setSelectedUserForEditing(null)
+              this.props.refreshUsersList()
+            } else {
+              console.log('something went wrong.')
+            }
+          })
+          .catch(err => console.log(err))
+      } else {
+        this.displayInvalidEmailError()
+      }
     }
+  }
+
+  displayInvalidEmailError = () => {
+    this.setState({
+      ...this.state,
+      showInvalidEmailErr: true
+    })
+    this.displayInvalidEmailErrorTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showInvalidEmailErr: false
+      })
+    }, 2000)
   }
 
   render() {
@@ -135,9 +154,18 @@ class UserEditView extends Component {
         {
           this.state.emailSentMsg
           ?
-            <div className='center-float'>
+            <div className='center-float' style={{ width: '300px', height: '200px' }}>
               Password reset instructions have been sent to {this.state.userName}'s email address
             </div>
+          : null
+        }
+        {
+          this.state.showInvalidEmailErr
+          ? <>
+              <div className='center-float' style={{ width: '300px', height: '200px' }}>
+                Invalid email, please input a correct email address.
+              </div>
+            </>
           : null
         }
       </>
