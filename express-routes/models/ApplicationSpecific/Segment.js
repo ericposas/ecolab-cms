@@ -1,8 +1,10 @@
-import { model, Schema } from 'mongoose'
+// import { model, Schema } from 'mongoose'
+const { model, Schema } = require('mongoose')
 
 const Segment = model('Segment', new Schema({
   name: {
     type: String,
+    unique: true,
     default: ''
   },
   offerings: {
@@ -23,4 +25,6 @@ const Segment = model('Segment', new Schema({
   }
 }))
 
-export default Segment
+// export default Segment
+
+module.exports = Segment
