@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
+import validator from 'email-validator'
 import axios from 'axios'
 
 class CreateAdmin extends Component {
@@ -10,7 +11,9 @@ class CreateAdmin extends Component {
   state = {
     nameValue: '',
     emailValue: '',
-    showUserCreatedMsg: false
+    showAdminCreatedMsg: false,
+    showAdminCreateError: false,
+
   }
 
   componentDidMount() {
@@ -23,8 +26,9 @@ class CreateAdmin extends Component {
   }
 
   componentWillUnmount() {
-    if (this.userCreatedMsgTimer) clearTimeout(this.userCreatedMsgTimer)
-    if (this.userCreateErrorTimer) clearTimeout(this.userCreateErrorTimer)
+    if (this.displayAdminCreatedMsgTimer) clearTimeout(this.displayAdminCreatedMsgTimer)
+    if (this.displayAdminCreateErrorTimer) clearTimeout(this.displayAdminCreateErrorTimer)
+    if (this.displayInvalidEmailErrorTimer) clearTimeout(this.displayInvalidEmailErrorTimer)
   }
 
   onNameInput = e => {
@@ -41,74 +45,95 @@ class CreateAdmin extends Component {
     })
   }
 
+  displayAdminCreatedMsg = () => {
+    const { history } = this.props
+    this.setState({
+      ...this.state,
+      showAdminCreatedMsg: true
+    })
+    this.displayAdminCreatedMsgTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showAdminCreatedMsg: false
+      })
+      history.push('/users')
+    }, 2000)
+  }
+
+  displayAdminCreateError = () => {
+    this.setState({
+      ...this.state,
+      showAdminCreateError: true
+    })
+    this.displayAdminCreateErrorTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showAdminCreateError: false
+      })
+    }, 2000)
+  }
+  
+  displayInvalidEmailError = () => {
+    this.setState({
+      ...this.state,
+      showInvalidEmailError: true
+    })
+    this.displayAdminCreateErrorTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showInvalidEmailError: false
+      })
+    }, 2000)
+  }
+
   submitForm = e => {
     const { history } = this.props
     const { nameValue, emailValue } = this.state //, passwordValue } = this.state
     e.preventDefault()
-    axios.post('/admins/create', {
-      name: nameValue,
-      email: emailValue
-      // password: passwordValue
-    })
-    .then(data => {
-      const { success } = data.data
-      if (success) {
-        console.log(success)
-        this.setState({
-          ...this.state,
-          showUserCreatedMsg: true
+    if (validator.validate(emailValue)) {
+      axios.post('/admins/create', { name: nameValue, email: emailValue })
+        .then(data => {
+          const { success } = data.data
+          if (success) this.displayAdminCreatedMsg()
+          else this.displayAdminCreateError()
         })
-        this.userCreatedMsgTimer = setTimeout(() => {
-          this.setState({
-            ...this.state,
-            showUserCreatedMsg: false
-          })
-          history.push('/users')
-        }, 2000)
-      } else {
-        this.setState({
-          ...this.state,
-          showUserCreateError: true
-        })
-        this.userCreateErrorTimer = setTimeout(() => {
-          this.setState({
-            ...this.state,
-            showUserCreateError: false
-          })
-        }, 2000)
-      }
-    })
-    .catch(err => console.log({ error: err.errmsg }))
+        .catch(err => console.log({ error: err.errmsg }))
+    } else {
+      this.displayInvalidEmailError()
+    }
   }
 
   render() {
     const { AdminData } = this.props
-    const { showUserCreatedMsg, showUserCreateError } = this.state
+    const { showAdminCreatedMsg, showAdminCreateError, showInvalidEmailError } = this.state
     return (
       <>
         {
-          showUserCreateError
-          ? <><div>User could not be created.</div></>
+          showInvalidEmailError
+          ? <><div>Invalid email address.</div><br/><br/></>
           : null
         }
         {
-          showUserCreatedMsg
-          ? <><div>User created succesfully.</div><br/><br/></>
+          showAdminCreateError
+          ? <><div>Admin could not be created.</div><br/><br/></>
+          : null
+        }
+        {
+          showAdminCreatedMsg
+          ? <><div>Admin created succesfully.</div><br/><br/></>
           : null
         }
         {
           AdminData.auth
           ?
             <>
-              <div>Admin - Create New User</div>
+              <div>Admin - Create New Administrator</div><br/>
               <div>
                 <form method='post'>
                   <label>name: &nbsp;</label>
                   <input onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
                   <label>email: &nbsp;</label>
-                  <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
-                  {/*<label>password: &nbsp;</label>
-                  <input onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>*/}
+                  <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/><br/>
                   <input onClick={this.submitForm} type='submit' value='Create User'/>
                 </form>
               </div>

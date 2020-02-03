@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
+import validator from 'email-validator'
 import axios from 'axios'
 
 class CreateUser extends Component {
@@ -10,7 +11,9 @@ class CreateUser extends Component {
   state = {
     nameValue: '',
     emailValue: '',
-    showUserCreatedMsg: false
+    showUserCreatedMsg: false,
+    showUserCreateError: false,
+    showInvalidEmailMsg: false
   }
 
   componentDidMount() {
@@ -25,6 +28,7 @@ class CreateUser extends Component {
   componentWillUnmount() {
     if (this.userCreatedMsgTimer) clearTimeout(this.userCreatedMsgTimer)
     if (this.userCreateErrorTimer) clearTimeout(this.userCreateErrorTimer)
+    if (this.displayInvalidEmailMsgTimer) clearTimeout(this.displayInvalidEmailMsgTimer)
   }
 
   onNameInput = e => {
@@ -41,51 +45,74 @@ class CreateUser extends Component {
     })
   }
 
+  displayInvalidEmailMsg = () => {
+    this.setState({
+      ...this.state,
+      showInvalidEmailMsg: true
+    })
+    this.displayInvalidEmailMsgTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showInvalidEmailMsg: false
+      })
+    }, 2000)
+  }
+
+  displayUserCreatedMsg = () => {
+    const { history } = this.props
+    this.setState({
+      ...this.state,
+      showUserCreatedMsg: true
+    })
+    this.userCreatedMsgTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showUserCreatedMsg: false
+      })
+      history.push('/users')
+    }, 2000)
+  }
+
+  displayUserCreateErrorMsg = () => {
+    this.setState({
+      ...this.state,
+      showUserCreateError: true
+    })
+    this.userCreateErrorTimer = setTimeout(() => {
+      this.setState({
+        ...this.state,
+        showUserCreateError: false
+      })
+    }, 2000)
+  }
+
   submitForm = e => {
     const { history } = this.props
-    const { nameValue, emailValue } = this.state //, passwordValue } = this.state
+    const { nameValue, emailValue } = this.state
     e.preventDefault()
-    axios.post('/users/create', {
-      name: nameValue,
-      email: emailValue
-      // password: passwordValue
-    })
-    .then(data => {
-      const { success } = data.data
-      if (success) {
-        console.log(success)
-        this.setState({
-          ...this.state,
-          showUserCreatedMsg: true
+    if (validator.validate(this.state.emailValue)) {
+      axios.post('/users/create', { name: nameValue, email: emailValue })
+        .then(data => {
+          const { success } = data.data
+          if (success) this.displayUserCreatedMsg()
+          else this.displayUserCreateErrorMsg()
         })
-        this.userCreatedMsgTimer = setTimeout(() => {
-          this.setState({
-            ...this.state,
-            showUserCreatedMsg: false
-          })
-          history.push('/users')
-        }, 2000)
-      } else {
-        this.setState({
-          ...this.state,
-          showUserCreateError: true
-        })
-        this.userCreateErrorTimer = setTimeout(() => {
-          this.setState({
-            ...this.state,
-            showUserCreateError: false
-          })
-        }, 2000)
-      }
-    })
-    .catch(err => console.log({ error: err.errmsg }))
+        .catch(err => console.log({ error: err.errmsg }))
+    } else {
+      this.displayInvalidEmailMsg()
+    }
   }
 
   render() {
     const { AdminData } = this.props
-    const { showUserCreatedMsg, showUserCreateError } = this.state
+    const { showUserCreatedMsg, showUserCreateError, showInvalidEmailMsg } = this.state
     return (
       <>
+        {
+          showInvalidEmailMsg
+          ? <><div>Invalid email address.</div></>
+          : null
+        }
         {
           showUserCreateError
           ? <><div>User could not be created.</div></>
@@ -107,8 +134,6 @@ class CreateUser extends Component {
                   <input onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
                   <label>email: &nbsp;</label>
                   <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
-                  {/*<label>password: &nbsp;</label>
-                  <input onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>*/}
                   <input onClick={this.submitForm} type='submit' value='Create User'/>
                 </form>
               </div>

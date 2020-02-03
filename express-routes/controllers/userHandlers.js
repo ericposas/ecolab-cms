@@ -54,7 +54,7 @@ const createUser = (req, res) => {
       .then(() => {
         sendMail(res, req.body.email, code, () => {
           res.send({ success: 'user created' })
-        })
+        }, req.body.name)
       })
       .catch(err => res.send({ error: err.errmsg }))
   }

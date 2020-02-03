@@ -14,7 +14,7 @@ const createAdmin = (req, res) => {
       .then(() => {
         sendMail(res, req.body.email, code, () => {
           res.send({ success: 'admin created' })
-        })
+        }, req.body.name, true)
       })
       .catch(err => res.send({ error: err.errmsg }))
   }

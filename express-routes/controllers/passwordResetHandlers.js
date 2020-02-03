@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer'
 import User from '../models/User'
 import Admin from '../models/Admin'
 
-const sendMail = async (res, email, code, cb) => {
+const sendMail = async (res, email, code, cb, name, adminBool) => {
   // let testAccount = await nodemailer.createTestAccount()
   let transporter = nodemailer.createTransport({
     // host: 'sector5digital-com.mail.protection.outlook.com',
@@ -17,12 +17,13 @@ const sendMail = async (res, email, code, cb) => {
     secure: false,
   })
   let info = await transporter.sendMail({
-    from: 'Test <sector5developer@gmail.com>',
+    from: 'Password Reset <sector5developer@gmail.com>',
     to: email,
-    subject: 'Testing',
-    text: 'Testing testing',
+    subject: `${adminBool ? 'Admin' : 'User' } password reset ${name ? 'for ' + name : null}`,
+    text: 'Please reset your password',
     html: `
-      <div>Copy/paste password reset code:<div>
+      ${ adminBool ? 'Admin ' : 'User ' } ${ name ? name : null }
+      <div>Copy/paste password reset code to login:<div>
       <b>${code}</b>
     `
   })
