@@ -22,6 +22,10 @@ class UserEditView extends Component {
     })
   }
 
+  componentWillUnmount() {
+    if (this.emailSentTimer) clearTimeout(this.emailSentTimer)
+  }
+  
   setUserName = e => {
     this.setState({
       ...this.state,
@@ -45,7 +49,7 @@ class UserEditView extends Component {
             ...this.state,
             emailSentMsg: true
           })
-          setTimeout(() => {
+          this.emailSentTimer = setTimeout(() => {
             this.setState({
               ...this.state,
               emailSentMsg: false

@@ -22,6 +22,11 @@ class CreateAdmin extends Component {
     })
   }
 
+  componentWillUnmount() {
+    if (this.userCreatedMsgTimer) clearTimeout(this.userCreatedMsgTimer)
+    if (this.userCreateErrorTimer) clearTimeout(this.userCreateErrorTimer)
+  }
+  
   onNameInput = e => {
     this.setState({
       ...this.state,
@@ -53,7 +58,7 @@ class CreateAdmin extends Component {
           ...this.state,
           showUserCreatedMsg: true
         })
-        setTimeout(() => {
+        this.userCreatedMsgTimer = setTimeout(() => {
           this.setState({
             ...this.state,
             showUserCreatedMsg: false
@@ -65,7 +70,7 @@ class CreateAdmin extends Component {
           ...this.state,
           showUserCreateError: true
         })
-        setTimeout(() => {
+        this.userCreateErrorTimer = setTimeout(() => {
           this.setState({
             ...this.state,
             showUserCreateError: false

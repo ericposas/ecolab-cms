@@ -22,6 +22,10 @@ class AdminLogin extends Component {
     })
   }
 
+  componentWillUnmount() {
+    if (this.userMsgTimer) clearTimeout(this.userMsgTimer)
+  }
+  
   onEmailInput = e => {
     this.setState({
       ...this.state,
@@ -60,7 +64,7 @@ class AdminLogin extends Component {
       else if (reset) this.props.history.push('/reset-password/adminCodeResetSuccess')
       else {
         this.setState({ ...this.state, userMsg: true })
-        setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
+        this.userMsgTimer = setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
       }
     })
     .catch(err => console.log(err))

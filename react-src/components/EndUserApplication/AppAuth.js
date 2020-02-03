@@ -11,10 +11,14 @@ class AppAuth extends Component {
     email: '',
     password: '',
     displayUserDataError: false,
-    displayUserAuthenticatedMsg: false,
-    // showResetUserPassword: false
+    displayUserAuthenticatedMsg: false
   }
 
+  componentWillUnmount() {
+    if (this.userDataAuthTimer) clearTimeout(this.userDataAuthTimer)
+    if (this.userDataErrorTimer) clearTimeout(this.userDataErrorTimer)
+  }
+  
   onEmailInput = e => {
     this.setState({
       ...this.state,
@@ -53,7 +57,7 @@ class AppAuth extends Component {
       ...this.state,
       displayUserDataError: true
     })
-    setTimeout(() => {
+    this.userDataErrorTimer = setTimeout(() => {
       this.setState({
         ...this.state,
         displayUserDataError: false
@@ -67,7 +71,7 @@ class AppAuth extends Component {
       ...this.state,
       displayUserAuthenticatedMsg: true
     })
-    setTimeout(() => {
+    this.userDataAuthTimer = setTimeout(() => {
       this.setState({
         ...this.state,
         displayUserAuthenticatedMsg: false

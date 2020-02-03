@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
-// import alphaSort from 'alpha-sort'
 import axios from 'axios'
 import { XmlEntities as Entities } from 'html-entities'
 import Toggler from '../UIcomponents/Toggler'
@@ -33,6 +32,11 @@ class ViewUsers extends Component {
     })
   }
 
+  componentWillUnmount() {
+    if (this.deletedUserMsgTimer) clearTimeout(this.deletedUserMsgTimer)
+    if (this.deletedAdminMsgTimer) clearTimeout(this.deletedAdminMsgTimer)
+  }
+
   getUsers = () => {
     const { setUsers } = this.props
     axios.post('/users/all')
@@ -58,12 +62,12 @@ class ViewUsers extends Component {
           ...this.state,
           showDeletedMsg: true
         })
-        setTimeout(() => {
+        this.deletedUserMsgTimer = setTimeout(() => {
           this.setState({
             ...this.state,
             showDeletedMsg: false
           })
-        }, 1000)
+        }, 2000)
       }
     } catch (err) {
       console.log(err)
@@ -79,12 +83,12 @@ class ViewUsers extends Component {
           ...this.state,
           showDeletedMsg: true
         })
-        setTimeout(() => {
+        this.deletedAdminMsgTimer = setTimeout(() => {
           this.setState({
             ...this.state,
             showDeletedMsg: false
           })
-        }, 1000)
+        }, 2000)
       }
     } catch (err) {
       console.log(err)

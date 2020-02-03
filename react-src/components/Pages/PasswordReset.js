@@ -24,6 +24,10 @@ class PasswordReset extends Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this._timer) clearTimeout(this._timer)
+  }
+  
   submitCode = () => {
     axios.post('/password/code', { code: this.state.codeVal })
       .then(data => {
@@ -54,11 +58,11 @@ class PasswordReset extends Component {
               ...this.state,
               formState: 'passwordResetSuccess'
             })
-            setTimeout(() => {
+            this._timer = setTimeout(() => {
               adminBool
               ? this.props.history.push('/admin')
               : this.props.history.push('/login')
-            }, 1500)
+            }, 2000)
           } else {
             console.log('error occurred setting password.')
           }
