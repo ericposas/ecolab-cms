@@ -15,6 +15,9 @@ import {
 import userRoutes from './express-routes/routes/userRoutes'
 import adminRoutes from './express-routes/routes/adminRoutes'
 import passwordResetRoutes from './express-routes/routes/passwordResetRoutes'
+// Eco lab specific
+import webModuleRoutes from './express-routes/routes/ApplicationSpecific/webModuleRoutes'
+
 
 dotenv.config()
 const {
@@ -62,15 +65,15 @@ app.get('/', (req, res) => {
 
 // Password Reset Routes
 app.use('/password', passwordResetRoutes)
-
 // Login -- at base URL
 app.post('/authCheck', authCheck)
 app.post('/login', login)
 app.post('/logout', logout)
-
 app.use('/users', userRoutes)
-
 app.use('/admins', adminRoutes)
+
+// Eco Lab Application specific
+app.use('/webmodules', webModuleRoutes)
 
 
 app.listen(port, err => {

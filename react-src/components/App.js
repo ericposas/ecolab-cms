@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { HashRouter as Router, Route, Switch, Link } from 'react-router-dom'
+// CMS - User management
 import CreateUser from './Admin/CreateUser'
 import CreateAdmin from './Admin/CreateAdmin'
 import AdminLogin from './AdminLogin/AdminLogin'
@@ -8,8 +9,12 @@ import AdminHome from './Pages/AdminHome'
 import ViewUsers from './Pages/ViewUsers'
 import AdminPasswordReset from './Pages/AdminPasswordReset'
 import PasswordReset from './Pages/PasswordReset'
+// Application frontend
 import AppAuth from './EndUserApplication/AppAuth'
 import AppHome from './EndUserApplication/AppHome'
+import CreateMode from './EndUserApplication/CreateMode'
+import CreateWebModule from './EndUserApplication/CreateWebModule'
+import ViewWebModules from './EndUserApplication/ViewWebModules'
 import axios from 'axios'
 
 class App extends Component {
@@ -29,6 +34,9 @@ class App extends Component {
 
             <Route exact path='/' component={AppHome}/>
             <Route path='/login' component={AppAuth}/>
+            <Route path='/create-mode' component={CreateMode}/>
+            <Route path='/create-web-module' component={CreateWebModule}/>
+            <Route path='/view-web-modules' component={ViewWebModules}/>
 
           </Switch>
         </Router>

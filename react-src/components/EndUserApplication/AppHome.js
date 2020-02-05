@@ -8,34 +8,39 @@ import axios from 'axios'
 
 class AppHome extends Component {
 
-  componentDidMount() {
-    const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
-    checkAppUserAuth(data => {
-      console.log(data.data)
-      const { auth, fullaccess, peer, name, email } = data.data
-      if (!auth) history.push('/login')
-      else {
-        if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
-      }
-    })
-  }
+  // componentDidMount() {
+  //   const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
+  //   checkAppUserAuth(data => {
+  //     console.log(data.data)
+  //     const { auth, fullaccess, peer, name, email } = data.data
+  //     if (!auth) history.push('/login')
+  //     else {
+  //       if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+  //     }
+  //   })
+  // }
 
   logout = () => {
     this.props.history.push('/logout/user')
   }
 
   render() {
-    const { AppUserData } = this.props
+    const { AppUserData, history } = this.props
+    const grnblue = '#00ffae'
+    const logoutAreaStyle = {
+      top: 0, right: 0, position: 'absolute',
+    }
     return (
       <>
-        <TitleBar title={'Application Frontend'} color={'#00ffae'}/>
-        <button
-          style={{
-            top: '10px', right: '10px',
-            position: 'absolute',
-          }}
-          onClick={this.logout}>log out</button>
-        <div className='padding-div-20'>Welcome {AppUserData.name ? AppUserData.name : null}</div>
+        <TitleBar title={'Eco Lab Application'} color={'#00ffae'}/>
+        <div style={logoutAreaStyle}>
+          <div className='padding-div-20' style={{ display: 'inline-block' }}>Welcome {AppUserData.name ? AppUserData.name : null}</div>
+          <button onClick={this.logout}>log out</button>
+        </div>
+        <div className='center-float' style={{ top: '40px', width: '80%', height: '500px', border: 'none' }}>
+          <div className='dashboard-button-x-large' style={{ backgroundColor: grnblue }} onClick={() => history.push('/create-mode')}>Create Mode</div>
+          <div className='dashboard-button-x-large' style={{ backgroundColor: grnblue }}>Edit Mode</div>
+        </div>
       </>
     )
   }
