@@ -13,8 +13,14 @@ class ViewWebModules extends Component {
     getWebModules()
   }
 
+  handleDelete = module => {
+    const { deleteWebModule, getWebModules } = this.props
+    console.log('delete ' + module.browser_url)
+    deleteWebModule(module._id, getWebModules)
+  }
+  
   render() {
-    const { WebModules } = this.props
+    const { WebModules, DeletingWebModule, WebModuleDeleted } = this.props
     return (
       <>
         {
@@ -23,10 +29,23 @@ class ViewWebModules extends Component {
             WebModules.map(module => (
               <Fragment key={module._id}>
                 <div className='web-module-in-list'>
+                  <div
+                    className='x-symbol web-module-x-btn'
+                    onClick={() => this.handleDelete(module)}>&#10005;</div>
                   {module.browser_url}
                 </div>
               </Fragment>
             ))
+          : null
+        }
+        {
+          DeletingWebModule
+          ? <div>Deleting web module...</div>
+          : null
+        }
+        {
+          WebModuleDeleted
+          ? <div>Web module deleted!</div>
           : null
         }
       </>

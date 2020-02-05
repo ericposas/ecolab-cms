@@ -17,6 +17,8 @@ import {
   WEB_MODULE_SAVED,
   GETTING_WEB_MODULES,
   SET_WEB_MODULES,
+  DELETING_WEB_MODULE,
+  WEB_MODULE_DELETED,
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -76,6 +78,23 @@ const getWebModules = () => {
       .catch(err => console.log(err))
   }
 }
+const deleteWebModule = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: DELETING_WEB_MODULE, payload: true })
+    axios.delete(`/webmodules/delete/${id}`)
+      .then(data => {
+        dispatch({ type: DELETING_WEB_MODULE, payload: false })
+        dispatch({ type: WEB_MODULE_DELETED, payload: true })
+        if (callback) callback()
+        window.webModuleDeletedTimer = setTimeout(() => {
+          dispatch({ type: WEB_MODULE_DELETED, payload: false })
+          // getWebModules()
+        }, 2000)
+        console.log(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+}
 
 export default {
   // CMS - User mgmt
@@ -94,5 +113,6 @@ export default {
   // Eco Lab
   saveWebModule,
   getWebModules,
+  deleteWebModule,
 
 }
