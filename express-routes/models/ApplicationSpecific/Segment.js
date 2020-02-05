@@ -7,7 +7,11 @@ const Segment = model('Segment', new Schema({
     unique: true,
     default: ''
   },
-  offerings: {
+  parent_industry: {
+    type: String,
+    default: ''
+  },
+  offering_ids: {
     type: Array,
     default: []
   },

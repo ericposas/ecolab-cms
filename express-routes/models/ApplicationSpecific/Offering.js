@@ -5,7 +5,7 @@ const Offering = model('Offering', new Schema({
     type: String,
     default: ''
   },
-  segment_ids: {
+  parent_segment: {
     type: Array,
     default: []
   },

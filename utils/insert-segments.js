@@ -6,8 +6,8 @@ require('dotenv').config()
 const results = [];
 
 const insertEntry = async item => {
-  await Segment.create({ name: item })
-  console.log(`created ${item} successfully`);
+  await Segment.create({ parent_industry: item[0], name: item[1] })
+  console.log(`created ${item[1]} successfully`);
 }
 
 const runDBinserts = () => {
@@ -18,7 +18,7 @@ const runDBinserts = () => {
   .on('end', () => {
     // console.log(results)
     for (let i = 0; i < results.length; i++) {
-      insertEntry(results[i][0])
+      insertEntry(results[i])
     }
   })
 }

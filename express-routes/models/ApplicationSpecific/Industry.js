@@ -5,6 +5,10 @@ const Industry = model('Industry', new Schema({
     type: String,
     default: ''
   },
+  parent_division: {
+    type: String,
+    default: ''
+  },
   segments: {
     type: Array,
     default: []
