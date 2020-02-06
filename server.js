@@ -1,4 +1,6 @@
 import path from 'path'
+import cors from 'cors'
+import multer from 'multer'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
@@ -18,7 +20,13 @@ import passwordResetRoutes from './express-routes/routes/passwordResetRoutes'
 // Eco lab specific
 import webModuleRoutes from './express-routes/routes/ApplicationSpecific/webModuleRoutes'
 
-
+const storage = multer.diskStorage({
+  destination: `${__dirname}/uploads`,
+  filename: (req, file, cb) => {
+    cb(null, `${file.originalname}-${Date.now()}`)
+  }
+})
+const upload = multer({ storage: storage })
 dotenv.config()
 const {
   MODE,
@@ -36,6 +44,7 @@ mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-taijg.m
   useUnifiedTopology: true
 })
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
@@ -74,6 +83,12 @@ app.use('/admins', adminRoutes)
 
 // Eco Lab Application specific
 app.use('/webmodules', webModuleRoutes)
+
+// File upload
+app.post('/testupload', upload.single('file'), (req, res, next) => {
+  // console.log(req)
+  res.send({ success: `upload ${req.file.originalname} success!` })
+})
 
 
 app.listen(port, err => {

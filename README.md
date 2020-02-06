@@ -13,3 +13,5 @@
 
 ##TODO
   - create /upload route
+  - add user auth check in every route in the end-user application
+  
