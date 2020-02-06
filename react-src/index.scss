@@ -1,3 +1,5 @@
+$grnblue: #00ffae;
+
 html,
 body {
   overflow-x: hidden;
@@ -162,7 +164,7 @@ body {
   text-align: center;
   border-radius: 2px;
   line-height: 100px;
-  background-color: lightblue;
+  background-color: $grnblue;
 }
 
 .web-module-x-btn {

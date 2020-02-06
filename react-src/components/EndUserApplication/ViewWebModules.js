@@ -18,11 +18,13 @@ class ViewWebModules extends Component {
     console.log('delete ' + module.browser_url)
     deleteWebModule(module._id, getWebModules)
   }
-  
+
   render() {
+    const grnblue = '#00ffae'
     const { WebModules, DeletingWebModule, WebModuleDeleted } = this.props
     return (
       <>
+        <TitleBar title={'Eco Lab Application'} color={grnblue}/>
         {
           WebModules
           ?
