@@ -13,6 +13,9 @@ import SavingWebModule from './ApplicationSpecific/SavingWebModule'
 import WebModuleSaved from './ApplicationSpecific/WebModuleSaved'
 import GettingWebModules from './ApplicationSpecific/GettingWebModules'
 import WebModules from './ApplicationSpecific/WebModules'
+import SavingCompanyData from './ApplicationSpecific/SavingCompanyData'
+import CompanyDataSaved from './ApplicationSpecific/CompanyDataSaved'
+import CompanyDataError from './ApplicationSpecific/CompanyDataError'
 
 const rootReducer = combineReducers({
   // CMS / User management
@@ -29,7 +32,10 @@ const rootReducer = combineReducers({
   WebModuleSaved,
   GettingWebModules,
   WebModules,
-  
+  SavingCompanyData,
+  CompanyDataSaved,
+  CompanyDataError,
+
 })
 
 export default rootReducer

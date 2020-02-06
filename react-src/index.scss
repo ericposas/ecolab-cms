@@ -6,6 +6,13 @@ body {
   overflow-x: hidden;
 }
 
+// Misc.
+.section-title {
+  font-weight: bold;
+  font-size: 1.35rem;
+  margin-bottom: 10px;
+}
+
 .padding-div-10 {
   padding: 10px;
 }
@@ -192,4 +199,20 @@ body {
   top: -40px; left: 4px;
   border-radius: 10px;
   width: 10px; height: 10px;
+}
+
+// Transition Group - CSS Transitions
+.item-enter {
+  opacity: 0;
+}
+.item-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.item-exit {
+  opacity: 1;
+}
+.item-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
 }

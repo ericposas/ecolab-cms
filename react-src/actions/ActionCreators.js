@@ -19,6 +19,9 @@ import {
   SET_WEB_MODULES,
   DELETING_WEB_MODULE,
   WEB_MODULE_DELETED,
+  SAVING_COMPANY_DATA_TO_DB,
+  COMPANY_DATA_SAVED,
+  COMPANY_DATA_ERROR,
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -95,6 +98,31 @@ const deleteWebModule = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
+const submitCreateCompanyData = (companyName, companyLogoFilePath, customerNameFields, noteFieldValue) => {
+  return (dispatch, getState) => {
+    dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: true })
+    axios.post(`/companies`, {
+        name: companyName, logo: companyLogoFilePath,
+        customer_names: customerNameFields, notes: noteFieldValue
+      })
+      .then(data => {
+        dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: false })
+        if (data.data.success) {
+          dispatch({ type: COMPANY_DATA_SAVED, payload: true })
+          window.customerDataSavedTimer = setTimeout(() => {
+            dispatch({ type: COMPANY_DATA_SAVED, payload: false })
+          })
+        } else {
+          dispatch({ type: COMPANY_DATA_ERROR, payload: true })
+          window.customerDataErrorTimer = setTimeout(() => {
+            dispatch({ type: COMPANY_DATA_ERROR, payload: false })
+          })
+        }
+        console.log(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+}
 
 export default {
   // CMS - User mgmt
@@ -110,9 +138,12 @@ export default {
   clearAdminsForBulkAction,
   setSelectedUserForEditing,
   setSelectedAdminForEditing,
-  // Eco Lab
+  // Eco Lab - Web Module Data
   saveWebModule,
   getWebModules,
   deleteWebModule,
+  // Eco Lab - Company Data
+  submitCreateCompanyData,
+
 
 }

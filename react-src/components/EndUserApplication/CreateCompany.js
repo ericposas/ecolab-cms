@@ -8,6 +8,7 @@ import { Progress as ProgressBar } from 'reactstrap'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { ToastContainer, toast } from 'react-toastify'
+import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import uuid from 'uuid'
 
@@ -18,7 +19,14 @@ class CreateCompany extends Component {
     companyNameError: true,
     companyLogoLoadedPercent: 0,
     companyLogoUploaded: false,
+    companyLogoFilePath: '',
     customerNameFields: [],
+    noteFieldValue: '',
+
+  }
+
+  componentDidMount() {
+    // do auth check here...
 
   }
 
@@ -26,7 +34,7 @@ class CreateCompany extends Component {
     if (this.loadedResetTimer) clearTimeout(this.loadedResetTimer)
 
   }
-  
+
   handleCompanyNameChange = e => {
     this.setState({
       companyName: e.target.value,
@@ -49,7 +57,7 @@ class CreateCompany extends Component {
       .then(data => {
         console.log(data)
         toast.success(`uploaded ${file.name} successfully!`)
-        this.setState({ companyLogoUploaded: true })
+        this.setState({ companyLogoUploaded: true, companyLogoFilePath: data.data.path })
         this.loadedResetTimer = setTimeout(() => {
           this.setState({ companyLogoLoadedPercent: 0 })
         }, 2000)
@@ -78,43 +86,75 @@ class CreateCompany extends Component {
         i == idx ? e.target.value : name
       ))
     })
+  }
 
+  handleNotesEntry = e => {
+    this.setState({
+      noteFieldValue: e.target.value
+    })
+  }
+
+  handleSubmit = () => {
+    const { submitCreateCompanyData } = this.props
+    const { companyName, companyLogoFilePath, customerNameFields, noteFieldValue } = this.state
+    submitCreateCompanyData(
+      companyName, companyLogoFilePath,
+      customerNameFields, noteFieldValue
+    )
   }
 
   render() {
     const grnblue = '#00ffae'
+    const { SavingCompanyData, CompanyDataSaved, CompanyDataError, history } = this.props
     return (
       <>
         <TitleBar title='Eco Lab Application' color={grnblue}/><br/>
         <ToastContainer/>
         <div className='padding-div-20'>
+          <div className='section-title'>Company Name</div>
           <TextField
             error={this.state.companyNameError}
             variant='outlined'
-            label='Company name'
+            // label='Company name'
             onChange={this.handleCompanyNameChange}
             value={this.state.companyName}/><br/><br/>
-          {
-            this.state.companyName && this.state.companyNameError == false
-            ?
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={(this.state.companyName != '' && this.state.companyNameError == false)}
+            timeout={500}
+            classNames='item'>
               <>
+                <div className='section-title'>Company Logo</div>
                 <form method='post' encType='multipart/form-data'>
                   <Button
                     variant='contained'
                     component='label'>
                     Select a File
                     <input type='file' onChange={this.handleFileSelect} style={{ display: 'none' }}/>
-                    </Button>
+                  </Button>
+                  <CSSTransition
+                    appear
+                    unmountOnExit
+                    in={this.state.companyLogoLoadedPercent != 0}
+                    timeout={500}
+                    classNames='item'>
                     <ProgressBar max='100' color='success' value={this.state.companyLogoLoadedPercent}>{Math.round(this.state.companyLogoLoadedPercent, 2)}%</ProgressBar>
+                  </CSSTransition>
                 </form>
                 <br/>
                 <br/>
               </>
-            : null
-          }
-          {
-            this.state.companyLogoUploaded
-            ? <>
+          </CSSTransition>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.companyLogoUploaded}
+            timeout={500}
+            classNames='item'
+            >
+              <>
+                <div className='section-title'>Team Members</div>
                 <div className='plus-symbol' onClick={this.addCustomerNameInputBox}>
                   <div className='plus-symbol-inner-text'>+</div>
                 </div>
@@ -135,10 +175,72 @@ class CreateCompany extends Component {
                     </Fragment>
                   )))
                 }
+                <br/>
+                <br/>
+                <br/>
               </>
+          </CSSTransition>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.customerNameFields.length > 0 && this.state.customerNameFields[0] != ''}
+            timeout={500}
+            classNames='item'
+            >
+            <>
+              <div className='section-title'>Additional notes?</div>
+              <TextField
+                variant='outlined'
+                // label='Notes'
+                onChange={this.handleNotesEntry}
+                value={this.state.noteFieldValue}>
+              </TextField>
+              <br/>
+              <br/>
+            </>
+          </CSSTransition>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.customerNameFields.length > 0 && this.state.customerNameFields[0] != ''}
+            timeout={500}
+            classNames='item'>
+            <Button
+              variant='contained'
+              color='default'
+              onClick={this.handleSubmit}>
+              Submit
+            </Button>
+          </CSSTransition>
+          {
+            SavingCompanyData
+            ? <div style={{ display: 'none' }}>
+                {toast.warn('Attempting to save company data...', {
+                  autoClose: 1000
+                })}
+              </div>
             : null
           }
-
+          {
+            CompanyDataSaved
+            ? <div style={{ display: 'none' }}>
+                {toast.success('Company data saved successfully...', {
+                  autoClose: 2500,
+                  // onOpen: () => {},
+                  onClose: () => history.push('/view-companies')
+                })}
+              </div>
+            : null
+          }
+          {
+            CompanyDataError
+            ? <div style={{ display: 'none' }}>
+                {toast.error('Error saving company...', {
+                  autoClose: 2500
+                })}
+              </div>
+            : null
+          }
         </div>
       </>
     )
@@ -146,4 +248,4 @@ class CreateCompany extends Component {
 
 }
 
-export default CreateCompany
+export default connect(mapState, mapDispatch)(withAppUserAuth(withRouter(CreateCompany)))

@@ -20,6 +20,7 @@ const appLogin = (req, res) => {
           if (result == true) {
             // add session for application user
             req.session.appuserauth = true
+            req.session.appuserid = doc._id
             req.session.appusername = doc.name
             req.session.appuseremail = doc.email
             req.session.appuserfullaccess = doc.full_access
@@ -27,6 +28,7 @@ const appLogin = (req, res) => {
             req.session.appuserpeer = doc.peer
             req.session.maxAge = 1000 * 60 * 15
             req.session.save()
+            console.log(req.session.appuserid)
             res.send({ auth: true, fullaccess: doc.full_access, peer: doc.peer, name: doc.name, email: doc.email })
           } else {
             // try login via code

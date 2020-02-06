@@ -67,7 +67,7 @@ class CreateWebModule extends Component {
             WebModuleSaved
             ? <div style={{display:'none'}}>
                 {toast.success('web module saved!', {
-                  autoClose: 2000,
+                  autoClose: 2500,
                   position: 'bottom-left'
                 })}
               </div>

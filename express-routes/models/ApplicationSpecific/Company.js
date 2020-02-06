@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose'
 
-const Customer = model('Customer', new Schema({
+const Company = model('Company', new Schema({
   name: {
     type: String,
     required: true,
@@ -40,4 +40,4 @@ const Customer = model('Customer', new Schema({
   }
 }))
 
-export default Customer
+export default Company

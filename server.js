@@ -19,11 +19,12 @@ import adminRoutes from './express-routes/routes/adminRoutes'
 import passwordResetRoutes from './express-routes/routes/passwordResetRoutes'
 // Eco lab specific
 import webModuleRoutes from './express-routes/routes/ApplicationSpecific/webModuleRoutes'
+import companyRoutes from './express-routes/routes/ApplicationSpecific/companyRoutes'
 
 const storage = multer.diskStorage({
   destination: `${__dirname}/uploads`,
   filename: (req, file, cb) => {
-    cb(null, `${file.originalname}-${Date.now()}`)
+    cb(null, `${file.originalname.split('.').slice(0, -1).join('.')}-${Date.now()}${path.extname(file.originalname)}`)
   }
 })
 const upload = multer({ storage: storage })
@@ -57,7 +58,10 @@ app.use(session({
   resave: false,
   rolling: true,
   saveUninitialized: false,
-  cookie: {}
+  cookie: {
+    secure: false,
+    httpOnly: false
+  }
   // cookie: MODE == 'development' ? {} : { secure: true }
   // cookie: { secure: true }
 }))
@@ -83,6 +87,7 @@ app.use('/admins', adminRoutes)
 
 // Eco Lab Application specific
 app.use('/webmodules', webModuleRoutes)
+app.use('/companies', companyRoutes)
 
 // File upload
 app.post('/testupload', upload.single('file'), (req, res, next) => {
