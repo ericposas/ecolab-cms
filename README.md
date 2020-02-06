@@ -12,4 +12,4 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - create Ecolab schemas for db objects
+  - create /upload route
