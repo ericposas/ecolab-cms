@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
+import Button from '@material-ui/core/Button'
 import axios from 'axios'
 
 class AppHome extends Component {
@@ -35,7 +36,7 @@ class AppHome extends Component {
         <TitleBar title={'Eco Lab Application'} color={'#00ffae'}/>
         <div style={logoutAreaStyle}>
           <div className='padding-div-20' style={{ display: 'inline-block' }}>Welcome {AppUserData.name ? AppUserData.name : null}</div>
-          <button onClick={this.logout}>log out</button>
+          <Button onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
         </div>
         <div className='center-float' style={{ top: '40px', width: '80%', height: '500px', border: 'none' }}>
           <div className='dashboard-button-x-large' style={{ backgroundColor: grnblue }} onClick={() => history.push('/create-mode')}>Create Mode</div>

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
+import Button from '@material-ui/core/Button'
+import { ToastContainer, toast } from 'react-toastify'
 import axios from 'axios'
 
 class CreateWebModule extends Component {
@@ -28,7 +30,7 @@ class CreateWebModule extends Component {
     const { saveWebModule } = this.props
     // do url validation here..
       saveWebModule(this.state.urlField)
-
+      this.setState({ urlField: '' })
   }
 
   render() {
@@ -37,6 +39,7 @@ class CreateWebModule extends Component {
     return (
       <>
         <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+        <ToastContainer/>
         <div className='center-float' style={{ width: '80%', height: '400px', borderRadius: '2px' }}>
           <div style={{ textAlign: 'center', lineHeight: '400px' }}>Enter your URL to save as a module:</div>
           <input
@@ -47,17 +50,27 @@ class CreateWebModule extends Component {
             value={this.state.urlField}/>
           {
             this.state.urlField != ''
-            ? <button onClick={this.handleSubmit}>Save Web Module</button>
+            ? <Button onClick={this.handleSubmit} variant='contained' color='default'>Save Web Module</Button>
             : null
           }
           {
             SavingWebModule
-            ? <div>Saving web module...</div>
+            ? <div style={{display:'none'}}>
+                {toast.success('saving web module..', {
+                  autoClose: 500,
+                  position: 'bottom-left'
+                })}
+              </div>
             : null
           }
           {
             WebModuleSaved
-            ? <div>Web module saved!</div>
+            ? <div style={{display:'none'}}>
+                {toast.success('web module saved!', {
+                  autoClose: 2000,
+                  position: 'bottom-left'
+                })}
+              </div>
             : null
           }
         </div>

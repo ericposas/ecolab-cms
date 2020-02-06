@@ -16,6 +16,7 @@ import CreateMode from './EndUserApplication/CreateMode'
 import CreateWebModule from './EndUserApplication/CreateWebModule'
 import ViewWebModules from './EndUserApplication/ViewWebModules'
 import FileUpload from './EndUserApplication/FileUpload'
+import CreateCompany from './EndUserApplication/CreateCompany'
 import axios from 'axios'
 
 class App extends Component {
@@ -39,6 +40,7 @@ class App extends Component {
             <Route path='/create-web-module' component={CreateWebModule}/>
             <Route path='/view-web-modules' component={ViewWebModules}/>
             <Route path='/file-upload' component={FileUpload}/>
+            <Route path='/create-company' component={CreateCompany}/>
 
           </Switch>
         </Router>
