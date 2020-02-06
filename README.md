@@ -12,6 +12,5 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - create /upload route
   - add user auth check in every route in the end-user application
-  
+  - add file size and file extension check on company logo upload
