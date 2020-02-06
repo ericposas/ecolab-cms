@@ -89,7 +89,9 @@ app.post('/testupload', upload.single('file'), (req, res, next) => {
   // console.log(req)
   res.send({ success: `upload ${req.file.originalname} success!` })
 })
-
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.send({ success: true, path: `/uploads/${req.file.filename}` })
+})
 
 app.listen(port, err => {
   if (err) throw err
