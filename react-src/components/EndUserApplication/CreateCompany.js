@@ -18,24 +18,15 @@ class CreateCompany extends Component {
     companyNameError: true,
     companyLogoLoadedPercent: 0,
     companyLogoUploaded: false,
-    // customerNameFieldsCount: 0,
-    customerNameFields: {},
+    customerNameFields: [],
 
   }
-
-  // componentDidMount() {
-  //   this.setState({
-  //     customerNameFields: {
-  //       [uuid()]: ''
-  //     }
-  //   })
-  // }
 
   componentWillUnmount() {
     if (this.loadedResetTimer) clearTimeout(this.loadedResetTimer)
 
   }
-
+  
   handleCompanyNameChange = e => {
     this.setState({
       companyName: e.target.value,
@@ -69,37 +60,25 @@ class CreateCompany extends Component {
       })
   }
 
-  addCustomerNameInputBox = id => {
-    // console.log(Object.keys(this.state.customerNameFields).length-1)
-    let _latestKey = uuid()
+  addCustomerNameInputBox = () => {
     this.setState({
-      latestKey: _latestKey,
-      // customerNameFieldsCount: this.state.customerNameFieldsCount += 1,
-      customerNameFields: {
-        ...this.state.customerNameFields,
-        [_latestKey]: ''
-      }
+      customerNameFields: this.state.customerNameFields.concat('')
     })
   }
 
-  removeCustomerNameInputBox = id => e => {
-    let _customerNameFields = this.state.customerNameFields
-    delete _customerNameFields[id]
+  removeCustomerNameInputBox = idx => e => {
     this.setState({
-      customerNameFields: _customerNameFields
+      customerNameFields: this.state.customerNameFields.filter((name, i) => i != idx)
     })
   }
 
-  handleCustomerNameFieldEntry = id => e => {
-    console.log(id)
+  handleCustomerNameEntry = idx => e => {
     this.setState({
-      ...this.state,
-      customerNameFields: {
-        ...this.state.customerNameFields,
-        [id]: e.target.value
-      }
+      customerNameFields: this.state.customerNameFields.map((name, i) => (
+        i == idx ? e.target.value : name
+      ))
     })
-    console.log(this.state)
+
   }
 
   render() {
@@ -128,25 +107,33 @@ class CreateCompany extends Component {
                     </Button>
                     <ProgressBar max='100' color='success' value={this.state.companyLogoLoadedPercent}>{Math.round(this.state.companyLogoLoadedPercent, 2)}%</ProgressBar>
                 </form>
+                <br/>
+                <br/>
               </>
             : null
           }
           {
             this.state.companyLogoUploaded
             ? <>
-                <div onClick={this.addCustomerNameInputBox}>&#8330;</div>
+                <div className='plus-symbol' onClick={this.addCustomerNameInputBox}>
+                  <div className='plus-symbol-inner-text'>+</div>
+                </div>
+                <div style={{ display: 'inline-block', marginLeft: '10px' }}>Add Company Member Names</div>
+                <br/>
+                <br/>
                 {
-                  Object.keys(this.state.customerNameFields).map((field, idx) => {
-                    // let _key = uuid()
-                    // console.log(this.state.latestKey)
-                    let _key = this.state.latestKey
-                    return (
-                      <Fragment key={_key}>
-                        <input type='text' onChange={this.handleCustomerNameFieldEntry(_key)} value={this.state.customerNameFields[_key]}/>
-                        <div className='x-symbol' onClick={this.removeCustomerNameInputBox(_key)}>&#10006;</div>
-                      </Fragment>
-                    )
-                  })
+                  this.state.customerNameFields.map((field, idx) => ((
+                    <Fragment key={idx}>
+                      <div className='padding-div-10' style={{ display: 'inline-block' }}>
+                        <TextField
+                          variant='outlined'
+                          label={`Customer name ${idx}`}
+                          onChange={this.handleCustomerNameEntry(idx)}
+                          value={this.state.customerNameFields[idx]}/>
+                          <div onClick={this.removeCustomerNameInputBox(idx)} style={{ display: 'inline-block' }}>&#10006;</div>
+                      </div>
+                    </Fragment>
+                  )))
                 }
               </>
             : null

@@ -1,4 +1,5 @@
 $grnblue: #00ffae;
+$purp: #3F51B5;
 
 html,
 body {
@@ -39,6 +40,25 @@ body {
 .x-symbol {
   cursor: pointer;
   display: inline-block;
+}
+
+.plus-symbol {
+  width: 50px;
+  cursor: pointer;
+  font-size: 2rem;
+  display: inline-block;
+  background-color: $purp;
+  border-radius: 4px;
+  text-align: center;
+  color: #fff;
+}
+
+.plus-symbol:hover {
+  transform: scale(1.05);
+}
+
+.plus-symbol-inner-text {
+  margin-top: -4px;
 }
 
 // LeftSidePanel <Component>
