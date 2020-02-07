@@ -11,11 +11,17 @@ import SelectedAdminForEditing from './CMS/SelectedAdminForEditing'
 // Eco Lab Application
 import SavingWebModule from './ApplicationSpecific/SavingWebModule'
 import WebModuleSaved from './ApplicationSpecific/WebModuleSaved'
-import GettingWebModules from './ApplicationSpecific/GettingWebModules'
+import FetchingWebModules from './ApplicationSpecific/FetchingWebModules'
+import DeletingWebModule from './ApplicationSpecific/DeletingWebModule'
+import WebModuleDeleted from './ApplicationSpecific/WebModuleDeleted'
 import WebModules from './ApplicationSpecific/WebModules'
 import SavingCompanyData from './ApplicationSpecific/SavingCompanyData'
 import CompanyDataSaved from './ApplicationSpecific/CompanyDataSaved'
 import CompanyDataError from './ApplicationSpecific/CompanyDataError'
+import Companies from './ApplicationSpecific/Companies'
+import FetchingCompanies from './ApplicationSpecific/FetchingCompanies'
+import DeletingCompany from './ApplicationSpecific/DeletingCompany'
+import CompanyDeleted from './ApplicationSpecific/CompanyDeleted'
 
 const rootReducer = combineReducers({
   // CMS / User management
@@ -30,11 +36,17 @@ const rootReducer = combineReducers({
   // EcoLab Application
   SavingWebModule,
   WebModuleSaved,
-  GettingWebModules,
+  FetchingWebModules,
   WebModules,
+  WebModuleDeleted,
+  DeletingWebModule,
   SavingCompanyData,
   CompanyDataSaved,
   CompanyDataError,
+  Companies,
+  FetchingCompanies,
+  DeletingCompany,
+  CompanyDeleted,
 
 })
 

@@ -201,6 +201,16 @@ body {
   width: 10px; height: 10px;
 }
 
+// Companies
+.company-in-list {
+  padding: 10px;
+  width: 200px;
+  border-radius: 4px;
+  background-color: $grnblue;
+  border: 2px solid green;
+  margin: 5px;
+}
+
 // Transition Group - CSS Transitions
 .item-enter {
   opacity: 0;

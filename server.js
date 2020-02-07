@@ -55,12 +55,12 @@ app.use(session({
     return uuid()
   },
   secret: 'mysecret',
-  resave: false,
+  resave: true,
   rolling: true,
   saveUninitialized: false,
   cookie: {
-    secure: false,
-    httpOnly: false
+    secure: MODE == 'development' ? false : true,
+    httpOnly: MODE == 'development' ? false : true
   }
   // cookie: MODE == 'development' ? {} : { secure: true }
   // cookie: { secure: true }

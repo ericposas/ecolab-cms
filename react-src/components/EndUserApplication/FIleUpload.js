@@ -16,6 +16,18 @@ class FileUpload extends Component {
     loaded: 0
   }
 
+  componentDidMount() {
+    const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
+    checkAppUserAuth(data => {
+      console.log(data.data)
+      const { auth, fullaccess, peer, name, email } = data.data
+      if (!auth) history.push('/login')
+      else {
+        if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+      }
+    })
+  }
+
   componentWillUnmount() {
     if (this.loadedResetTimer) clearTimeout(this.loadedResetTimer)
   }
@@ -80,4 +92,4 @@ class FileUpload extends Component {
 
 }
 
-export default FileUpload
+export default connect(mapState, mapDispatch)(withRouter(withAppUserAuth(FileUpload)))

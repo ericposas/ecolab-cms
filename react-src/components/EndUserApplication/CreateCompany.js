@@ -26,8 +26,15 @@ class CreateCompany extends Component {
   }
 
   componentDidMount() {
-    // do auth check here...
-
+    const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
+    checkAppUserAuth(data => {
+      console.log(data.data)
+      const { auth, fullaccess, peer, name, email } = data.data
+      if (!auth) history.push('/login')
+      else {
+        if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+      }
+    })
   }
 
   componentWillUnmount() {
@@ -108,8 +115,8 @@ class CreateCompany extends Component {
     const { SavingCompanyData, CompanyDataSaved, CompanyDataError, history } = this.props
     return (
       <>
-        <TitleBar title='Eco Lab Application' color={grnblue}/><br/>
         <ToastContainer/>
+        <TitleBar title='Eco Lab Application' color={grnblue}/><br/>
         <div className='padding-div-20'>
           <div className='section-title'>Company Name</div>
           <TextField

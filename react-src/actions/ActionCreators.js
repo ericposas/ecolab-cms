@@ -22,6 +22,10 @@ import {
   SAVING_COMPANY_DATA_TO_DB,
   COMPANY_DATA_SAVED,
   COMPANY_DATA_ERROR,
+  GETTING_COMPANIES,
+  SET_COMPANIES,
+  DELETING_COMPANY,
+  COMPANY_DELETED,
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -53,6 +57,7 @@ const clearAdminsForBulkAction = () => ({ type: CLEAR_SELECTED_ADMINS_FOR_BULK_A
 const setSelectedUserForEditing = user => ({ type: SET_SELECTED_USER_FOR_EDITING, payload: user })
 const setSelectedAdminForEditing = admin => ({ type: SET_SELECTED_ADMIN_FOR_EDITING, payload: admin })
 // Eco Lab
+// Web Module
 const saveWebModule = (browser_url) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_WEB_MODULE, payload: true })
@@ -84,14 +89,44 @@ const getWebModules = () => {
 const deleteWebModule = (id, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: DELETING_WEB_MODULE, payload: true })
-    axios.delete(`/webmodules/delete/${id}`)
+    axios.delete(`/companies/delete/${id}`)
       .then(data => {
         dispatch({ type: DELETING_WEB_MODULE, payload: false })
         dispatch({ type: WEB_MODULE_DELETED, payload: true })
         if (callback) callback()
         window.webModuleDeletedTimer = setTimeout(() => {
           dispatch({ type: WEB_MODULE_DELETED, payload: false })
-          // getWebModules()
+        }, 2000)
+        console.log(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+}
+// Company
+const getCompanies = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: GETTING_COMPANIES, payload: true })
+    axios.post('/companies/view')
+      .then(data => {
+        dispatch({ type: GETTING_COMPANIES, payload: false })
+        console.log(data.data)
+        if (data.data.success) {
+          dispatch({ type: SET_COMPANIES, payload: data.data.success })
+        }
+      })
+      .catch(err => console.log(err))
+  }
+}
+const deleteCompany = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: DELETING_COMPANY, payload: true })
+    axios.delete(`/companies/delete/${id}`)
+      .then(data => {
+        dispatch({ type: DELETING_COMPANY, payload: false })
+        dispatch({ type: COMPANY_DELETED, payload: true })
+        if (callback) callback()
+        window.companyDeletedTimer = setTimeout(() => {
+          dispatch({ type: COMPANY_DELETED, payload: false })
         }, 2000)
         console.log(data.data)
       })
@@ -144,6 +179,6 @@ export default {
   deleteWebModule,
   // Eco Lab - Company Data
   submitCreateCompanyData,
-
+  getCompanies,
 
 }

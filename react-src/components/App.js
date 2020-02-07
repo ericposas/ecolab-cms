@@ -17,6 +17,10 @@ import CreateWebModule from './EndUserApplication/CreateWebModule'
 import ViewWebModules from './EndUserApplication/ViewWebModules'
 import FileUpload from './EndUserApplication/FileUpload'
 import CreateCompany from './EndUserApplication/CreateCompany'
+import ViewCompanies from './EndUserApplication/ViewCompanies'
+// Open / Closed - Extensibility Example
+import ExampleExtended from './OpenClosedPrinciple/ExampleExtended'
+
 import axios from 'axios'
 
 class App extends Component {
@@ -41,6 +45,11 @@ class App extends Component {
             <Route path='/view-web-modules' component={ViewWebModules}/>
             <Route path='/file-upload' component={FileUpload}/>
             <Route path='/create-company' component={CreateCompany}/>
+            <Route path='/view-companies' component={ViewCompanies}/>
+
+            <Route path='/open-closed' render={() => (
+              <ExampleExtended someProp={'steak and whiskey'}></ExampleExtended>
+            )}/>
 
           </Switch>
         </Router>

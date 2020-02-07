@@ -9,8 +9,16 @@ import axios from 'axios'
 class ViewWebModules extends Component {
 
   componentDidMount() {
-    const { getWebModules } = this.props
-    getWebModules()
+    const { getWebModules, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
+    checkAppUserAuth(data => {
+      console.log(data.data)
+      const { auth, fullaccess, peer, name, email } = data.data
+      if (!auth) history.push('/login')
+      else {
+        if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+        getWebModules()
+      }
+    })
   }
 
   handleDelete = module => {
@@ -56,4 +64,4 @@ class ViewWebModules extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(ViewWebModules)
+export default connect(mapState, mapDispatch)(withRouter(withAppUserAuth(ViewWebModules)))
