@@ -27,7 +27,19 @@ const viewCompanies = (req, res) => {
     .catch(err => res.send({ error: 'error occurred getting company data' }))
 }
 
+const deleteCompany = (req, res) => {
+  if (req.params.id) {
+    let id = req.params.id
+    Company.deleteOne({ _id: id })
+      .then(doc => res.send({ success: id + ' successfully deleted.' }))
+      .catch(err => res.send({ error: 'db error' }))
+  } else {
+    res.send({ error: 'no object id provided' })
+  }
+}
+
 export {
   createCompany,
-  viewCompanies
+  viewCompanies,
+  deleteCompany,
 }

@@ -6,6 +6,7 @@ import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
+import CompanyInList from './ListComponents/CompanyInList'
 import axios from 'axios'
 
 class ViewCompanies extends Component {
@@ -47,6 +48,7 @@ class ViewCompanies extends Component {
           </Button>
           <br/>
           <br/>
+          <div className='section-title'>Companies</div>
           {
             FetchingCompanies
             ? <div style={{ display: 'none' }}>
@@ -59,26 +61,9 @@ class ViewCompanies extends Component {
           {
             Companies
             ? <>
-                {/*<div style={{ display: 'none' }}>
-                  {toast.success('companies retrieved!', {
-                    autoClose: 2500
-                  })}
-                </div>*/}
                 {Companies.map(company => (
                   <Fragment key={company._id}>
-                    <div className='company-in-list'>
-                      <div className='company-in-list-title'>{company.name}</div>
-                      <div className='company-in-list-customer-names'>
-                        <ul>
-                          {
-                            company.customer_names.map(name => (
-                              <li key={`${company}-${name}`}>{name}</li>
-                            ))
-                          }
-                        </ul>
-                      </div>
-                      <img className='company-in-list-thumbnail' src={company.logo_image_url}/>
-                    </div>
+                    <CompanyInList company={company}/>
                   </Fragment>
                 ))}
               </>

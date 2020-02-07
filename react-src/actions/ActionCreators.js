@@ -180,5 +180,6 @@ export default {
   // Eco Lab - Company Data
   submitCreateCompanyData,
   getCompanies,
+  deleteCompany,
 
 }

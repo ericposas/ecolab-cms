@@ -49,6 +49,12 @@ body {
   display: inline-block;
 }
 
+.x-symbol-absolute {
+  cursor: pointer;
+  display: block;
+  position: absolute;
+}
+
 .plus-symbol {
   width: 50px;
   cursor: pointer;
@@ -203,12 +209,22 @@ body {
 
 // Companies
 .company-in-list {
+  position: relative;
   padding: 10px;
   width: 200px;
   border-radius: 4px;
   background-color: $grnblue;
   border: 2px solid green;
   margin: 5px;
+}
+
+.company-in-list-x-symbol {
+  top: -4px;
+  right: 4px;
+  font-size: 1.35rem;
+  font-weight: bold;
+  position: absolute;
+  cursor: pointer;
 }
 
 .company-in-list-title {
