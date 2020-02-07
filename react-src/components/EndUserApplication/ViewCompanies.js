@@ -25,6 +25,8 @@ class ViewCompanies extends Component {
     })
   }
 
+  // componentDidMount() { this.props.getCompanies() }
+
   handleBackBtnClick = () => {
     this.props.history.push('/create-company')
   }
@@ -36,36 +38,53 @@ class ViewCompanies extends Component {
       <>
         <ToastContainer/>
         <TitleBar title={'Eco Lab Application'} color={grnblue}/>
-        <Button
-          onClick={this.handleBackBtnClick}
-          variant='contained'
-          color='primary'>Back to Create/Add a Company</Button>
-        {
-          FetchingCompanies
-          ? <div style={{ display: 'none' }}>
-              {toast.warn('fetching companies...', {
-                autoClose: 500
-              })}
-            </div>
-          : null
-        }
-        {
-          Companies
-          ? <>
-              <div style={{ display: 'none' }}>
-                {toast.success('companies retrieved!', {
-                  autoClose: 2500
+        <div className='padding-div-20'>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={this.handleBackBtnClick}>
+              Back to Create/Add a Company
+          </Button>
+          <br/>
+          <br/>
+          {
+            FetchingCompanies
+            ? <div style={{ display: 'none' }}>
+                {toast.warn('fetching companies...', {
+                  autoClose: 500
                 })}
               </div>
-              {Companies.map(company => (
-                <Fragment key={company._id}>
-                  <div className='company-in-list'>{company.name}</div>
-                </Fragment>
-              ))}
-            </>
-          : null
-        }
-
+            : null
+          }
+          {
+            Companies
+            ? <>
+                {/*<div style={{ display: 'none' }}>
+                  {toast.success('companies retrieved!', {
+                    autoClose: 2500
+                  })}
+                </div>*/}
+                {Companies.map(company => (
+                  <Fragment key={company._id}>
+                    <div className='company-in-list'>
+                      <div className='company-in-list-title'>{company.name}</div>
+                      <div className='company-in-list-customer-names'>
+                        <ul>
+                          {
+                            company.customer_names.map(name => (
+                              <li key={`${company}-${name}`}>{name}</li>
+                            ))
+                          }
+                        </ul>
+                      </div>
+                      <img className='company-in-list-thumbnail' src={company.logo_image_url}/>
+                    </div>
+                  </Fragment>
+                ))}
+              </>
+            : null
+          }
+        </div>
       </>
     )
   }

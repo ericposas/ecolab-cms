@@ -211,6 +211,19 @@ body {
   margin: 5px;
 }
 
+.company-in-list-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.company-in-list-customer-names {
+  font-size: .85rem;
+}
+
+.company-in-list-thumbnail {
+  width: 140px;
+}
+
 // Transition Group - CSS Transitions
 .item-enter {
   opacity: 0;

@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
     cb(null, `${file.originalname.split('.').slice(0, -1).join('.')}-${Date.now()}${path.extname(file.originalname)}`)
   }
 })
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage }) //.single('file')
 dotenv.config()
 const {
   MODE,
@@ -51,22 +51,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.set('trust proxy', 1)
 app.use(session({
-  genid: (req) => {
-    return uuid()
-  },
+  genid: (req) => uuid(),
   secret: 'mysecret',
-  resave: true,
-  rolling: true,
-  saveUninitialized: false,
-  cookie: {
-    secure: MODE == 'development' ? false : true,
-    httpOnly: MODE == 'development' ? false : true
-  }
-  // cookie: MODE == 'development' ? {} : { secure: true }
-  // cookie: { secure: true }
+  resave: false,
+  saveUninitialized: true,
+  cookie: MODE == 'development' ? { httpOnly: false } : { secure: true }
 }))
 
 app.use(express.static(__dirname+'/public'))
+app.use('/uploads', express.static(__dirname+'/uploads'))
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/public/index.html'))
@@ -90,13 +83,26 @@ app.use('/webmodules', webModuleRoutes)
 app.use('/companies', companyRoutes)
 
 // File upload
-app.post('/testupload', upload.single('file'), (req, res, next) => {
-  // console.log(req)
-  res.send({ success: `upload ${req.file.originalname} success!` })
-})
+// app.post('/testupload', upload.single('file'), (req, res, next) => {
+//   // console.log(req)
+//   res.send({ success: `upload ${req.file.originalname} success!` })
+// })
+//upload.single('file')
+
 app.post('/upload', upload.single('file'), (req, res) => {
+  console.log(req.session)
   res.send({ success: true, path: `/uploads/${req.file.filename}` })
 })
+
+// app.post('/upload', (req, res) => {
+//   console.log(req.session)
+//   upload(req, res, err => {
+//     if (err instanceof multer.MulterError) { return res.status(500).json(err) }
+//     else if (err) { return res.status(500).json(err) }
+//     // return res.status(200).send(req.file)
+//     return res.send({ success: true, path: `/uploads/${req.file.filename}` })
+//   })
+// })
 
 app.listen(port, err => {
   if (err) throw err

@@ -12,5 +12,7 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
+  - multer causes an error with sessions; needed to format the multer middleWare according to: https://programmingwithmosh.com/javascript/react-file-upload-proper-server-side-nodejs-easy/
   - add user auth check in every route in the end-user application
   - add file size and file extension check on company logo upload
+  - show thumbnail of uploaded image after upload 

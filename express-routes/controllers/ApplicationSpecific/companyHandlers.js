@@ -2,7 +2,6 @@ import { Schema, Types } from 'mongoose'
 import Company from '../../models/ApplicationSpecific/Company'
 
 const createCompany = (req, res) => {
-  console.log(req.session)
   if (req.body.name && req.body.logo && req.body.customer_names) {
     Company({
       name: req.body.name,
@@ -13,7 +12,6 @@ const createCompany = (req, res) => {
     })
     .save()
     .then(() => {
-      req.session.save()
       res.send({ success: 'company profile saved' })
     })
     .catch(err => res.send({ error: 'db err, possible dup key' }))
@@ -23,7 +21,7 @@ const createCompany = (req, res) => {
 }
 
 const viewCompanies = (req, res) => {
-  console.log(req.session.appuserid)
+  console.log(req.session, req.session.appuserid)
   Company.find()
     .then(data => res.send({ success: data }))
     .catch(err => res.send({ error: 'error occurred getting company data' }))

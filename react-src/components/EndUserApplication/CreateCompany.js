@@ -110,14 +110,24 @@ class CreateCompany extends Component {
     )
   }
 
+  handleViewCompaniesBtnClick = () => this.props.history.push('/view-companies')
+
   render() {
     const grnblue = '#00ffae'
     const { SavingCompanyData, CompanyDataSaved, CompanyDataError, history } = this.props
     return (
       <>
         <ToastContainer/>
-        <TitleBar title='Eco Lab Application' color={grnblue}/><br/>
+        <TitleBar title='Eco Lab Application' color={grnblue}/>
         <div className='padding-div-20'>
+          <Button
+            variant='contained'
+            color='default'
+            onClick={this.handleViewCompaniesBtnClick}>
+              View Existing Companies
+          </Button>
+          <br/>
+          <br/>
           <div className='section-title'>Company Name</div>
           <TextField
             error={this.state.companyNameError}
@@ -214,7 +224,7 @@ class CreateCompany extends Component {
             classNames='item'>
             <Button
               variant='contained'
-              color='default'
+              color='primary'
               onClick={this.handleSubmit}>
               Submit
             </Button>
@@ -232,7 +242,7 @@ class CreateCompany extends Component {
             CompanyDataSaved
             ? <div style={{ display: 'none' }}>
                 {toast.success('Company data saved successfully...', {
-                  autoClose: 2500,
+                  autoClose: 1000,
                   // onOpen: () => {},
                   onClose: () => history.push('/view-companies')
                 })}
@@ -243,7 +253,7 @@ class CreateCompany extends Component {
             CompanyDataError
             ? <div style={{ display: 'none' }}>
                 {toast.error('Error saving company...', {
-                  autoClose: 2500
+                  autoClose: 1500
                 })}
               </div>
             : null

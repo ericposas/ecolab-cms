@@ -43,8 +43,9 @@ const login = (req, res) => {
               req.session.adminId = data._id
               // req.session.cookie.expires
               req.session.cookie.maxAge = 1000 * 60 * 15 // 15 min.
-              req.session.save()
-              res.send({ auth: true, owner: data.owner, name: data.name, email: data.email })
+              req.session.save(() => {
+                res.send({ auth: true, owner: data.owner, name: data.name, email: data.email })
+              })
             } else {
               // try login via code
               code(req, res, () => {
