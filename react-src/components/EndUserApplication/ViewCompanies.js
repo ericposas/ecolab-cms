@@ -7,6 +7,7 @@ import TitleBar from '../UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
 import CompanyInList from './ListComponents/CompanyInList'
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 
 class ViewCompanies extends Component {
@@ -61,11 +62,18 @@ class ViewCompanies extends Component {
           {
             Companies
             ? <>
-                {Companies.map(company => (
-                  <Fragment key={company._id}>
-                    <CompanyInList company={company}/>
-                  </Fragment>
-                ))}
+                <TransitionGroup>
+                  {Companies.map(company => (
+                    <CSSTransition key={company._id}
+                      appear
+                      unmountOnExit
+                      in={company != null}
+                      timeout={500}
+                      classNames='item'>
+                      <CompanyInList company={company}/>
+                    </CSSTransition>
+                  ))}
+                </TransitionGroup>
               </>
             : null
           }
