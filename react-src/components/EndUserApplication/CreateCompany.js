@@ -47,32 +47,71 @@ class CreateCompany extends Component {
       companyName: e.target.value,
       companyNameError: e.target.value == '' ? true : false,
     })
-    console.log(this.state.companyNameError)
+    // console.log(this.state.companyNameError)
   }
 
+  getUploadedFileDimensions = file => new Promise((resolve, reject) => {
+    try {
+      let img = new Image()
+      img.onload = () => {
+        const width  = img.naturalWidth
+        const height = img.naturalHeight
+        window.URL.revokeObjectURL(img.src)
+        // return resolve({width, height})
+        if (width > 400) {
+          console.log('correct dimensions')
+          return resolve(true)
+        } else {
+          console.log('wrong dimensions')
+          return resolve(false)
+        }
+      }
+      img.src = window.URL.createObjectURL(file)
+    } catch (exception) {
+      return reject(exception)
+    }
+  })
+
+  checkMimeType = (file) => {
+    const types = ['image/png', 'image/jpeg', 'image/gif']
+    if (types.includes(file.type)) {
+      console.log(`${file.type} is a valid file type`)
+      return true
+    } else {
+      console.log('incorrect mime type')
+      return false
+    }
+  }
+  
   handleFileSelect = e => {
     let file = e.target.files[0]
-    const formData = new FormData()
-    formData.append('file', file)
-    axios.post('/upload', formData, {
-        onUploadProgress: evt => {
-          this.setState({
-            companyLogoLoadedPercent: (evt.loaded / evt.total * 100)
+    this.getUploadedFileDimensions(file)
+      .then(correctDimensions => {
+        if (correctDimensions && this.checkMimeType(file)) {
+          const formData = new FormData()
+          formData.append('file', file)
+          axios.post('/upload', formData, {
+            onUploadProgress: evt => {
+              this.setState({
+                companyLogoLoadedPercent: (evt.loaded / evt.total * 100)
+              })
+            }
+          })
+          .then(data => {
+            console.log(data)
+            toast.success(`uploaded ${file.name} successfully!`)
+            this.setState({ companyLogoUploaded: true, companyLogoFilePath: data.data.path })
+            this.loadedResetTimer = setTimeout(() => {
+              this.setState({ companyLogoLoadedPercent: 0 })
+            }, 2000)
+          })
+          .catch(err => {
+            toast.error('error occurred during upload.')
+            console.log(err)
           })
         }
       })
-      .then(data => {
-        console.log(data)
-        toast.success(`uploaded ${file.name} successfully!`)
-        this.setState({ companyLogoUploaded: true, companyLogoFilePath: data.data.path })
-        this.loadedResetTimer = setTimeout(() => {
-          this.setState({ companyLogoLoadedPercent: 0 })
-        }, 2000)
-      })
-      .catch(err => {
-        toast.error('error occurred during upload.')
-        console.log(err)
-      })
+
   }
 
   addCustomerNameInputBox = () => {
@@ -135,6 +174,16 @@ class CreateCompany extends Component {
             // label='Company name'
             onChange={this.handleCompanyNameChange}
             value={this.state.companyName}/><br/><br/>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.companyLogoFilePath != ''}
+            timeout={500}
+            classNames='item'>
+            <>
+              <img width={280} src={this.state.companyLogoFilePath}/>
+            </>
+          </CSSTransition>
           <CSSTransition
             appear
             unmountOnExit
