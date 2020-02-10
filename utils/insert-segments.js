@@ -6,7 +6,7 @@ require('dotenv').config()
 const results = [];
 
 const insertEntry = async item => {
-  await Segment.create({ parent_industry: item[0], name: item[1] })
+  await Segment.create({ parent_industry: item[0].trim(), name: item[1].trim() })
   console.log(`created ${item[1]} successfully`);
 }
 

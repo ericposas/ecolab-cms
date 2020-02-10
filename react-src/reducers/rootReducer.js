@@ -25,6 +25,10 @@ import CompanyDeleted from './ApplicationSpecific/CompanyDeleted'
 import CompanyToDelete from './ApplicationSpecific/CompanyToDelete'
 import FetchingDivisions from './ApplicationSpecific/FetchingDivisions'
 import Divisions from './ApplicationSpecific/Divisions'
+import FetchingIndustries from './ApplicationSpecific/FetchingIndustries'
+import Industries from './ApplicationSpecific/Industries'
+import FetchingSegments from './ApplicationSpecific/FetchingSegments'
+import Segments from './ApplicationSpecific/Segments'
 
 const rootReducer = combineReducers({
   // CMS / User management
@@ -53,6 +57,10 @@ const rootReducer = combineReducers({
   CompanyToDelete,
   FetchingDivisions,
   Divisions,
+  FetchingIndustries,
+  Industries,
+  FetchingSegments,
+  Segments,
 
 })
 

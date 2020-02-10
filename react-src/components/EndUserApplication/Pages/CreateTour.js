@@ -14,6 +14,12 @@ import axios from 'axios'
 
 const CHOOSE_COMPANY = 'Choose company'
 const CREATE_NEW_COMPANY = '* Create New Company'
+const CHOOSE_DIVISION = 'Choose division'
+const CHOOSE_INDUSTRY = 'Choose industry'
+const CHOOSE_SEGMENT = 'Choose segment'
+const dummyDivision = { _id: 74329874923, name: CHOOSE_DIVISION, industries: [] }
+const dummyIndustry = { _id: 4872394983278, name: CHOOSE_INDUSTRY, segments: [] }
+const dummySegment = { _id: 759729874829, name: CHOOSE_SEGMENT, offerings: [] }
 
 class CreateTour extends Component {
 
@@ -22,14 +28,18 @@ class CreateTour extends Component {
   componentDidMount() {
     this.props.getCompanies()
     this.props.getDivisions()
+    this.props.getIndustries()
+    this.props.getSegments()
+
   }
 
   state = {
     tourName: '',
     tourNameError: true,
     companySelected: CHOOSE_COMPANY,
-    divisionSelected: null,
-    // industriesOfSelectedDivision: '',
+    divisionSelected: dummyDivision,
+    industrySelected: dummyIndustry,
+    segmentSelected: dummySegment,
 
   }
 
@@ -41,17 +51,32 @@ class CreateTour extends Component {
   }
 
   handleCompanySelector = e => {
-    if (e.target.value == 'Create New Company') this.props.history.push('/create-company/create-tour')
-    else this.setState({ companySelected: e.target.value })
+    if (e.target.value == CREATE_NEW_COMPANY) this.props.history.push('/create-company/create-tour')
+    else this.setState({ ...this.state, companySelected: e.target.value, divisionSelected: dummyDivision, industrySelected: dummyIndustry, segmentSelected: dummyIndustry })
   }
 
   handleDivisionSelector = e => {
     let divisionId = e.target.value
     let division = this.props.Divisions.find(d => d._id === divisionId)
-    this.setState({ divisionSelected: division })
+    console.log(divisionId, division)
+    this.setState({ ...this.state, divisionSelected: division, industrySelected: dummyIndustry, segmentSelected: dummySegment })
+    // console.log(division.name)
     // this.setState({ divisionSelected: division.name, industriesOfSelectedDivision: division.industries })
   }
 
+  handleIndustrySelector = e => {
+    let industryName = e.target.value
+    let industry = this.props.Industries.find(i => i.name === industryName)
+    this.setState({ ...this.state, industrySelected: industry, segmentSelected: dummySegment })
+    console.log(industry)
+  }
+
+  handleSegmentSelector = e => {
+    let segmentName = e.target.value
+    let segment = this.props.Segments.find(s => s.name.trim() === segmentName)
+    this.setState({ ...this.state, segmentSelected: segment })
+    console.log(segment)
+  }
 
   render() {
     const grnblue = '#00ffae'
@@ -108,8 +133,9 @@ class CreateTour extends Component {
             <>
               <div className='section-title'>Choose Division</div>
               <select
-                value={this.state.industriesOfSelectedDivision}
+                value={this.state.divisionSelected ?  this.state.divisionSelected.name : ''}
                 onChange={this.handleDivisionSelector}>
+                <option value={''}>{this.state.divisionSelected ? this.state.divisionSelected.name : ''}</option>
                 {
                   Divisions
                   ?
@@ -130,19 +156,45 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.divisionSelected != null}
+            in={this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION}
             timeout={500}
             classNames='item'>
             <>
               <div className='section-title'>Choose Industry</div>
               <select
-                value={this.state.industrySelected}
+                value={this.state.industrySelected ? this.state.industrySelected.name : ''}
                 onChange={this.handleIndustrySelector}>
+                <option value={''}>Choose industry</option>
                 {
-                  this.state.divisionSelected
+                  this.state.divisionSelected && this.state.divisionSelected.industries
                   ?
-                    this.state.divisionSelected.industries.map(industry => (
-                      <option key={industry} value={industry}>{industry}</option>
+                    this.state.divisionSelected.industries.map((industry, idx) => (
+                      <option key={`${industry}-${idx}`} value={industry}>{industry}</option>
+                    ))
+                  : null
+                }
+              </select>
+              <br/>
+              <br/>
+            </>
+          </CSSTransition>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.industrySelected != null && this.state.industrySelected.name != CHOOSE_INDUSTRY}
+            timeout={500}
+            classNames='item'>
+            <>
+              <div className='section-title'>Choose Segment</div>
+              <select
+                value={this.state.segmentSelected ? this.state.segmentSelected.name : ''}
+                onChange={this.handleSegmentSelector}>
+                <option value={''}>Choose segment</option>
+                {
+                  this.state.industrySelected && this.state.industrySelected.segments
+                  ?
+                    this.state.industrySelected.segments.map((segment, idx) => (
+                      <option key={`${segment}-${idx}`} value={segment}>{segment}</option>
                     ))
                   : null
                 }

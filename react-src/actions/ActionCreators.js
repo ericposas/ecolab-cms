@@ -32,6 +32,12 @@ import {
   // Divisions
   GETTING_DIVISIONS,
   SET_DIVISIONS,
+  // Industries
+  GETTING_INDUSTRIES,
+  SET_INDUSTRIES,
+  // Segments
+  GETTING_SEGMENTS,
+  SET_SEGMENTS,
 
   //
 
@@ -180,7 +186,32 @@ const getDivisions = () => {
       .catch(err => console.log(err))
   }
 }
-// const setDivisions = ()
+// Industries
+const getIndustries = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: GETTING_INDUSTRIES, payload: true })
+    axios.post(`/industries/view`)
+      .then(data => {
+        dispatch({ type: GETTING_INDUSTRIES, payload: false })
+        console.log(data)
+        dispatch({ type: SET_INDUSTRIES, payload: data.data.success })
+      })
+      .catch(err => console.log(err))
+  }
+}
+// Segments
+const getSegments = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: GETTING_SEGMENTS, payload: true })
+    axios.post(`/segments/view`)
+      .then(data => {
+        dispatch({ type: GETTING_SEGMENTS, payload: false })
+        console.log(data)
+        dispatch({ type: SET_SEGMENTS, payload: data.data.success })
+      })
+      .catch(err => console.log(err))
+  }
+}
 
 export default {
   // CMS - User mgmt
@@ -205,7 +236,9 @@ export default {
   getCompanies,
   deleteCompany,
   setCompanyToDelete,
-  // Eco Lab - Division Data
+  // Eco Lab - Division, Industry, Segment Data
   getDivisions,
+  getIndustries,
+  getSegments,
 
 }

@@ -1,41 +1,41 @@
-Light, Consumer Packaged Goods
-Light, Beverage Processing
-Light, Dairy Processing
-Light, Meat Poultry and Seafood Processing
-Light, Brewery & Winery
-Light, Grain & Oilseed Processing
-Light, Biofuels & Ethanol
-Light, Sugar Processing
-Light, Mech/Elec/Eqt Mfg.
-Light, Plastic Products
-Light, General Manufacturing
-Light, Pharmaceutical
-Light, Corrugated Box
-Light, Wood Products
-Light, General Electronics
-Light, Microelectronics
-Light, Rail Transportation
-Light, Aerospc Defense Mfg
-Light, Automotive
-Light, Tire & Rubber Products
-Light, Agricultural & Construction Equipment
-Light, Commercial Buildings
-Light, New Construction
-Light, Education Facilities
-Light, Hospitals & Health
-Light, Hotels and Resorts
-Light, District Energy
-Light, General Gov't
-Light, Long Term Care Facil
-Light, Data Centers
-Light, Casinos
-Heavy, Coal Fired
-Heavy, Gas Fired
-Heavy, Geothermal
-Heavy, Nuclear
-Heavy, Industrial Gases
-Heavy, Ammonia & Fertilizer
-Heavy, Specialty Chemicals
-Heavy, Aluminum
-Heavy, Steel Mills
-Heavy, Investment Casting
+F&B, Consumer Packaged Goods
+F&B, Beverage Processing
+F&B, Dairy Processing
+F&B, Meat Poultry and Seafood Processing
+F&B, Brewery & Winery
+F&B, Grain & Oilseed Processing
+F&B, Biofuels & Ethanol
+F&B, Sugar Processing
+Manufacturing, Mech/Elec/Eqt Mfg.
+Manufacturing, Plastic Products
+Manufacturing, General Manufacturing
+Manufacturing, Pharmaceutical
+Manufacturing, Corrugated Box
+Manufacturing, Wood Products
+Manufacturing, General Electronics
+Manufacturing, Microelectronics
+Transportation, Rail Transportation
+Transportation, Aerospc Defense Mfg
+Transportation, Automotive
+Transportation, Tire & Rubber Products
+Transportation, Agricultural & Construction Equipment
+Institutional, Commercial Buildings
+Institutional, New Construction
+Institutional, Education Facilities
+Institutional, Hospitals & Health
+Institutional, Hotels and Resorts
+Institutional, District Energy
+Institutional, General Gov't
+Institutional, Long Term Care Facil
+Institutional, Data Centers
+Institutional, Casinos
+Power, Coal Fired
+Power, Gas Fired
+Power, Geothermal
+Power, Nuclear
+Chemicals, Industrial Gases
+Chemicals, Ammonia & Fertilizer
+Chemicals, Specialty Chemicals
+Primary Metals, Aluminum
+Primary Metals, Steel Mills
+Primary Metals, Investment Casting
