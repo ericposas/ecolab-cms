@@ -31,7 +31,7 @@ class CreateMode extends Component {
           <div className='dashboard-button-large' style={{ backgroundColor: grnblue }}>Custom Module</div>
           <div className='dashboard-button-large' onClick={() => history.push('/create-company')} style={{ backgroundColor: grnblue }}>Add a Company</div>
           <div className='dashboard-button-large' onClick={() => history.push('/create-web-module')} style={{ backgroundColor: grnblue }}>Web Module</div>
-          <div className='dashboard-button-large' style={{ backgroundColor: grnblue }}>Tour Module</div>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-tour')} style={{ backgroundColor: grnblue }}>Tour Module</div>
         </div>
       </>
     )

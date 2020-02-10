@@ -13,12 +13,14 @@ import {
   SET_SELECTED_USER_FOR_EDITING,
   SET_SELECTED_ADMIN_FOR_EDITING,
   // ECO LAB APP
+  // Web Modules
   SAVING_WEB_MODULE,
   WEB_MODULE_SAVED,
   GETTING_WEB_MODULES,
   SET_WEB_MODULES,
   DELETING_WEB_MODULE,
   WEB_MODULE_DELETED,
+  // Companies
   SAVING_COMPANY_DATA_TO_DB,
   COMPANY_DATA_SAVED,
   COMPANY_DATA_ERROR,
@@ -27,6 +29,11 @@ import {
   SET_COMPANY_TO_DELETE,
   DELETING_COMPANY,
   COMPANY_DELETED,
+  // Divisions
+  GETTING_DIVISIONS,
+  SET_DIVISIONS,
+
+  //
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -160,6 +167,20 @@ const submitCreateCompanyData = (companyName, companyLogoFilePath, customerNameF
   }
 }
 const setCompanyToDelete = (id) => ({ type: SET_COMPANY_TO_DELETE, payload: id })
+// Divisions
+const getDivisions = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: GETTING_DIVISIONS, payload: true })
+    axios.post(`/divisions/view`)
+      .then(data => {
+        dispatch({ type: GETTING_DIVISIONS, payload: false })
+        console.log(data)
+        dispatch({ type: SET_DIVISIONS, payload: data.data.success })
+      })
+      .catch(err => console.log(err))
+  }
+}
+// const setDivisions = ()
 
 export default {
   // CMS - User mgmt
@@ -184,5 +205,7 @@ export default {
   getCompanies,
   deleteCompany,
   setCompanyToDelete,
+  // Eco Lab - Division Data
+  getDivisions,
 
 }

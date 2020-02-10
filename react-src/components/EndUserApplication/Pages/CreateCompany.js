@@ -26,6 +26,7 @@ class CreateCompany extends Component {
     noteFieldValue: '',
     //
     showDeleteModal: false,
+    lastPageVisited: null,
 
   }
 
@@ -37,6 +38,8 @@ class CreateCompany extends Component {
       if (!auth) history.push('/login')
       else {
         if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+        this.setState({ lastPageVisited: this.props.match.params.lastLocation })
+        console.log(this.props.match.params.lastLocation)
       }
     })
   }
