@@ -24,6 +24,7 @@ import {
   COMPANY_DATA_ERROR,
   GETTING_COMPANIES,
   SET_COMPANIES,
+  SET_COMPANY_TO_DELETE,
   DELETING_COMPANY,
   COMPANY_DELETED,
 
@@ -158,6 +159,7 @@ const submitCreateCompanyData = (companyName, companyLogoFilePath, customerNameF
       .catch(err => console.log(err))
   }
 }
+const setCompanyToDelete = (id) => ({ type: SET_COMPANY_TO_DELETE, payload: id })
 
 export default {
   // CMS - User mgmt
@@ -181,5 +183,6 @@ export default {
   submitCreateCompanyData,
   getCompanies,
   deleteCompany,
+  setCompanyToDelete,
 
 }

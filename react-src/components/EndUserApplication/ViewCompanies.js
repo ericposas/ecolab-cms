@@ -8,9 +8,14 @@ import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
 import CompanyInList from './ListComponents/CompanyInList'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import DeleteConfirmModal from './Modals/DeleteConfirmModal'
 import axios from 'axios'
 
 class ViewCompanies extends Component {
+
+  state = {
+    showDeleteModal: false
+  }
 
   componentDidMount() {
     const { getCompanies, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
@@ -28,6 +33,12 @@ class ViewCompanies extends Component {
   }
 
   // componentDidMount() { this.props.getCompanies() }
+
+  displayDeleteModal = value => {
+    this.setState({
+      showDeleteModal: value
+    })
+  }
 
   handleBackBtnClick = () => {
     this.props.history.push('/create-company')
@@ -70,7 +81,7 @@ class ViewCompanies extends Component {
                       in={company != null}
                       timeout={500}
                       classNames='item'>
-                      <CompanyInList company={company}/>
+                      <CompanyInList displayDeleteModal={this.displayDeleteModal} company={company}/>
                     </CSSTransition>
                   ))}
                 </TransitionGroup>
@@ -78,6 +89,14 @@ class ViewCompanies extends Component {
             : null
           }
         </div>
+        <CSSTransition
+          appear
+          unmountOnExit
+          in={this.state.showDeleteModal}
+          timeout={500}
+          classNames='item'>
+          <DeleteConfirmModal displayDeleteModal={this.displayDeleteModal} showDeleteModal={this.state.showDeleteModal}/>
+        </CSSTransition>
       </>
     )
   }

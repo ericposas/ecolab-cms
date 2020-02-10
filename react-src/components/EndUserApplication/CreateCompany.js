@@ -12,6 +12,8 @@ import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
 import uuid from 'uuid'
 
+const FileWidth = 960
+
 class CreateCompany extends Component {
 
   state = {
@@ -22,6 +24,8 @@ class CreateCompany extends Component {
     companyLogoFilePath: '',
     customerNameFields: [],
     noteFieldValue: '',
+    //
+    showDeleteModal: false,
 
   }
 
@@ -58,7 +62,7 @@ class CreateCompany extends Component {
         const height = img.naturalHeight
         window.URL.revokeObjectURL(img.src)
         // return resolve({width, height})
-        if (width > 400) {
+        if (width >= FileWidth) {
           console.log('correct dimensions')
           return resolve(true)
         } else {
@@ -82,7 +86,7 @@ class CreateCompany extends Component {
       return false
     }
   }
-  
+
   handleFileSelect = e => {
     let file = e.target.files[0]
     this.getUploadedFileDimensions(file)

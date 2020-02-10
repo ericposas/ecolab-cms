@@ -4,8 +4,13 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 
 class CompanyInList extends Component {
 
-  handleDelete = id => {
-    this.props.deleteCompany(id, () => this.props.getCompanies())
+  // handleDelete = id => {
+  //   this.props.deleteCompany(id, () => this.props.getCompanies())
+  // }
+
+  handleShowDeleteModal = id => {
+    this.props.displayDeleteModal(true)
+    this.props.setCompanyToDelete(id)
   }
   
   render() {
@@ -14,7 +19,7 @@ class CompanyInList extends Component {
       <div className='company-in-list'>
         <div
           className='company-in-list-x-symbol'
-          onClick={() => this.handleDelete(company._id)}>&times;</div>
+          onClick={() => this.handleShowDeleteModal(company._id)}>&times;</div>
         <div className='company-in-list-title'>{company.name}</div>
         <div className='company-in-list-customer-names'>
           <ul>
