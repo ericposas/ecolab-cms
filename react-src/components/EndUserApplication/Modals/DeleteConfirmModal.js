@@ -19,11 +19,15 @@ class DeleteConfirmModal extends Component {
     return (
       <>
         <div className='fullscreen-darken'></div>
-        <div className='center-float'>
+        <div className='center-float' style={{ width: '360px', height: '140px', textAlign: 'center', borderRadius: '4px' }}>
           <div className='padding-div-20'>
             <div>Are you sure you want to delete this company?</div>
-            <Button onClick={this.handleDelete} variant='contained' color='primary'>Yes</Button>
-            <Button onClick={() => this.props.displayDeleteModal(false)} variant='contained' color='secondary'>No</Button>
+            <div className='padding-div-10' style={{ display: 'inline-block' }}>
+              <Button onClick={this.handleDelete} variant='contained' color='primary'>Yes</Button>
+            </div>
+            <div className='padding-div-10' style={{ display: 'inline-block' }}>
+              <Button onClick={() => this.props.displayDeleteModal(false)} variant='contained' color='secondary'>No</Button>
+            </div>
           </div>
         </div>
       </>

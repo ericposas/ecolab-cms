@@ -12,12 +12,12 @@ import PasswordReset from './Pages/PasswordReset'
 // Application frontend
 import AppAuth from './EndUserApplication/AppAuth'
 import AppHome from './EndUserApplication/AppHome'
-import CreateMode from './EndUserApplication/CreateMode'
-import CreateWebModule from './EndUserApplication/CreateWebModule'
-import ViewWebModules from './EndUserApplication/ViewWebModules'
-import FileUpload from './EndUserApplication/FileUpload'
-import CreateCompany from './EndUserApplication/CreateCompany'
-import ViewCompanies from './EndUserApplication/ViewCompanies'
+import CreateMode from './EndUserApplication/Pages/CreateMode'
+import CreateWebModule from './EndUserApplication/Pages/CreateWebModule'
+import ViewWebModules from './EndUserApplication/Pages/ViewWebModules'
+import FileUpload from './EndUserApplication/Misc/FileUpload'
+import CreateCompany from './EndUserApplication/Pages/CreateCompany'
+import ViewCompanies from './EndUserApplication/Pages/ViewCompanies'
 // Open / Closed - Extensibility Example
 import ExampleExtended from './OpenClosedPrinciple/ExampleExtended'
 
