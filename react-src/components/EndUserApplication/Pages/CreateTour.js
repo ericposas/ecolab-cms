@@ -26,11 +26,16 @@ class CreateTour extends Component {
   // componentDidMount() { //add auth }
 
   componentDidMount() {
+    // stagger these so that they load in one after the other async, possibly?
     this.props.getCompanies()
     this.props.getDivisions()
     this.props.getIndustries()
     this.props.getSegments()
 
+  }
+
+  componentDidUpdate() {
+    console.log(this.state)
   }
 
   state = {
@@ -43,6 +48,16 @@ class CreateTour extends Component {
 
   }
 
+  handleTourSubmit = () => {
+    this.props.createTourModule({
+      name: this.state.tourName,
+      company_id: this.state.companySelected._id,
+      division_id: this.state.divisionSelected._id,
+      industry_id: this.state.industrySelected._id,
+      segment_id: this.state.segmentSelected._id,
+    })
+  }
+
   handleTourNameChange = e => {
     this.setState({
       tourName: e.target.value,
@@ -51,8 +66,11 @@ class CreateTour extends Component {
   }
 
   handleCompanySelector = e => {
+    // console.log(e.target.value)
+    let companyName = e.target.value
+    let company = this.props.Companies.find(c => c.name === companyName)
     if (e.target.value == CREATE_NEW_COMPANY) this.props.history.push('/create-company/create-tour')
-    else this.setState({ ...this.state, companySelected: e.target.value, divisionSelected: dummyDivision, industrySelected: dummyIndustry, segmentSelected: dummyIndustry })
+    else this.setState({ ...this.state, companySelected: company, divisionSelected: dummyDivision, industrySelected: dummyIndustry, segmentSelected: dummyIndustry })
   }
 
   handleDivisionSelector = e => {
@@ -103,7 +121,7 @@ class CreateTour extends Component {
             <>
               <div className='section-title'>Choose Company</div>
               <select
-                value={this.state.companySelected}
+                value={this.state.companySelected ? this.state.companySelected.name : ''}
                 onChange={this.handleCompanySelector}>
                 {
                   Companies
@@ -199,6 +217,21 @@ class CreateTour extends Component {
                   : null
                 }
               </select>
+              <br/>
+              <br/>
+            </>
+          </CSSTransition>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT}
+            timeout={500}
+            classNames='item'>
+            <>
+              <Button
+                onClick={this.handleTourSubmit}
+                variant='contained'
+                color='primary'>Create Tour</Button>
             </>
           </CSSTransition>
         </div>

@@ -23,6 +23,7 @@ import companyRoutes from './express-routes/routes/ApplicationSpecific/companyRo
 import divisionRoutes from './express-routes/routes/ApplicationSpecific/divisionRoutes'
 import industryRoutes from './express-routes/routes/ApplicationSpecific/industryRoutes'
 import segmentRoutes from './express-routes/routes/ApplicationSpecific/segmentRoutes'
+import tourModuleRoutes from './express-routes/routes/ApplicationSpecific/tourModuleRoutes'
 
 const storage = multer.diskStorage({
   destination: `${__dirname}/uploads`,
@@ -87,6 +88,7 @@ app.use('/companies', companyRoutes)
 app.use('/divisions', divisionRoutes)
 app.use('/industries', industryRoutes)
 app.use('/segments', segmentRoutes)
+app.use('/tourmodules', tourModuleRoutes)
 
 // File upload
 // app.post('/testupload', upload.single('file'), (req, res, next) => {

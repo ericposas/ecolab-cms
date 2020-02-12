@@ -207,9 +207,16 @@ const getSegments = () => {
       .then(data => {
         dispatch({ type: GETTING_SEGMENTS, payload: false })
         console.log(data)
-        dispatch({ type: SET_SEGMENTS, payload: data.data.success })
+        if (data.data.success) dispatch({ type: SET_SEGMENTS, payload: data.data.success })
+        else console.log('error: ' + data.data.error)
       })
       .catch(err => console.log(err))
+  }
+}
+// Tour Modules
+const saveTourModule = (tourName, company_id, division_id, industry_id, segment_id) => {
+  return (dispatch, getState) => {
+    
   }
 }
 
