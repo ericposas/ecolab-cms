@@ -6,7 +6,8 @@
     "react:build": "webpack --production --watch",
     "react:dev": "webpack --development --watch",
     "server:build": "babel server.js --out-file server-compiled.js",
-    "server:dev": "nodemon --ignore 'uploads/*' --exec babel-node server.js"
+    "server:dev": "nodemon --ignore 'uploads/*' --exec babel-node server.js",
+    "server:run-build": "babel-node server-compiled.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.1",
