@@ -2,9 +2,12 @@ import { Schema, Types } from 'mongoose'
 import Segment from '../../models/ApplicationSpecific/Segment'
 
 const getSegments = (req, res) => {
-  Segment.find()
-    .then(data => res.send({ success: data }))
-    .catch(err => res.send({ error: 'error occurred getting segment data' }))
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    Segment.find()
+      .then(data => res.send({ success: data }))
+      .catch(err => res.send({ error: 'error occurred getting segment data' }))
+  }
 }
 
 export {
