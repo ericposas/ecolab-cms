@@ -44,7 +44,10 @@ const login = (req, res) => {
               // req.session.cookie.expires
               req.session.cookie.maxAge = 1000 * 60 * 15 // 15 min.
               req.session.save(() => {
-                res.send({ auth: true, owner: data.owner, name: data.name, email: data.email })
+                data.resetCode = null
+                data.save()
+                  .then(() => res.send({ auth: true, owner: data.owner, name: data.name, email: data.email }))
+                  .catch(err => res.send({ error: 'error updating document' }))
               })
             } else {
               // try login via code

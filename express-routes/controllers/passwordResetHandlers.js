@@ -29,6 +29,7 @@ const sendMail = async (res, email, code, cb, name, adminBool) => {
   })
   if (cb) cb()
   else res.send({ success: 'message sent!' })
+  // res.send({ success: true })
 }
 
 const forgot = (req, res) => {
@@ -68,18 +69,26 @@ const forgot = (req, res) => {
 }
 
 const code = (req, res, cb) => {
-  let submittedCode = req.body.password.trim()
+  let submittedCode = req.body.password || req.body.code
+  submittedCode = submittedCode.trim()
+  console.log(submittedCode)
   if (!req.body.admin) {
     User.findOne({ resetCode: submittedCode })
       .then(doc => {
+        // console.log(doc)
         if (doc == null) {
           res.send({ error: 'invalid code' })
         } else {
           if (submittedCode == doc.resetCode) {
+            console.log('matches')
             req.session.appusername = doc.name
             req.session.appuseremail = doc.email
-            if (cb) cb()
-            else res.send({ success: 'allow user to reset password -- redirect to password reset page' })
+            // res.send({ success: true })
+            if (cb) {
+              cb()
+            } else {
+              res.send({ success: 'allow user to reset password -- redirect to password reset page' })
+            }
           } else {
             res.send({ error: 'incorrect data supplied' })
           }

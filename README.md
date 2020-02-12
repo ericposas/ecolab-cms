@@ -12,4 +12,5 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
+  - code() submit route doesn't work directly; code reset working when we pass it to the login function, strange.
   - add user auth check in every route in the end-user application

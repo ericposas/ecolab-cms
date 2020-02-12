@@ -33,7 +33,33 @@ class App extends Component {
         <Router>
           <Switch>
             <Route path='/reset-user-password' component={AdminPasswordReset}/>
-            <Route path='/reset-password/:formState' component={PasswordReset}/>
+            <Route path='/reset-password/:formState?' component={PasswordReset}/>
+            <Route path='/forgot-password' component={
+              // () => {
+              // return (
+                class ForgotPath extends React.Component {
+                  state = { forgotVal: '' }
+                  handleForgotValue = e => {
+                    this.setState({
+                      forgotVal: e.target.value
+                    })
+                  }
+                  render() {
+                    return (
+                      <>
+                        <div>Email address:</div>
+                        <input type='text' value={this.state.forgotVal} onChange={this.handleForgotValue}/>
+                        <button onClick={() => {
+                            axios.post('/password/forgot', { email: this.state.forgotVal })
+                              .then(data => console.log(data))
+                              .catch(err => console.log(err))
+                        }}>Forgot password</button>
+                      </>
+                    )
+                  }
+                }
+              // )
+            }/>
             <Route path='/create-admin' component={CreateAdmin}/>
             <Route path='/create-user' component={CreateUser}/>
             <Route path='/admin' component={AdminLogin}/>

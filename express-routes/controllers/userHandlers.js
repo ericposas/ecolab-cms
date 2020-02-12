@@ -15,7 +15,8 @@ const appLogin = (req, res) => {
   if (req.body.email && req.body.password) {
     User.findOne({ email: req.body.email })
       .then(doc => {
-        console.log(doc)
+        // console.log(doc)
+        // if (doc.resetCode) { doc.resetCode = null }
         bcrypt.compare(req.body.password, doc.password, (err, result) => {
           if (result == true) {
             // add session for application user
@@ -29,7 +30,10 @@ const appLogin = (req, res) => {
             req.session.maxAge = 1000 * 60 * 15
             req.session.save(() => {
               console.log(req.session)
-              res.send({ auth: true, fullaccess: doc.full_access, peer: doc.peer, name: doc.name, email: doc.email })
+              doc.resetCode = null
+              doc.save()
+                .then(() => res.send({ auth: true, fullaccess: doc.full_access, peer: doc.peer, name: doc.name, email: doc.email }))
+                .catch(err => res.send({ error: 'failed saving document' }))
             })
           } else {
             // try login via code

@@ -23,7 +23,7 @@ class UserEditView extends Component {
       userName: this.props.SelectedUserForEditing.name,
       userEmail: this.props.SelectedUserForEditing.email,
       userActive: this.props.SelectedUserForEditing.active,
-      userFullAccess: this.props.SelectedUserForEditing.fullaccess,
+      userFullAccess: this.props.SelectedUserForEditing.full_access,
       userPeer: this.props.SelectedUserForEditing.peer
     })
   }
