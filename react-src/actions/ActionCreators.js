@@ -38,8 +38,13 @@ import {
   // Segments
   GETTING_SEGMENTS,
   SET_SEGMENTS,
-
-  //
+  // Tours
+  SAVING_TOUR,
+  TOUR_SAVED,
+  GETTING_TOURS,
+  SET_TOURS,
+  DELETING_TOUR,
+  TOUR_DELETED,
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -208,15 +213,26 @@ const getSegments = () => {
         dispatch({ type: GETTING_SEGMENTS, payload: false })
         console.log(data)
         if (data.data.success) dispatch({ type: SET_SEGMENTS, payload: data.data.success })
-        else console.log('error: ' + data.data.error)
+        else console.log(`error: ${data.data.error}`)
       })
       .catch(err => console.log(err))
   }
 }
 // Tour Modules
-const saveTourModule = (tourName, company_id, division_id, industry_id, segment_id) => {
+const createTourModule = (tourName, company_id, division_id, industry_id, segment_id) => {
   return (dispatch, getState) => {
-    
+    dispatch({ type: GETTING_TOURS, payload: true })
+    // console.log(tourName, company_id, division_id, industry_id, segment_id)
+    axios.post(`/tourmodules`, {
+        name: tourName, company_id, division_id, industry_id, segment_id
+      })
+      .then(data => {
+        dispatch({ type: GETTING_TOURS, payload: false })
+        console.log(data)
+        if (data.data.success) dispatch({ type: SET_TOURS, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+      })
+      .catch(err => console.log(err))
   }
 }
 
@@ -247,5 +263,7 @@ export default {
   getDivisions,
   getIndustries,
   getSegments,
+  // Tours
+  createTourModule,
 
 }

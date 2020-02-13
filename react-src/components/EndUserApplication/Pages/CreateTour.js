@@ -49,13 +49,13 @@ class CreateTour extends Component {
   }
 
   handleTourSubmit = () => {
-    this.props.createTourModule({
-      name: this.state.tourName,
-      company_id: this.state.companySelected._id,
-      division_id: this.state.divisionSelected._id,
-      industry_id: this.state.industrySelected._id,
-      segment_id: this.state.segmentSelected._id,
-    })
+    this.props.createTourModule(
+      this.state.tourName,
+      this.state.companySelected._id,
+      this.state.divisionSelected._id,
+      this.state.industrySelected._id,
+      this.state.segmentSelected._id,
+    )
   }
 
   handleTourNameChange = e => {
@@ -224,7 +224,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT}
+            in={this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION && this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT}
             timeout={500}
             classNames='item'>
             <>
