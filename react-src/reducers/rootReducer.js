@@ -29,6 +29,11 @@ import FetchingIndustries from './ApplicationSpecific/FetchingIndustries'
 import Industries from './ApplicationSpecific/Industries'
 import FetchingSegments from './ApplicationSpecific/FetchingSegments'
 import Segments from './ApplicationSpecific/Segments'
+import Tours from './ApplicationSpecific/Tours'
+import FetchingTours from './ApplicationSpecific/FetchingTours'
+import DeletingTour from './ApplicationSpecific/DeletingTour'
+import TourDeleted from './ApplicationSpecific/TourDeleted'
+import TourToDelete from './ApplicationSpecific/TourToDelete'
 
 const rootReducer = combineReducers({
   // CMS / User management
@@ -61,6 +66,11 @@ const rootReducer = combineReducers({
   Industries,
   FetchingSegments,
   Segments,
+  Tours,
+  FetchingTours,
+  DeletingTour,
+  TourDeleted,
+  TourToDelete,
 
 })
 

@@ -30,7 +30,7 @@ const viewTourModules = (req, res) => {
   else {
     TourModule.find()
       .then(data => res.send({ success: data }))
-      .catch(err => res.send({ error: 'error occurred getting company data' }))
+      .catch(err => res.send({ error: 'error occurred getting tour module data' }))
   }
 }
 

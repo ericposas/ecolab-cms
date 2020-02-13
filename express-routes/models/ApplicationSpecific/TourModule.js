@@ -5,21 +5,9 @@ const TourModule = model('TourModule', new Schema({
     type: String,
     default: ''
   },
-  browser_url: {
-    type: String,
-    default: ''
-  },
-  tablet_thumb_url: {
-    type: String,
-    default: ''
-  },
   enabled: {
     type: Boolean,
     default: true
-  },
-  home_screen_thumb_url: {
-    type: String,
-    default: ''
   },
   creator_id: {
     type: Schema.ObjectId,

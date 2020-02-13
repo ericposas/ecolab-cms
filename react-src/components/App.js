@@ -19,6 +19,7 @@ import FileUpload from './EndUserApplication/Misc/FileUpload'
 import CreateCompany from './EndUserApplication/Pages/CreateCompany'
 import ViewCompanies from './EndUserApplication/Pages/ViewCompanies'
 import CreateTour from './EndUserApplication/Pages/CreateTour'
+import ViewTours from './EndUserApplication/Pages/ViewTours'
 // import ViewTours from './EndUserApplication/Pages/ViewTours'
 // Open / Closed - Extensibility Example
 import ExampleExtended from './OpenClosedPrinciple/ExampleExtended'
@@ -76,6 +77,7 @@ class App extends Component {
             <Route path='/create-company/:lastLocation?' component={CreateCompany}/>
             <Route path='/view-companies' component={ViewCompanies}/>
             <Route path='/create-tour' component={CreateTour}/>
+            <Route path='/view-tours' component={ViewTours}/>
             {/*<Route path='/view-tours' component={ViewTours}/>*/}
 
             <Route path='/open-closed' render={() => (

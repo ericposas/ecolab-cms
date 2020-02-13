@@ -45,6 +45,7 @@ import {
   SET_TOURS,
   DELETING_TOUR,
   TOUR_DELETED,
+  SET_TOUR_TO_DELETE,
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -235,6 +236,37 @@ const createTourModule = (tourName, company_id, division_id, industry_id, segmen
       .catch(err => console.log(err))
   }
 }
+const getTours = () => {
+  return (dispatch, getState) => {
+    dispatch({ type: GETTING_TOURS, payload: true })
+    axios.post('/tourmodules/view')
+      .then(data => {
+        dispatch({ type: GETTING_TOURS, payload: false })
+        console.log(data.data)
+        if (data.data.success) {
+          dispatch({ type: SET_TOURS, payload: data.data.success })
+        }
+      })
+      .catch(err => console.log(err))
+  }
+}
+const deleteTour = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: DELETING_TOUR, payload: true })
+    axios.delete(`/tourmodules/delete/${id}`)
+      .then(data => {
+        dispatch({ type: DELETING_TOUR, payload: false })
+        dispatch({ type: TOUR_DELETED, payload: true })
+        if (callback) callback()
+        window.tourDeletedTimer = setTimeout(() => {
+          dispatch({ type: TOUR_DELETED, payload: false })
+        }, 2000)
+        console.log(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+}
+const setTourToDelete = (id) => ({ type: SET_TOUR_TO_DELETE, payload: id })
 
 export default {
   // CMS - User mgmt
@@ -265,5 +297,8 @@ export default {
   getSegments,
   // Tours
   createTourModule,
+  getTours,
+  setTourToDelete,
+  deleteTour,
 
 }

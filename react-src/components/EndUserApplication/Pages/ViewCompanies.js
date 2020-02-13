@@ -95,7 +95,7 @@ class ViewCompanies extends Component {
           in={this.state.showDeleteModal}
           timeout={500}
           classNames='item'>
-          <DeleteConfirmModal displayDeleteModal={this.displayDeleteModal} showDeleteModal={this.state.showDeleteModal}/>
+          <DeleteConfirmModal type={'company'} displayDeleteModal={this.displayDeleteModal} showDeleteModal={this.state.showDeleteModal}/>
         </CSSTransition>
       </>
     )
