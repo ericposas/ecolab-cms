@@ -16,7 +16,7 @@ class ViewCompanies extends Component {
   state = {
     showDeleteModal: false
   }
-
+  
   componentDidMount() {
     const { getCompanies, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {

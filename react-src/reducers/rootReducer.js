@@ -34,6 +34,9 @@ import FetchingTours from './ApplicationSpecific/FetchingTours'
 import DeletingTour from './ApplicationSpecific/DeletingTour'
 import TourDeleted from './ApplicationSpecific/TourDeleted'
 import TourToDelete from './ApplicationSpecific/TourToDelete'
+import TourSelectedForEdit from './ApplicationSpecific/TourSelectedForEdit'
+import UpdatingTour from './ApplicationSpecific/UpdatingTour'
+import TourUpdated from './ApplicationSpecific/TourUpdated'
 
 const rootReducer = combineReducers({
   // CMS / User management
@@ -71,6 +74,9 @@ const rootReducer = combineReducers({
   DeletingTour,
   TourDeleted,
   TourToDelete,
+  TourSelectedForEdit,
+  UpdatingTour,
+  TourUpdated,
 
 })
 

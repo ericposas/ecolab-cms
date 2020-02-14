@@ -48,8 +48,52 @@ const deleteTourModule = (req, res) => {
   }
 }
 
+const getOneTourModule = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    if (req.params.id) {
+      const { id } = req.params
+      TourModule.findOne({ _id: id })
+        .then(doc => res.send({ success: doc }))
+        .catch(err => res.send({ error: 'db error -- retrieving tour failed.' }))
+    } else {
+      res.send({ error: 'no object id provided' })
+    }
+  }
+}
+
+const updateTourModule = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    if (req.params.id) {
+      const { id } = req.params
+      console.log(id)
+      TourModule.findOne({ _id: id })
+        .then(doc => {
+          console.log(doc)
+          if (doc) {
+            doc.name = req.body.name,
+            doc.creator_id = Types.ObjectId(req.session.appuserid)
+            doc.company_id = Types.ObjectId(req.body.company_id)
+            doc.division_id = Types.ObjectId(req.body.division_id)
+            doc.industry_id = Types.ObjectId(req.body.industry_id)
+            doc.segment_id = Types.ObjectId(req.body.segment_id)
+            doc.save()
+              .then(doc => res.send({ success: `updated ${doc._id} successfully` }))
+              .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))
+          }
+        })
+        .catch(err => res.send({ error: 'error occurred finding tour doc' }))
+    } else {
+      res.send({ error: 'no id param sent' })
+    }
+  }
+}
+
 export {
   createTourModule,
   viewTourModules,
   deleteTourModule,
+  getOneTourModule,
+  updateTourModule,
 }

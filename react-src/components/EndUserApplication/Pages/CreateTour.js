@@ -65,16 +65,34 @@ class CreateTour extends Component {
   }
 
   handleTourSubmit = () => {
-    this.props.createTourModule({
-      tourName: this.state.tourName,
-      company_id: this.state.companySelected._id,
-      division_id: this.state.divisionSelected._id,
-      industry_id: this.state.industrySelected._id,
-      segment_id: this.state.segmentSelected._id,
-    },
-    () => {
-      this.props.history.push('/view-tours')
-    })
+    switch (this.props.placement) {
+      case 'edit-tour':
+        this.props.updateTourModule({
+          tour_id: this.props.TourSelectedForEdit._id,
+          tourName: this.state.tourName,
+          company_id: this.state.companySelected._id,
+          division_id: this.state.divisionSelected._id,
+          industry_id: this.state.industrySelected._id,
+          segment_id: this.state.segmentSelected._id,
+        },
+        () => {
+          // this.props.history.push('/view-tours')
+          this.props.displayEditModal(false)
+          this.props.getTours()
+        })
+        break;
+      default:
+        this.props.createTourModule({
+          tourName: this.state.tourName,
+          company_id: this.state.companySelected._id,
+          division_id: this.state.divisionSelected._id,
+          industry_id: this.state.industrySelected._id,
+          segment_id: this.state.segmentSelected._id,
+        },
+        () => {
+          this.props.history.push('/view-tours')
+        })
+    }
   }
 
   handleTourNameChange = e => {
@@ -250,7 +268,13 @@ class CreateTour extends Component {
               <Button
                 onClick={this.handleTourSubmit}
                 variant='contained'
-                color='primary'>Create Tour</Button>
+                color='primary'>
+                {
+                  this.props.placement == 'edit-tour'
+                  ? 'Update Tour'
+                  : 'Create Tour'
+                }
+              </Button>
             </>
           </CSSTransition>
         </div>

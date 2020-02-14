@@ -9,6 +9,11 @@ class TourInList extends Component {
     this.props.setTourToDelete(id)
   }
 
+  handleOnSelect = id => {
+    this.props.getOneTour(id)
+    this.props.displayEditModal(true)
+  }
+
   render() {
     const { tour } = this.props
     return (
@@ -16,7 +21,9 @@ class TourInList extends Component {
         <div
           className='tour-in-list-x-symbol'
           onClick={() => this.handleShowDeleteModal(tour._id)}>&times;</div>
-        <div className='tour-in-list-title'>{tour.name}</div>
+        <div
+          className='tour-in-list-title'
+          onClick={() => this.handleOnSelect(tour._id)}>{tour.name}</div>
         {/*<img className='tour-in-list-thumbnail' src={}/>*/}
       </div>
     )

@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button'
 import TourInList from '../ListComponents/TourInList'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import DeleteConfirmModal from '../Modals/DeleteConfirmModal'
+import EditTourModal from '../Modals/EditTourModal'
 import axios from 'axios'
 
 class ViewTours extends Component {
@@ -33,6 +34,12 @@ class ViewTours extends Component {
   displayDeleteModal = value => {
     this.setState({
       showDeleteModal: value
+    })
+  }
+
+  displayEditModal = value => {
+    this.setState({
+      showEditModal: value
     })
   }
 
@@ -77,7 +84,7 @@ class ViewTours extends Component {
                       in={tour != null}
                       timeout={500}
                       classNames='item'>
-                      <TourInList displayDeleteModal={this.displayDeleteModal} tour={tour}/>
+                      <TourInList displayDeleteModal={this.displayDeleteModal} displayEditModal={this.displayEditModal} tour={tour}/>
                     </CSSTransition>
                   ))}
                 </TransitionGroup>
@@ -92,6 +99,14 @@ class ViewTours extends Component {
           timeout={500}
           classNames='item'>
           <DeleteConfirmModal type={'tour'} displayDeleteModal={this.displayDeleteModal} showDeleteModal={this.state.showDeleteModal}/>
+        </CSSTransition>
+        <CSSTransition
+          appear
+          unmountOnExit
+          in={this.state.showEditModal}
+          timeout={500}
+          classNames='item'>
+          <EditTourModal displayEditModal={this.displayEditModal} showEditModal={this.state.showEditModal}/>
         </CSSTransition>
       </>
     )

@@ -46,6 +46,11 @@ import {
   DELETING_TOUR,
   TOUR_DELETED,
   SET_TOUR_TO_DELETE,
+  RETRIEVING_TOUR,
+  TOUR_RETRIEVED,
+  SELECTED_TOUR_TO_EDIT,
+  UPDATING_TOUR,
+  TOUR_UPDATED,
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -272,6 +277,39 @@ const deleteTour = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
+const getOneTour = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: RETRIEVING_TOUR, payload: true })
+    axios.post(`/tourmodules/${id}`)
+      .then(data => {
+        dispatch({ type: RETRIEVING_TOUR, payload: false })
+        dispatch({ type: TOUR_RETRIEVED, payload: true })
+        if (data.data.success) dispatch({ type: SELECTED_TOUR_TO_EDIT, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+        if (callback) callback()
+        window.tourRetrievalTimer = setTimeout(() => {
+          dispatch({ type: TOUR_RETRIEVED, payload: false })
+        }, 2000)
+        console.log(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+}
+const updateTourModule = ({ tour_id, tourName, company_id, division_id, industry_id, segment_id }, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: UPDATING_TOUR, payload: true })
+    axios.put(`/tourmodules/update/${tour_id}`, {
+        name: tourName, company_id, division_id, industry_id, segment_id
+      })
+      .then(data => {
+        dispatch({ type: UPDATING_TOUR, payload: false })
+        dispatch({ type: TOUR_UPDATED, payload: true })
+        if (callback) callback()
+        window.tourUpdateTimer = setTimeout(() => dispatch({ type: TOUR_UPDATED, payload: false }))
+      })
+      .catch(err => console.log(err))
+  }
+}
 const setTourToDelete = (id) => ({ type: SET_TOUR_TO_DELETE, payload: id })
 
 export default {
@@ -306,5 +344,7 @@ export default {
   getTours,
   setTourToDelete,
   deleteTour,
+  getOneTour,
+  updateTourModule,
 
 }
