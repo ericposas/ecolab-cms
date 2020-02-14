@@ -240,6 +240,32 @@ body {
   width: 140px;
 }
 
+// Tours
+.tour-in-list {
+  position: relative;
+  padding: 10px;
+  width: 200px;
+  border-radius: 4px;
+  background-color: $grnblue;
+  border: 2px solid green;
+  margin: 5px;
+}
+
+.tour-in-list-x-symbol {
+  top: -4px;
+  right: 4px;
+  font-size: 1.35rem;
+  font-weight: bold;
+  position: absolute;
+  cursor: pointer;
+}
+
+.tour-in-list-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+
 // Transition Group - CSS Transitions
 .item-enter {
   opacity: 0;
