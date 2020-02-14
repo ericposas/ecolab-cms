@@ -1,4 +1,4 @@
-const Companies = (state = null, action) => {
+const Companies = (state = [], action) => {
   switch (action.type) {
     case 'SET_COMPANIES':
       return action.payload

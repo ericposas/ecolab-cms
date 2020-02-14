@@ -29,7 +29,7 @@ class ViewTours extends Component {
       }
     })
   }
-  
+
   displayDeleteModal = value => {
     this.setState({
       showDeleteModal: value
@@ -67,7 +67,7 @@ class ViewTours extends Component {
             : null
           }
           {
-            Tours
+            Tours && Tours.map
             ? <>
                 <TransitionGroup>
                   {Tours.map(tour => (

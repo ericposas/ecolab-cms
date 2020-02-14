@@ -1,4 +1,4 @@
-const Divisions = (state = null, action) => {
+const Divisions = (state = [], action) => {
   switch (action.type) {
     case 'SET_DIVISIONS':
       return action.payload

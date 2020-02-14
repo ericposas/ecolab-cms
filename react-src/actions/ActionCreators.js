@@ -123,16 +123,16 @@ const deleteWebModule = (id, callback) => {
   }
 }
 // Company
-const getCompanies = () => {
+const getCompanies = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_COMPANIES, payload: true })
     axios.post('/companies/view')
       .then(data => {
         dispatch({ type: GETTING_COMPANIES, payload: false })
         console.log(data.data)
-        if (data.data.success) {
-          dispatch({ type: SET_COMPANIES, payload: data.data.success })
-        }
+        if (data.data.success) dispatch({ type: SET_COMPANIES, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+        if (cb) cb()
       })
       .catch(err => console.log(err))
   }
@@ -180,33 +180,37 @@ const submitCreateCompanyData = (companyName, companyLogoFilePath, customerNameF
 }
 const setCompanyToDelete = (id) => ({ type: SET_COMPANY_TO_DELETE, payload: id })
 // Divisions
-const getDivisions = () => {
+const getDivisions = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_DIVISIONS, payload: true })
     axios.post(`/divisions/view`)
       .then(data => {
         dispatch({ type: GETTING_DIVISIONS, payload: false })
         console.log(data)
-        dispatch({ type: SET_DIVISIONS, payload: data.data.success })
+        if (data.data.success) dispatch({ type: SET_DIVISIONS, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+        if (cb) cb()
       })
       .catch(err => console.log(err))
   }
 }
 // Industries
-const getIndustries = () => {
+const getIndustries = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_INDUSTRIES, payload: true })
     axios.post(`/industries/view`)
       .then(data => {
         dispatch({ type: GETTING_INDUSTRIES, payload: false })
         console.log(data)
-        dispatch({ type: SET_INDUSTRIES, payload: data.data.success })
+        if (data.data.success) dispatch({ type: SET_INDUSTRIES, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+        if (cb) cb()
       })
       .catch(err => console.log(err))
   }
 }
 // Segments
-const getSegments = () => {
+const getSegments = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_SEGMENTS, payload: true })
     axios.post(`/segments/view`)
@@ -215,12 +219,13 @@ const getSegments = () => {
         console.log(data)
         if (data.data.success) dispatch({ type: SET_SEGMENTS, payload: data.data.success })
         else console.log(`error: ${data.data.error}`)
+        if (cb) cb()
       })
       .catch(err => console.log(err))
   }
 }
 // Tour Modules
-const createTourModule = (tourName, company_id, division_id, industry_id, segment_id) => {
+const createTourModule = ({ tourName, company_id, division_id, industry_id, segment_id }, cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_TOURS, payload: true })
     // console.log(tourName, company_id, division_id, industry_id, segment_id)
@@ -232,20 +237,21 @@ const createTourModule = (tourName, company_id, division_id, industry_id, segmen
         console.log(data)
         if (data.data.success) dispatch({ type: SET_TOURS, payload: data.data.success })
         else console.log(`error: ${data.data.error}`)
+        if (cb) cb()
       })
       .catch(err => console.log(err))
   }
 }
-const getTours = () => {
+const getTours = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_TOURS, payload: true })
     axios.post('/tourmodules/view')
       .then(data => {
         dispatch({ type: GETTING_TOURS, payload: false })
         console.log(data.data)
-        if (data.data.success) {
-          dispatch({ type: SET_TOURS, payload: data.data.success })
-        }
+        if (data.data.success) dispatch({ type: SET_TOURS, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+        if (cb) cb()
       })
       .catch(err => console.log(err))
   }

@@ -23,15 +23,31 @@ const dummySegment = { _id: 759729874829, name: CHOOSE_SEGMENT, offerings: [] }
 
 class CreateTour extends Component {
 
-  // componentDidMount() { //add auth }
-
   componentDidMount() {
-    // stagger these so that they load in one after the other async, possibly?
-    this.props.getCompanies()
-    this.props.getDivisions()
-    this.props.getIndustries()
-    this.props.getSegments()
-
+    const { checkAppUserAuth, setAppUserData, AppUserData, history,
+            getCompanies, getDivisions, getIndustries, getSegments } = this.props
+    checkAppUserAuth(data => {
+      console.log(data.data)
+      const { auth, fullaccess, peer, name, email } = data.data
+      if (!auth) history.push('/login')
+      else {
+        if (!AppUserData.auth) {
+          setAppUserData(auth, fullaccess, peer, name, email)
+        }
+        // getCompanies()
+        getCompanies(() => {
+          getDivisions(() => {
+            getIndustries(() => {
+              getSegments()
+              console.log('getting segments..')
+            })
+            console.log('getting industries..')
+          })
+          console.log('getting divisions..')
+        })
+        console.log('getting companies..')
+      }
+    })
   }
 
   componentDidUpdate() {
@@ -49,13 +65,16 @@ class CreateTour extends Component {
   }
 
   handleTourSubmit = () => {
-    this.props.createTourModule(
-      this.state.tourName,
-      this.state.companySelected._id,
-      this.state.divisionSelected._id,
-      this.state.industrySelected._id,
-      this.state.segmentSelected._id,
-    )
+    this.props.createTourModule({
+      tourName: this.state.tourName,
+      company_id: this.state.companySelected._id,
+      division_id: this.state.divisionSelected._id,
+      industry_id: this.state.industrySelected._id,
+      segment_id: this.state.segmentSelected._id,
+    },
+    () => {
+      this.props.history.push('/view-tours')
+    })
   }
 
   handleTourNameChange = e => {
@@ -241,4 +260,4 @@ class CreateTour extends Component {
 
 }
 
-export default connect(mapState, mapDispatch)(withRouter(CreateTour))
+export default connect(mapState, mapDispatch)(withAppUserAuth(withRouter(CreateTour)))

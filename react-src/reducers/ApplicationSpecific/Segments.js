@@ -1,4 +1,4 @@
-const Segments = (state = null, action) => {
+const Segments = (state = [], action) => {
   switch (action.type) {
     case 'SET_SEGMENTS':
       return action.payload
