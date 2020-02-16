@@ -152,16 +152,18 @@ class CreateTour extends Component {
           {
             this.props.placement != 'edit-tour'
             ?
-              <Button
-                variant='contained'
-                color='default'
-                onClick={this.handleViewToursBtnClick}>
-                  View Existing Tours
-              </Button>
+              <>
+                <Button
+                  variant='contained'
+                  color='default'
+                  onClick={this.handleViewToursBtnClick}>
+                    View Existing Tours
+                </Button>
+                <br/>
+                <br/>
+              </>
             : null
           }
-          <br/>
-          <br/>
           <div className='section-title'>Tour Name</div>
           <TextField
             error={this.state.tourNameError}

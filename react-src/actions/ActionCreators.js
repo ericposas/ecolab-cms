@@ -29,6 +29,11 @@ import {
   SET_COMPANY_TO_DELETE,
   DELETING_COMPANY,
   COMPANY_DELETED,
+  RETRIEVING_COMPANY,
+  COMPANY_RETRIEVED,
+  SELECTED_COMPANY_TO_EDIT,
+  UPDATING_COMPANY,
+  COMPANY_UPDATED,
   // Divisions
   GETTING_DIVISIONS,
   SET_DIVISIONS,
@@ -158,16 +163,14 @@ const deleteCompany = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
-const submitCreateCompanyData = (companyName, companyLogoFilePath, customerNameFields, noteFieldValue) => {
+const submitCreateCompanyData = ({ name, logo, customer_names, notes }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: true })
-    axios.post(`/companies`, {
-        name: companyName, logo: companyLogoFilePath,
-        customer_names: customerNameFields, notes: noteFieldValue
-      })
+    axios.post(`/companies`, { name, logo, customer_names, notes })
       .then(data => {
         dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: false })
         if (data.data.success) {
+          if (callback) callback()
           dispatch({ type: COMPANY_DATA_SAVED, payload: true })
           window.customerDataSavedTimer = setTimeout(() => {
             dispatch({ type: COMPANY_DATA_SAVED, payload: false })
@@ -178,6 +181,37 @@ const submitCreateCompanyData = (companyName, companyLogoFilePath, customerNameF
             dispatch({ type: COMPANY_DATA_ERROR, payload: false })
           })
         }
+        console.log(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+}
+const updateCompanyData = ({ id, name, logo, customer_names, notes }, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: UPDATING_COMPANY, payload: true })
+    axios.put(`/companies/update/${id}`, { name, logo, customer_names, notes })
+      .then(data => {
+        dispatch({ type: UPDATING_COMPANY, payload: false })
+        dispatch({ type: COMPANY_UPDATED, payload: true })
+        if (callback) callback()
+        window.companyUpdateTimer = setTimeout(() => dispatch({ type: COMPANY_UPDATED, payload: false }))
+      })
+      .catch(err => console.log(err))
+  }
+}
+const getOneCompany = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: RETRIEVING_COMPANY, payload: true })
+    axios.post(`/companies/${id}`)
+      .then(data => {
+        dispatch({ type: RETRIEVING_COMPANY, payload: false })
+        dispatch({ type: COMPANY_RETRIEVED, payload: true })
+        if (data.data.success) dispatch({ type: SELECTED_COMPANY_TO_EDIT, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+        if (callback) callback()
+        window.companyRetrievalTimer = setTimeout(() => {
+          dispatch({ type: COMPANY_RETRIEVED, payload: false })
+        }, 2000)
         console.log(data.data)
       })
       .catch(err => console.log(err))
@@ -333,8 +367,10 @@ export default {
   // Eco Lab - Company Data
   submitCreateCompanyData,
   getCompanies,
-  deleteCompany,
   setCompanyToDelete,
+  deleteCompany,
+  getOneCompany,
+  updateCompanyData,
   // Eco Lab - Division, Industry, Segment Data
   getDivisions,
   getIndustries,

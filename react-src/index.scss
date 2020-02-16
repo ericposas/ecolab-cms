@@ -24,9 +24,10 @@ body {
 .fullscreen-darken {
   top: 0;
   width: 100%;
-  height: 100vh;
+  height: 150vh;
   background-color: rgba(0,0,0,0.35);
   position: absolute;
+  overflow: hidden;
 }
 
 .ui-title-bar {
@@ -41,6 +42,7 @@ body {
   border: 1px solid #888;
   background-color: #fff;
   position: absolute;
+  z-index: 2;
   // specify width and height in component
 }
 
@@ -209,13 +211,16 @@ body {
 
 // Companies
 .company-in-list {
-  position: relative;
+  margin: 5px;
   padding: 10px;
-  width: 200px;
+  width: 240px;
+  min-height: 280px;
+  position: relative;
   border-radius: 4px;
   background-color: $grnblue;
   border: 2px solid green;
-  margin: 5px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .company-in-list-x-symbol {
@@ -225,12 +230,14 @@ body {
   font-weight: bold;
   position: absolute;
   cursor: pointer;
+  z-index: 1;
 }
 
 .company-in-list-title {
   font-weight: bold;
   font-size: 1.2rem;
   user-select: none;
+  display: inline;
 }
 
 .company-in-list-customer-names {
@@ -241,31 +248,71 @@ body {
   width: 140px;
 }
 
+.company-in-list-edit-icon {
+  width: 12px;
+  margin: 0 0 4px 10px;
+  display: inline;
+}
+
+.company-in-list-backing {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+  // background-color: red;
+  // opacity: .5;
+}
+
 // Tours
 .tour-in-list {
-  position: relative;
+  margin: 5px;
   padding: 10px;
-  width: 200px;
+  width: 180px;
+  min-height: 180px;
+  position: relative;
   border-radius: 4px;
   background-color: $grnblue;
   border: 2px solid green;
-  cursor: pointer;
-  margin: 5px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  line-height: 3rem;
 }
 
 .tour-in-list-x-symbol {
-  top: -4px;
-  right: 4px;
+  top: -14px;
+  right: 3px;
   font-size: 1.35rem;
   font-weight: bold;
   position: absolute;
   cursor: pointer;
+  z-index: 1;
 }
 
 .tour-in-list-title {
   font-weight: bold;
   font-size: 1.2rem;
   user-select: none;
+  display: inline;
+}
+
+.tour-in-list-backing {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  position: absolute;
+  // background-color: red;
+  // opacity: .5;
+}
+
+.tour-in-list-edit-icon {
+  width: 12px;
+  margin: 0 0 4px 10px;
+  display: inline;
 }
 
 

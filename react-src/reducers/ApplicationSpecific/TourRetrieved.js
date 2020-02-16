@@ -1,6 +1,6 @@
-const RetrievingTour = (state = null, action) => {
+const TourRetrieved = (state = null, action) => {
   switch (action.type) {
-    case 'RETRIEVING_TOUR':
+    case 'TOUR_RETRIEVED':
       return action.payload
       break;
     default:

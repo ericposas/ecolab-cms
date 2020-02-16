@@ -17,17 +17,17 @@ const FileWidth = 960
 class CreateCompany extends Component {
 
   state = {
-    companyName: '',
-    companyNameError: true,
+    companyName: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : '',
+    companyNameError: this.props.CompanySelectedForEdit ? false : true,
     companyLogoLoadedPercent: 0,
-    companyLogoUploaded: false,
+    companyLogoUploaded: this.props.CompanySelectedForEdit ? true : false,
     companyLogoFilePath: '',
-    customerNameFields: [],
-    noteFieldValue: '',
-    //
+    customerNameFields: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.customer_names : [],
+    noteFieldValue: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.notes : '',
     showDeleteModal: false,
     lastPageVisited: null,
-
+    skipUpload: false,
+    correctLogoDimensions: null
   }
 
   componentDidMount() {
@@ -44,8 +44,23 @@ class CreateCompany extends Component {
     })
   }
 
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { CompanySelectedForEdit } = this.props
+  //   console.log(CompanySelectedForEdit)
+  //   if (prevProps.CompanySelectedForEdit != this.props.CompanySelectedForEdit) {
+  //     this.setState({
+  //       companyName: CompanySelectedForEdit ? CompanySelectedForEdit.name : '',
+  //       companyLogoFilePath: CompanySelectedForEdit ? CompanySelectedForEdit.logo_image_url : '',
+  //       customerNameFields: CompanySelectedForEdit ? CompanySelectedForEdit.customer_names : [],
+  //       noteFieldValue: CompanySelectedForEdit ? CompanySelectedForEdit.notes : ''
+  //     })
+  //   }
+  // }
+
   componentWillUnmount() {
     if (this.loadedResetTimer) clearTimeout(this.loadedResetTimer)
+    if (this.incorrectLogoDimensionsTimer) clearTimeout(this.incorrectLogoDimensionsTimer)
+    if (this.correctLogoDimensionsTimer) clearTimeout(this.correctLogoDimensionsTimer)
 
   }
 
@@ -54,7 +69,6 @@ class CreateCompany extends Component {
       companyName: e.target.value,
       companyNameError: e.target.value == '' ? true : false,
     })
-    // console.log(this.state.companyNameError)
   }
 
   getUploadedFileDimensions = file => new Promise((resolve, reject) => {
@@ -67,9 +81,13 @@ class CreateCompany extends Component {
         // return resolve({width, height})
         if (width >= FileWidth) {
           console.log('correct dimensions')
+          this.setState({ correctLogoDimensions: true })
+          this.correctLogoDimensionsTimer = setTimeout(() => this.setState({ correctLogoDimensions: null }))
           return resolve(true)
         } else {
           console.log('wrong dimensions')
+          this.setState({ correctLogoDimensions: false })
+          this.incorrectLogoDimensionsTimer = setTimeout(() => this.setState({ correctLogoDimensions: null }))
           return resolve(false)
         }
       }
@@ -148,12 +166,27 @@ class CreateCompany extends Component {
   }
 
   handleSubmit = () => {
-    const { submitCreateCompanyData } = this.props
+    const { submitCreateCompanyData, updateCompanyData, CompanySelectedForEdit } = this.props
     const { companyName, companyLogoFilePath, customerNameFields, noteFieldValue } = this.state
-    submitCreateCompanyData(
-      companyName, companyLogoFilePath,
-      customerNameFields, noteFieldValue
-    )
+    switch (this.props.placement) {
+      case 'edit-company':
+        updateCompanyData({
+          id: CompanySelectedForEdit._id,
+          name: companyName, logo: companyLogoFilePath,
+          customer_names: customerNameFields, notes: noteFieldValue
+        },
+        () => {
+          this.props.displayEditModal(false)
+          this.props.getCompanies()
+        })
+        break;
+      default:
+        submitCreateCompanyData({
+          name: companyName, logo: companyLogoFilePath,
+          customer_names: customerNameFields, notes: noteFieldValue
+        },
+        () => this.props.history.push('/view-companies'))
+    }
   }
 
   handleViewCompaniesBtnClick = () => this.props.history.push('/view-companies')
@@ -164,21 +197,27 @@ class CreateCompany extends Component {
     return (
       <>
         <ToastContainer/>
-        <TitleBar title='Eco Lab Application' color={grnblue}/>
+        { this.props.placement != 'edit-company' ? <TitleBar title='Eco Lab Application' color={grnblue}/> : null }
         <div className='padding-div-20'>
-          <Button
-            variant='contained'
-            color='default'
-            onClick={this.handleViewCompaniesBtnClick}>
-              View Existing Companies
-          </Button>
-          <br/>
-          <br/>
+          {
+            this.props.placement != 'edit-company'
+            ?
+              <>
+                <Button
+                  variant='contained'
+                  color='default'
+                  onClick={this.handleViewCompaniesBtnClick}>
+                    View Existing Companies
+                </Button>
+                <br/>
+                <br/>
+              </>
+            : null
+          }
           <div className='section-title'>Company Name</div>
           <TextField
             error={this.state.companyNameError}
             variant='outlined'
-            // label='Company name'
             onChange={this.handleCompanyNameChange}
             value={this.state.companyName}/><br/><br/>
           <CSSTransition
@@ -198,25 +237,46 @@ class CreateCompany extends Component {
             timeout={500}
             classNames='item'>
               <>
-                <div className='section-title'>Company Logo</div>
+                { this.state.skipUpload == false ? <div className='section-title'>Company Logo</div> : null }
                 <form method='post' encType='multipart/form-data'>
-                  <Button
-                    variant='contained'
-                    component='label'>
-                    Select a File
-                    <input type='file' onChange={this.handleFileSelect} style={{ display: 'none' }}/>
-                  </Button>
-                  <CSSTransition
-                    appear
-                    unmountOnExit
-                    in={this.state.companyLogoLoadedPercent != 0}
-                    timeout={500}
-                    classNames='item'>
-                    <ProgressBar max='100' color='success' value={this.state.companyLogoLoadedPercent}>{Math.round(this.state.companyLogoLoadedPercent, 2)}%</ProgressBar>
-                  </CSSTransition>
+                  {
+                    this.state.skipUpload == false
+                    ?
+                      <>
+                        <Button
+                          style={{ display: 'inline-block' }}
+                          variant='contained'
+                          component='label'>
+                          Select a File
+                          <input type='file' onChange={this.handleFileSelect} style={{ display: 'none' }}/>
+                        </Button>
+                      </>
+                    : null
+                  }
+                  {
+                    this.props.placement == 'edit-company' && this.state.skipUpload == false
+                    ? <>
+                        <Button
+                          onClick={() => this.setState({ companyLogoUploaded: true, skipUpload: true }) }
+                          style={{ display: 'inline-block', marginLeft: '8px' }}
+                          color='secondary'
+                          variant='contained'>
+                            Skip new logo upload
+                        </Button>
+                        <CSSTransition
+                          appear
+                          unmountOnExit
+                          in={this.state.companyLogoLoadedPercent != 0}
+                          timeout={500}
+                          classNames='item'>
+                          <ProgressBar max='100' color='success' value={this.state.companyLogoLoadedPercent}>{Math.round(this.state.companyLogoLoadedPercent, 2)}%</ProgressBar>
+                        </CSSTransition>
+                        <br/>
+                        <br/>
+                      </>
+                    : null
+                  }
                 </form>
-                <br/>
-                <br/>
               </>
           </CSSTransition>
           <CSSTransition
@@ -264,7 +324,6 @@ class CreateCompany extends Component {
               <div className='section-title'>Additional notes?</div>
               <TextField
                 variant='outlined'
-                // label='Notes'
                 onChange={this.handleNotesEntry}
                 value={this.state.noteFieldValue}>
               </TextField>
@@ -282,7 +341,9 @@ class CreateCompany extends Component {
               variant='contained'
               color='primary'
               onClick={this.handleSubmit}>
-              Submit
+              {
+                this.props.placement != 'edit-company' ? 'Submit' : 'Update Company'
+              }
             </Button>
           </CSSTransition>
           {
@@ -310,6 +371,15 @@ class CreateCompany extends Component {
             ? <div style={{ display: 'none' }}>
                 {toast.error('Error saving company...', {
                   autoClose: 1500
+                })}
+              </div>
+            : null
+          }
+          {
+            this.state.correctLogoDimensions == false
+            ? <div style={{ display: 'none' }}>
+                {toast.error(`Incorrect logo dimensions. Please upload a logo that is at least ${FileWidth}px wide.`, {
+                  autoClose: 5000
                 })}
               </div>
             : null

@@ -23,6 +23,9 @@ import FetchingCompanies from './ApplicationSpecific/FetchingCompanies'
 import DeletingCompany from './ApplicationSpecific/DeletingCompany'
 import CompanyDeleted from './ApplicationSpecific/CompanyDeleted'
 import CompanyToDelete from './ApplicationSpecific/CompanyToDelete'
+import CompanySelectedForEdit from './ApplicationSpecific/CompanySelectedForEdit'
+import UpdatingCompany from './ApplicationSpecific/UpdatingCompany'
+import CompanyUpdated from './ApplicationSpecific/CompanyUpdated'
 import FetchingDivisions from './ApplicationSpecific/FetchingDivisions'
 import Divisions from './ApplicationSpecific/Divisions'
 import FetchingIndustries from './ApplicationSpecific/FetchingIndustries'
@@ -63,6 +66,9 @@ const rootReducer = combineReducers({
   DeletingCompany,
   CompanyDeleted,
   CompanyToDelete,
+  CompanySelectedForEdit,
+  UpdatingCompany,
+  CompanyUpdated,
   FetchingDivisions,
   Divisions,
   FetchingIndustries,

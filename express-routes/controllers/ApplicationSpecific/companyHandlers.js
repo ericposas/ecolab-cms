@@ -45,8 +45,51 @@ const deleteCompany = (req, res) => {
   }
 }
 
+const getOneCompany = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    if (req.params.id) {
+      const { id } = req.params
+      Company.findOne({ _id: id })
+        .then(doc => res.send({ success: doc }))
+        .catch(err => res.send({ error: 'db error -- retrieving company failed.' }))
+    } else {
+      res.send({ error: 'no object id provided' })
+    }
+  }
+}
+
+const updateCompany = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    if (req.params.id) {
+      const { id } = req.params
+      console.log(id)
+      Company.findOne({ _id: id })
+        .then(doc => {
+          console.log(doc)
+          if (doc) {
+            doc.name = req.body.name,
+            doc.logo_image_url = req.body.logo == '' ? doc.logo_image_url : req.body.logo,
+            doc.customer_names = req.body.customer_names,
+            doc.notes = req.body.notes ? req.body.notes : '',
+            doc.creator_id = Types.ObjectId(req.session.appuserid)
+            doc.save()
+              .then(doc => res.send({ success: `updated company ${doc._id} successfully` }))
+              .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))
+          }
+        })
+        .catch(err => res.send({ error: 'error occurred finding company doc' }))
+    } else {
+      res.send({ error: 'no id param sent' })
+    }
+  }
+}
+
 export {
   createCompany,
   viewCompanies,
   deleteCompany,
+  getOneCompany,
+  updateCompany,
 }

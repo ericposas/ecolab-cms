@@ -9,12 +9,14 @@ import Button from '@material-ui/core/Button'
 import CompanyInList from '../ListComponents/CompanyInList'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import DeleteConfirmModal from '../Modals/DeleteConfirmModal'
+import EditCompanyModal from '../Modals/EditCompanyModal'
 import axios from 'axios'
 
 class ViewCompanies extends Component {
 
   state = {
-    showDeleteModal: false
+    showDeleteModal: false,
+    showEditModal: false
   }
 
   componentDidMount() {
@@ -32,7 +34,11 @@ class ViewCompanies extends Component {
     })
   }
 
-  // componentDidMount() { this.props.getCompanies() }
+  displayEditModal = value => {
+    this.setState({
+      showEditModal: value
+    })
+  }
 
   displayDeleteModal = value => {
     this.setState({
@@ -81,7 +87,7 @@ class ViewCompanies extends Component {
                       in={company != null}
                       timeout={500}
                       classNames='item'>
-                      <CompanyInList displayDeleteModal={this.displayDeleteModal} company={company}/>
+                      <CompanyInList displayEditModal={this.displayEditModal} displayDeleteModal={this.displayDeleteModal} company={company}/>
                     </CSSTransition>
                   ))}
                 </TransitionGroup>
@@ -96,6 +102,14 @@ class ViewCompanies extends Component {
           timeout={500}
           classNames='item'>
           <DeleteConfirmModal type={'company'} displayDeleteModal={this.displayDeleteModal} showDeleteModal={this.state.showDeleteModal}/>
+        </CSSTransition>
+        <CSSTransition
+          appear
+          unmountOnExit
+          in={this.state.showEditModal}
+          timeout={500}
+          classNames='item'>
+          <EditCompanyModal displayEditModal={this.displayEditModal} showEditModal={this.state.showEditModal}/>
         </CSSTransition>
       </>
     )

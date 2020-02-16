@@ -15,7 +15,8 @@ import axios from 'axios'
 class ViewTours extends Component {
 
   state = {
-    showDeleteModal: false
+    showDeleteModal: false,
+    showEditModal: false
   }
 
   componentDidMount() {

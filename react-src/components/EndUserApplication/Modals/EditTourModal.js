@@ -13,15 +13,19 @@ class EditTourModal extends Component {
     return (
       <>
         <div className='fullscreen-darken'></div>
-        <div className='center-float' style={{ width: '360px', height: '90%', textAlign: 'center', borderRadius: '4px' }}>
+        <div className='center-float' style={{ width: '600px', height: '95%', textAlign: 'center', borderRadius: '4px' }}>
           <div>
             Edit Tour: { TourSelectedForEdit ? TourSelectedForEdit.name : null }
           </div>
-          <CreateTour placement='edit-tour' displayEditModal={this.props.displayEditModal}/>
           <div className='padding-div-10' style={{ display: 'inline-block' }}>
-            <Button onClick={() => this.props.displayEditModal(false)} variant='contained' color='secondary'>
+            <Button
+              style={{ float: 'right' }}
+              onClick={() => this.props.displayEditModal(false)}
+              variant='contained'
+              color='secondary'>
               Cancel
             </Button>
+            <CreateTour placement='edit-tour' displayEditModal={this.props.displayEditModal}/>
           </div>
         </div>
       </>
