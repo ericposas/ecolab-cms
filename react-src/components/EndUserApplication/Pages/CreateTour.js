@@ -113,10 +113,13 @@ class CreateTour extends Component {
     // console.log(e.target.value)
     let companyName = e.target.value
     let company = this.props.Companies.find(c => c.name === companyName)
-    if (e.target.value == CREATE_NEW_COMPANY && this.props.placement != 'edit-tour') this.props.history.push('/create-company/create-tour')
+    if (e.target.value == CREATE_NEW_COMPANY && this.props.placement != 'edit-tour') {
+      this.props.setCompanyToEdit(null)
+      this.props.history.push('/create-company/create-tour')
+    }
     else this.setState({ ...this.state, companySelected: company, divisionSelected: dummyDivision, industrySelected: dummyIndustry, segmentSelected: dummyIndustry })
   }
-
+  
   handleDivisionSelector = e => {
     let divisionId = e.target.value
     let division = this.props.Divisions.find(d => d._id === divisionId)
