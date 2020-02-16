@@ -133,14 +133,35 @@ class CreateTour extends Component {
     console.log(segment)
   }
 
+  handleViewToursBtnClick = () => {
+    this.props.history.push('/view-tours')
+  }
+
   render() {
     const grnblue = '#00ffae'
     const { Companies, Divisions, history } = this.props
     return (
       <>
         <ToastContainer/>
-        <TitleBar title='Eco Lab Application' color={grnblue}/>
+        {
+          this.props.placement != 'edit-tour'
+          ? <TitleBar title='Eco Lab Application' color={grnblue}/>
+          : null
+        }
         <div className='padding-div-20'>
+          {
+            this.props.placement != 'edit-tour'
+            ?
+              <Button
+                variant='contained'
+                color='default'
+                onClick={this.handleViewToursBtnClick}>
+                  View Existing Tours
+              </Button>
+            : null
+          }
+          <br/>
+          <br/>
           <div className='section-title'>Tour Name</div>
           <TextField
             error={this.state.tourNameError}

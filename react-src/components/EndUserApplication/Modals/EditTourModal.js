@@ -13,7 +13,7 @@ class EditTourModal extends Component {
     return (
       <>
         <div className='fullscreen-darken'></div>
-        <div className='center-float' style={{ width: '360px', height: '100%', textAlign: 'center', borderRadius: '4px' }}>
+        <div className='center-float' style={{ width: '360px', height: '90%', textAlign: 'center', borderRadius: '4px' }}>
           <div>
             Edit Tour: { TourSelectedForEdit ? TourSelectedForEdit.name : null }
           </div>
