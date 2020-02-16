@@ -185,7 +185,13 @@ class CreateCompany extends Component {
           name: companyName, logo: companyLogoFilePath,
           customer_names: customerNameFields, notes: noteFieldValue
         },
-        () => this.props.history.push('/view-companies'))
+        () => {
+          if (this.props.match.params.lastLocation == 'create-tour') {
+            this.props.history.push('/create-tour')
+          } else {
+            this.props.history.push('/view-companies')
+          }
+        })
     }
   }
 
@@ -197,12 +203,24 @@ class CreateCompany extends Component {
     return (
       <>
         <ToastContainer/>
-        { this.props.placement != 'edit-company' ? <TitleBar title='Eco Lab Application' color={grnblue}/> : null }
+        {
+          this.props.placement != 'edit-company'
+          ?
+            <>
+              <TitleBar title='Eco Lab Application' color={grnblue}/>
+            </>
+          : null
+        }
         <div className='padding-div-20'>
           {
             this.props.placement != 'edit-company'
             ?
               <>
+                <Button
+                  style={{ marginRight: '8px' }}
+                  variant='contained'
+                  color='primary'
+                  onClick={() => history.push('./create-mode')}>Dashboard</Button>
                 <Button
                   variant='contained'
                   color='default'
@@ -213,6 +231,11 @@ class CreateCompany extends Component {
                 <br/>
               </>
             : null
+          }
+          {
+            this.props.placement != 'edit-company'
+            ? <div className='page-title'>Add a Company</div>
+            : <div className='page-title'>Edit {this.props.CompanySelectedForEdit.name}</div>
           }
           <div className='section-title'>Company Name</div>
           <TextField
@@ -279,6 +302,8 @@ class CreateCompany extends Component {
                 </form>
               </>
           </CSSTransition>
+          <br/>
+          <br/>
           <CSSTransition
             appear
             unmountOnExit

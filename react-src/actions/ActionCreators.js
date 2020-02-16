@@ -34,6 +34,7 @@ import {
   SELECTED_COMPANY_TO_EDIT,
   UPDATING_COMPANY,
   COMPANY_UPDATED,
+  SET_COMPANY_TO_EDIT,
   // Divisions
   GETTING_DIVISIONS,
   SET_DIVISIONS,
@@ -56,6 +57,7 @@ import {
   SELECTED_TOUR_TO_EDIT,
   UPDATING_TOUR,
   TOUR_UPDATED,
+  SET_TOUR_TO_EDIT,
 
 } from '../constants/constants'
 import axios from 'axios'
@@ -218,6 +220,8 @@ const getOneCompany = (id, callback) => {
   }
 }
 const setCompanyToDelete = (id) => ({ type: SET_COMPANY_TO_DELETE, payload: id })
+const setCompanyToEdit = (company) => ({ type: SELECTED_COMPANY_TO_EDIT, payload: company })
+
 // Divisions
 const getDivisions = (cb) => {
   return (dispatch, getState) => {
@@ -264,12 +268,17 @@ const getSegments = (cb) => {
   }
 }
 // Tour Modules
-const createTourModule = ({ tourName, company_id, division_id, industry_id, segment_id }, cb) => {
+const createTourModule = ({
+    tourName, company_id, division_id, industry_id, segment_id,
+    company_name, division_name, industry_name, segment_name
+  }, cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_TOURS, payload: true })
     // console.log(tourName, company_id, division_id, industry_id, segment_id)
     axios.post(`/tourmodules`, {
-        name: tourName, company_id, division_id, industry_id, segment_id
+        name: tourName,
+        company_id, division_id, industry_id, segment_id,
+        company_name, division_name, industry_name, segment_name
       })
       .then(data => {
         dispatch({ type: GETTING_TOURS, payload: false })
@@ -329,11 +338,17 @@ const getOneTour = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
-const updateTourModule = ({ tour_id, tourName, company_id, division_id, industry_id, segment_id }, callback) => {
+const updateTourModule = ({
+  tour_id, tourName,
+  company_id, division_id, industry_id, segment_id,
+  company_name, division_name, industry_name, segment_name,
+  }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: UPDATING_TOUR, payload: true })
     axios.put(`/tourmodules/update/${tour_id}`, {
-        name: tourName, company_id, division_id, industry_id, segment_id
+        name: tourName,
+        company_id, division_id, industry_id, segment_id,
+        company_name, division_name, industry_name, segment_name,
       })
       .then(data => {
         dispatch({ type: UPDATING_TOUR, payload: false })
@@ -345,6 +360,7 @@ const updateTourModule = ({ tour_id, tourName, company_id, division_id, industry
   }
 }
 const setTourToDelete = (id) => ({ type: SET_TOUR_TO_DELETE, payload: id })
+const setTourToEdit = (tour) => ({ type: SELECTED_TOUR_TO_EDIT, payload: tour })
 
 export default {
   // CMS - User mgmt
@@ -371,6 +387,7 @@ export default {
   deleteCompany,
   getOneCompany,
   updateCompanyData,
+  setCompanyToEdit,
   // Eco Lab - Division, Industry, Segment Data
   getDivisions,
   getIndustries,
@@ -382,5 +399,6 @@ export default {
   deleteTour,
   getOneTour,
   updateTourModule,
+  setTourToEdit,
 
 }

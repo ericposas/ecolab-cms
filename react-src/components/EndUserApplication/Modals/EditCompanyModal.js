@@ -13,18 +13,19 @@ class EditCompanyModal extends Component {
     return (
       <>
         <div className='fullscreen-darken' onClick={() => this.props.displayEditModal(false)}></div>
-        <div className='center-float' style={{ width: '600px', height: '95%', textAlign: 'center', borderRadius: '4px' }}>
-          <div>
+        <div className='center-float edit-company-modal'>
+          {/*<div>
             Edit Company: { CompanySelectedForEdit ? CompanySelectedForEdit.name : null }
-          </div>
+          </div>*/}
           <div className='padding-div-10' style={{ display: 'inline-block' }}>
             <Button
-              style={{ float: 'right' }}
+              style={{ position: 'absolute', top: '4px', right: '4px' }}
               onClick={() => this.props.displayEditModal(false)}
               variant='contained'
               color='secondary'>
               Cancel
             </Button>
+            <br/>
             <CreateCompany placement='edit-company' displayEditModal={this.props.displayEditModal}/>
           </div>
         </div>

@@ -7,6 +7,12 @@ body {
 }
 
 // Misc.
+.page-title {
+  font-weight: bold;
+  font-size: 1.85rem;
+  margin-bottom: 10px;
+}
+
 .section-title {
   font-weight: bold;
   font-size: 1.35rem;
@@ -24,7 +30,7 @@ body {
 .fullscreen-darken {
   top: 0;
   width: 100%;
-  height: 150vh;
+  height: 100vh;
   background-color: rgba(0,0,0,0.35);
   position: absolute;
   overflow: hidden;
@@ -158,6 +164,21 @@ body {
   border-bottom: 1px solid #888;
 }
 
+// .modal-cancel-button {
+//   top: 0;
+//   right: 0;
+//   position: absolute;
+// }
+
+.edit-tour-modal,
+.edit-company-modal {
+  width: 600px;
+  height: 95%;
+  text-align: center;
+  border-radius: 4px;
+  overflow: scroll;
+}
+
 // Dashboard
 .dashboard-button-x-large {
   width: 49%;
@@ -269,8 +290,8 @@ body {
 .tour-in-list {
   margin: 5px;
   padding: 10px;
-  width: 180px;
-  min-height: 180px;
+  width: 280px;
+  min-height: 280px;
   position: relative;
   border-radius: 4px;
   background-color: $grnblue;
@@ -279,6 +300,7 @@ body {
   vertical-align: top;
   text-align: center;
   line-height: 3rem;
+  font-size: .85rem;
 }
 
 .tour-in-list-x-symbol {

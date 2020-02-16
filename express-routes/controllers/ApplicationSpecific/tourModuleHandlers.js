@@ -7,14 +7,21 @@ const createTourModule = (req, res) => {
     console.log(req.body)
     if (req.body.name &&
         req.body.company_id && req.body.division_id &&
-        req.body.industry_id && req.body.segment_id) {
+        req.body.industry_id && req.body.segment_id &&
+        req.body.company_name && req.body.division_name &&
+        req.body.industry_name && req.body.segment_name
+      ) {
       TourModule({
         name: req.body.name,
         creator_id: Types.ObjectId(req.session.appuserid),
         company_id: Types.ObjectId(req.body.company_id),
+        company_name: req.body.company_name,
         division_id: Types.ObjectId(req.body.division_id),
+        division_name: req.body.division_name,
         industry_id: Types.ObjectId(req.body.industry_id),
+        industry_name: req.body.industry_name,
         segment_id: Types.ObjectId(req.body.segment_id),
+        segment_name: req.body.segment_name,
       })
       .save()
       .then(() => res.send({ success: 'tour module saved' }))
@@ -75,9 +82,13 @@ const updateTourModule = (req, res) => {
             doc.name = req.body.name,
             doc.creator_id = Types.ObjectId(req.session.appuserid)
             doc.company_id = Types.ObjectId(req.body.company_id)
+            doc.company_name = req.body.company_name
             doc.division_id = Types.ObjectId(req.body.division_id)
+            doc.division_name = req.body.division_name
             doc.industry_id = Types.ObjectId(req.body.industry_id)
+            doc.industry_name = req.body.industry_name
             doc.segment_id = Types.ObjectId(req.body.segment_id)
+            doc.segment_name = req.body.segment_name
             doc.save()
               .then(doc => res.send({ success: `updated ${doc._id} successfully` }))
               .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))

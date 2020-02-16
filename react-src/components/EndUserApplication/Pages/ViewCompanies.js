@@ -47,6 +47,7 @@ class ViewCompanies extends Component {
   }
 
   handleBackBtnClick = () => {
+    this.props.setCompanyToEdit(null)
     this.props.history.push('/create-company')
   }
 
@@ -59,8 +60,13 @@ class ViewCompanies extends Component {
         <TitleBar title={'Eco Lab Application'} color={grnblue}/>
         <div className='padding-div-20'>
           <Button
+            style={{ marginRight: '8px' }}
             variant='contained'
             color='primary'
+            onClick={() => history.push('./create-mode')}>Dashboard</Button>
+          <Button
+            variant='contained'
+            color='secondary'
             onClick={this.handleBackBtnClick}>
               Back to Create/Add a Company
           </Button>

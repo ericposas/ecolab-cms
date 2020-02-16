@@ -61,7 +61,6 @@ class CreateTour extends Component {
     divisionSelected: dummyDivision,
     industrySelected: dummyIndustry,
     segmentSelected: dummySegment,
-
   }
 
   handleTourSubmit = () => {
@@ -71,9 +70,13 @@ class CreateTour extends Component {
           tour_id: this.props.TourSelectedForEdit._id,
           tourName: this.state.tourName,
           company_id: this.state.companySelected._id,
+          company_name: this.state.companySelected.name,
           division_id: this.state.divisionSelected._id,
+          division_name: this.state.divisionSelected.name,
           industry_id: this.state.industrySelected._id,
+          industry_name: this.state.industrySelected.name,
           segment_id: this.state.segmentSelected._id,
+          segment_name: this.state.segmentSelected.name,
         },
         () => {
           // this.props.history.push('/view-tours')
@@ -85,9 +88,13 @@ class CreateTour extends Component {
         this.props.createTourModule({
           tourName: this.state.tourName,
           company_id: this.state.companySelected._id,
+          company_name: this.state.companySelected.name,
           division_id: this.state.divisionSelected._id,
+          division_name: this.state.divisionSelected.name,
           industry_id: this.state.industrySelected._id,
+          industry_name: this.state.industrySelected.name,
           segment_id: this.state.segmentSelected._id,
+          segment_name: this.state.segmentSelected.name,
         },
         () => {
           this.props.history.push('/view-tours')
@@ -106,7 +113,7 @@ class CreateTour extends Component {
     // console.log(e.target.value)
     let companyName = e.target.value
     let company = this.props.Companies.find(c => c.name === companyName)
-    if (e.target.value == CREATE_NEW_COMPANY) this.props.history.push('/create-company/create-tour')
+    if (e.target.value == CREATE_NEW_COMPANY && this.props.placement != 'edit-tour') this.props.history.push('/create-company/create-tour')
     else this.setState({ ...this.state, companySelected: company, divisionSelected: dummyDivision, industrySelected: dummyIndustry, segmentSelected: dummyIndustry })
   }
 
@@ -154,6 +161,13 @@ class CreateTour extends Component {
             ?
               <>
                 <Button
+                  style={{ marginRight: '8px' }}
+                  variant='contained'
+                  color='primary'
+                  onClick={() => history.push('/create-mode')}>
+                    Dashboard
+                </Button>
+                <Button
                   variant='contained'
                   color='default'
                   onClick={this.handleViewToursBtnClick}>
@@ -164,48 +178,56 @@ class CreateTour extends Component {
               </>
             : null
           }
-          <div className='section-title'>Tour Name</div>
-          <TextField
-            error={this.state.tourNameError}
-            variant='outlined'
-            onChange={this.handleTourNameChange}
-            value={this.state.tourName}/>
+          {
+            this.props.placement != 'edit-tour'
+            ? <div className='page-title'>Create a Tour</div>
+            : <div className='page-title'>Edit {this.props.TourSelectedForEdit.name}</div>
+          }
+          <div className='section-title'>Choose Company</div>
+          <select
+            value={this.state.companySelected ? this.state.companySelected.name : ''}
+            onChange={this.handleCompanySelector}>
+            {
+              Companies
+              ? <>
+                  {
+                    [{ _id: 8394032098423098, name: CHOOSE_COMPANY }]
+                      .concat({ _id: 38402387589238947, name: CREATE_NEW_COMPANY })
+                      .concat(Companies).map(company => {
+                        if (company.name == CREATE_NEW_COMPANY && this.props.placement == 'edit-tour') {
+                          return null
+                        } else {
+                          return <option key={company._id} value={company.name}>{company.name}</option>
+                        }
+                    })
+                  }
+                </>
+              : null
+            }
+          </select>
           <br/>
           <br/>
-          <CSSTransition
-            appear
-            unmountOnExit
-            in={!this.state.tourNameError}
-            timeout={500}
-            classNames='item'>
-            <>
-              <div className='section-title'>Choose Company</div>
-              <select
-                value={this.state.companySelected ? this.state.companySelected.name : ''}
-                onChange={this.handleCompanySelector}>
-                {
-                  Companies
-                  ? <>
-                      {
-                        [{ _id: 8394032098423098, name: CHOOSE_COMPANY }]
-                          .concat({ _id: 38402387589238947, name: CREATE_NEW_COMPANY })
-                          .concat(Companies).map(company => (
-                            <option key={company._id} value={company.name}>{company.name}</option>
-                          )
-                        )
-                      }
-                    </>
-                  : null
-                }
-              </select>
-              <br/>
-              <br/>
-            </>
-          </CSSTransition>
           <CSSTransition
             appear
             unmountOnExit
             in={this.state.companySelected != '' && this.state.companySelected != CHOOSE_COMPANY}
+            timeout={500}
+            classNames='item'>
+              <>
+                <div className='section-title'>Tour Name</div>
+                <TextField
+                  error={this.state.tourNameError}
+                  variant='outlined'
+                  onChange={this.handleTourNameChange}
+                  value={this.state.tourName}/>
+                <br/>
+                <br/>
+              </>
+          </CSSTransition>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.tourNameError == false}
             timeout={500}
             classNames='item'>
             <>
