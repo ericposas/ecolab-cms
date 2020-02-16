@@ -220,7 +220,7 @@ class CreateCompany extends Component {
                   style={{ marginRight: '8px' }}
                   variant='contained'
                   color='primary'
-                  onClick={() => history.push('./create-mode')}>Dashboard</Button>
+                  onClick={() => history.push('/create-mode')}>Dashboard</Button>
                 <Button
                   variant='contained'
                   color='default'
