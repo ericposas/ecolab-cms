@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { HashRouter as Router, Route, Switch, Link } from 'react-router-dom'
 // CMS - User management
-import CreateUser from './Admin/CreateUser'
-import CreateAdmin from './Admin/CreateAdmin'
-import AdminLogin from './AdminLogin/AdminLogin'
-import AdminLogout from './AdminLogin/AdminLogout'
-import AdminHome from './Pages/AdminHome'
-import ViewUsers from './Pages/ViewUsers'
-import AdminPasswordReset from './Pages/AdminPasswordReset'
-import PasswordReset from './Pages/PasswordReset'
+import CreateUser from './CMS/Admin/CreateUser'
+import CreateAdmin from './CMS/Admin/CreateAdmin'
+import AdminLogin from './CMS/AdminLogin/AdminLogin'
+import AdminLogout from './CMS/AdminLogin/AdminLogout'
+import AdminHome from './CMS/Pages/AdminHome'
+import ViewUsers from './CMS/Pages/ViewUsers'
+import AdminPasswordReset from './CMS/Pages/AdminPasswordReset'
+import PasswordReset from './CMS/Pages/PasswordReset'
 // Application frontend
 import AppAuth from './EndUserApplication/AppAuth'
 import AppHome from './EndUserApplication/AppHome'
@@ -22,7 +22,7 @@ import CreateTour from './EndUserApplication/Pages/CreateTour'
 import ViewTours from './EndUserApplication/Pages/ViewTours'
 // import ViewTours from './EndUserApplication/Pages/ViewTours'
 // Open / Closed - Extensibility Example
-import ExampleExtended from './OpenClosedPrinciple/ExampleExtended'
+// import ExampleExtended from './OpenClosedPrinciple/ExampleExtended'
 
 import axios from 'axios'
 
@@ -80,9 +80,11 @@ class App extends Component {
             <Route path='/view-tours' component={ViewTours}/>
             {/*<Route path='/view-tours' component={ViewTours}/>*/}
 
+            {/*
             <Route path='/open-closed' render={() => (
               <ExampleExtended someProp={'steak and whiskey'}></ExampleExtended>
             )}/>
+            */}
 
           </Switch>
         </Router>

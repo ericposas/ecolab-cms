@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
-import withAppUserAuth from '../../HOC/withAppUserAuth'
-import TitleBar from '../../UIcomponents/TitleBar'
+import withAppUserAuth from '../HOC/withAppUserAuth'
+import TitleBar from '../../CMS/UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
 import CompanyInList from '../ListComponents/CompanyInList'
@@ -16,7 +16,7 @@ class ViewCompanies extends Component {
   state = {
     showDeleteModal: false
   }
-  
+
   componentDidMount() {
     const { getCompanies, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {

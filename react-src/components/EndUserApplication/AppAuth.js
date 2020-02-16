@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../mapStateMapDispatch'
 import axios from 'axios'
 import validator from 'email-validator'
-import TitleBar from '../UIcomponents/TitleBar'
+import TitleBar from '../CMS/UIcomponents/TitleBar'
 
 class AppAuth extends Component {
 

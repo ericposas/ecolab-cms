@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
-import withAppUserAuth from '../../HOC/withAppUserAuth'
+import withAppUserAuth from '../HOC/withAppUserAuth'
 import Button from '@material-ui/core/Button'
 import CreateTour from '../Pages/CreateTour'
 
