@@ -44,6 +44,15 @@ import TourToDelete from './ApplicationSpecific/TourToDelete'
 import TourSelectedForEdit from './ApplicationSpecific/TourSelectedForEdit'
 import UpdatingTour from './ApplicationSpecific/UpdatingTour'
 import TourUpdated from './ApplicationSpecific/TourUpdated'
+import CustomModuleDeleted from './ApplicationSpecific/CustomModuleDeleted'
+import CustomModuleSelectedForEdit from './ApplicationSpecific/CustomModuleSelectedForEdit'
+import CustomModuleToDelete from './ApplicationSpecific/CustomModuleToDelete'
+import CustomModuleUpdated from './ApplicationSpecific/CustomModuleUpdated'
+import FetchingCustomModules from './ApplicationSpecific/FetchingCustomModules'
+import RetrievingCustomModule from './ApplicationSpecific/RetrievingCustomModule'
+import SavingCustomModule from './ApplicationSpecific/SavingCustomModule'
+import UpdatingCustomModule from './ApplicationSpecific/UpdatingCustomModule'
+import CustomModules from './ApplicationSpecific/CustomModules'
 
 const rootReducer = combineReducers({
   // CMS / User management
@@ -91,6 +100,15 @@ const rootReducer = combineReducers({
   TourSelectedForEdit,
   UpdatingTour,
   TourUpdated,
+  CustomModules,
+  CustomModuleDeleted,
+  CustomModuleSelectedForEdit,
+  CustomModuleToDelete,
+  CustomModuleUpdated,
+  FetchingCustomModules,
+  RetrievingCustomModule,
+  SavingCustomModule,
+  UpdatingCustomModule,
 
 })
 

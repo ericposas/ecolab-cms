@@ -7,6 +7,14 @@ class DeleteConfirmModal extends Component {
 
   handleDelete = () => {
     switch (this.props.type) {
+      case 'custommodule':
+        this.props.deleteCustomModule(
+          this.props.CustomModuleToDelete,
+          () => {
+            this.props.getCustomModules()
+            this.props.displayDeleteModal(false)
+          })
+        break;
       case 'webmodule':
         this.props.deleteWebModule(
           this.props.WebModuleToDelete,

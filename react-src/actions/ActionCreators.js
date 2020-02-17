@@ -64,7 +64,18 @@ import {
   UPDATING_TOUR,
   TOUR_UPDATED,
   SET_TOUR_TO_EDIT,
-
+  // Custom Module
+  SAVING_CUSTOM_MODULE,
+  CUSTOM_MODULE_SAVED,
+  GETTING_CUSTOM_MODULES,
+  RETRIEVING_CUSTOM_MODULE,
+  DELETING_CUSTOM_MODULE,
+  CUSTOM_MODULE_DELETED,
+  SET_CUSTOM_MODULE_TO_DELETE,
+  SELECTED_CUSTOM_MODULE_TO_EDIT,
+  UPDATING_CUSTOM_MODULE,
+  CUSTOM_MODULE_UPDATED,
+  SET_CUSTOM_MODULES,
 } from '../constants/constants'
 import axios from 'axios'
 
@@ -400,13 +411,84 @@ const updateTourModule = ({
         dispatch({ type: UPDATING_TOUR, payload: false })
         dispatch({ type: TOUR_UPDATED, payload: true })
         if (callback) callback()
-        window.tourUpdateTimer = setTimeout(() => dispatch({ type: TOUR_UPDATED, payload: false }))
+        window.tourUpdateTimer = setTimeout(() => dispatch({ type: TOUR_UPDATED, payload: false }), 2000)
       })
       .catch(err => console.log(err))
   }
 }
 const setTourToDelete = (id) => ({ type: SET_TOUR_TO_DELETE, payload: id })
 const setTourToEdit = (tour) => ({ type: SELECTED_TOUR_TO_EDIT, payload: tour })
+// Custom Module
+const saveCustomModule = ({ image_url }, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: SAVING_CUSTOM_MODULE, payload: true })
+    axios.post(`/custommodules`, { image_url })
+      .then(data => {
+        if (data.data.success) {
+          dispatch({ type: SAVING_CUSTOM_MODULE, payload: false })
+          dispatch({ type: CUSTOM_MODULE_SAVED, payload: true })
+          window.customModuleSavedTimer = setTimeout(() => dispatch({ type: CUSTOM_MODULE_SAVED, payload: false }), 2000)
+          if (callback) callback()
+        } else {
+          console.log(data.data.error)
+        }
+      })
+      .catch(err => console.log(err))
+  }
+}
+const getCustomModules = (callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: GETTING_CUSTOM_MODULES, payload: true })
+    axios.post(`/custommodules/view`)
+      .then(data => {
+        if (data.data.success) {
+          dispatch({ type: GETTING_CUSTOM_MODULES, payload: false })
+          dispatch({ type: SET_CUSTOM_MODULES, payload: data.data.success })
+          if (callback) callback()
+        } else {
+          console.log(data.data.error)
+          // dispatch({ type: GETTING_CUSTOM_MODULES_ERROR, payload: true })
+          // window.gettingCustomModulesErrorTimer = setTimeout(() => dispatch({ type: GETTING_CUSTOM_MODULES_ERROR, payload: false }), 2000)
+        }
+      })
+      .catch(err => console.log(err))
+  }
+}
+const getOneCustomModule = ({ id }, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: RETRIEVING_CUSTOM_MODULE, payload: true })
+    axios.post(`/custommodules/${id}`)
+      .then(data => {
+        if (data.data.success) {
+          dispatch({ type: RETRIEVING_CUSTOM_MODULE, payload: false })
+          dispatch({ type: SELECTED_CUSTOM_MODULE_TO_EDIT, payload: data.data.success })
+          if (callback) callback()
+        } else {
+          console.log(data.data.error)
+        }
+      })
+  }
+}
+const deleteCustomModule = ({ id }, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: DELETING_CUSTOM_MODULE, payload: true })
+    axios.delete(`/custommodules/${id}`)
+      .then(data => {
+        if (data.data.success) {
+          dispatch({ type: DELETING_CUSTOM_MODULE, payload: false })
+          dispatch({ type: CUSTOM_MODULE_DELETED, payload: true })
+          window.customModuleDeletedTimer = setTimeout(() => {
+            dispatch({ type: CUSTOM_MODULE_DELETED, payload: false })
+          }, 2000)
+          if (callback) callback()
+        } else {
+          console.log(data.data.error)
+        }
+      })
+  }
+}
+const setCustomModuleToDelete = (id) => dispatch({ type: SET_CUSTOM_MODULE_TO_DELETE, payload: id })
+const setCustomModuleToEdit = (cmodule) => dispatch({ type: SELECTED_CUSTOM_MODULE_TO_EDIT, payload: cmodule })
 
 export default {
   // CMS - User mgmt
@@ -450,5 +532,11 @@ export default {
   getOneTour,
   updateTourModule,
   setTourToEdit,
-
+  // Eco Lab - Custom Module
+  saveCustomModule,
+  getCustomModules,
+  getOneCustomModule,
+  deleteCustomModule,
+  setCustomModuleToEdit,
+  setCustomModuleToDelete,
 }
