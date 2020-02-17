@@ -13,6 +13,6 @@
 
 ##TODO
   - code() submit route doesn't work directly; code reset working when we pass it to the login function, strange.
-  - Create Edit mode for all module types
   - Create all functions for "Custom Module", which is essentially an image upload route
+  - Add back protected routes on Custom Module pages
   - Add function of "enabled/disabled" for modules (will disable on the tablet/screen view)
