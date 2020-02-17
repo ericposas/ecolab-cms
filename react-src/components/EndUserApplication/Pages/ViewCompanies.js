@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
-import TitleBar from '../../CMS/UIcomponents/TitleBar'
+import TitleBar from '../UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
 import CompanyInList from '../ListComponents/CompanyInList'
@@ -46,7 +46,7 @@ class ViewCompanies extends Component {
     })
   }
 
-  handleBackBtnClick = () => {
+  handleAddCompanyBtnClick = () => {
     this.props.setCompanyToEdit(null)
     this.props.history.push('/create-company')
   }
@@ -63,12 +63,15 @@ class ViewCompanies extends Component {
             style={{ marginRight: '8px' }}
             variant='contained'
             color='primary'
-            onClick={() => history.push('./create-mode')}>Dashboard</Button>
+            onClick={() => {
+              this.props.setCompanyToEdit(null)
+              history.push('/')
+            }}>Dashboard</Button>
           <Button
             variant='contained'
             color='secondary'
-            onClick={this.handleBackBtnClick}>
-              Back to Create/Add a Company
+            onClick={this.handleAddCompanyBtnClick}>
+              Add a Company
           </Button>
           <br/>
           <br/>

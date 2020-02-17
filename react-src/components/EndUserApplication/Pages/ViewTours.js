@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
-import TitleBar from '../../CMS/UIcomponents/TitleBar'
+import TitleBar from '../UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
 import TourInList from '../ListComponents/TourInList'
@@ -61,14 +61,14 @@ class ViewTours extends Component {
             style={{ marginRight: '8px' }}
             variant='contained'
             color='primary'
-            onClick={() => history.push('/create-mode')}>
+            onClick={() => history.push('/')}>
               Dashboard
           </Button>
           <Button
             variant='contained'
             color='secondary'
             onClick={this.handleBackBtnClick}>
-              Back to Create/Add a Tour
+              Create a Tour
           </Button>
           <br/>
           <br/>

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
-import TitleBar from '../../CMS/UIcomponents/TitleBar'
+import TitleBar from '../UIcomponents/TitleBar'
 import { Progress as ProgressBar } from 'reactstrap'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -171,7 +171,7 @@ class CreateCompany extends Component {
     switch (this.props.placement) {
       case 'edit-company':
         updateCompanyData({
-          id: CompanySelectedForEdit._id,
+          id: CompanySelectedForEdit ? CompanySelectedForEdit._id : null,
           name: companyName, logo: companyLogoFilePath,
           customer_names: customerNameFields, notes: noteFieldValue
         },
@@ -220,7 +220,7 @@ class CreateCompany extends Component {
                   style={{ marginRight: '8px' }}
                   variant='contained'
                   color='primary'
-                  onClick={() => history.push('/create-mode')}>Dashboard</Button>
+                  onClick={() => history.push('/')}>Dashboard</Button>
                 <Button
                   variant='contained'
                   color='default'
@@ -235,7 +235,7 @@ class CreateCompany extends Component {
           {
             this.props.placement != 'edit-company'
             ? <div className='page-title'>Add a Company</div>
-            : <div className='page-title'>Edit {this.props.CompanySelectedForEdit.name}</div>
+            : <div className='page-title'>Edit {this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : ''}</div>
           }
           <div className='section-title'>Company Name</div>
           <TextField

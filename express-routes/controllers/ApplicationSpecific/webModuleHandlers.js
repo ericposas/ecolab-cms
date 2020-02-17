@@ -27,11 +27,50 @@ const deleteWebModule = (req, res) => {
   else {
     if (req.params.id) {
       let id = req.params.id
+      console.log(id)
       WebModule.deleteOne({ _id: id })
-        .then(doc => res.send({ success: id + ' successfully deleted.' }))
+        .then(doc => {
+          // console.log(doc)
+          res.send({ success: id + ' successfully deleted.' })
+        })
         .catch(err => res.send({ error: 'db error' }))
     } else {
       res.send({ error: 'no object id provided' })
+    }
+  }
+}
+
+const getOneWebModule = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    if (req.params.id) {
+      const { id } = req.params
+      WebModule.findOne({ _id: id })
+        .then(doc => res.send({ success: doc }))
+        .catch(err => res.send({ error: 'db error -- retrieving webmodule failed.' }))
+    } else {
+      res.send({ error: 'no object id provided' })
+    }
+  }
+}
+
+const updateWebModule = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    if (req.params.id) {
+      const { id } = req.params
+      WebModule.findOne({ _id: id })
+        .then(doc => {
+          if (doc) {
+            doc.browser_url = req.body.browser_url
+            doc.save()
+              .then(doc => res.send({ success: `updated ${doc._id} successfully` }))
+              .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))
+          }
+        })
+        .catch(err => res.send({ error: 'error occurred finding webmodule doc' }))
+    } else {
+      res.send({ error: 'no id param sent' })
     }
   }
 }
@@ -40,4 +79,6 @@ export {
   createWebModule,
   viewWebModules,
   deleteWebModule,
+  getOneWebModule,
+  updateWebModule,
 }

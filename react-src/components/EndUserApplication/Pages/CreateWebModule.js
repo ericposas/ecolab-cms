@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
-import TitleBar from '../../CMS/UIcomponents/TitleBar'
+import TitleBar from '../UIcomponents/TitleBar'
 import Button from '@material-ui/core/Button'
 import { ToastContainer, toast } from 'react-toastify'
 import axios from 'axios'
@@ -11,7 +11,7 @@ import axios from 'axios'
 class CreateWebModule extends Component {
 
   state = {
-    urlField: ''
+    urlField: this.props.WebModuleSelectedForEdit ? this.props.WebModuleSelectedForEdit.browser_url : ''
   }
 
   componentDidMount() {
@@ -39,30 +39,78 @@ class CreateWebModule extends Component {
   }
 
   handleSubmit = () => {
-    const { saveWebModule } = this.props
+    const { saveWebModule, updateWebModule, WebModuleSelectedForEdit, getWebModules, history } = this.props
     // do url validation here..
-      saveWebModule(this.state.urlField)
-      this.setState({ urlField: '' })
+    // console.log(this.props.placement)
+    if (this.props.placement == 'edit-webmodule') {
+      updateWebModule({ id: WebModuleSelectedForEdit._id, browser_url: this.state.urlField }, () => {
+        this.props.displayEditModal(false)
+        getWebModules()
+      })
+      // this.setState({ urlField: '' })
+    } else {
+      saveWebModule(this.state.urlField, () => history.push('/view-web-modules'))
+    }
   }
 
   render() {
     const grnblue = '#00ffae'
-    const { saveWebModule, SavingWebModule, WebModuleSaved } = this.props
+    const { saveWebModule, SavingWebModule, WebModuleSaved, history } = this.props
     return (
       <>
-        <TitleBar title={'Eco Lab Application'} color={grnblue}/>
         <ToastContainer/>
-        <div className='center-float' style={{ width: '80%', height: '400px', borderRadius: '2px' }}>
-          <div style={{ textAlign: 'center', lineHeight: '400px' }}>Enter your URL to save as a module:</div>
+        {
+          this.props.placement != 'edit-webmodule'
+          ?
+            <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+          : null
+        }
+        <div className='padding-div-20'>
+          {
+            this.props.placement != 'edit-webmodule'
+            ?
+              <>
+                <Button
+                  style={{ marginRight: '8px' }}
+                  variant='contained'
+                  color='primary'
+                  onClick={() => history.push('/')}>
+                    Dashboard
+                </Button>
+                <Button
+                  variant='contained'
+                  color='default'
+                  onClick={() => history.push('/view-web-modules')}>
+                    View Existing Web Modules
+                </Button>
+                <br/>
+                <br/>
+              </>
+            : null
+          }
+          <br/>
+          {
+            this.props.placement != 'edit-webmodule'
+            ? <div className='page-title'>Create a Web Module</div>
+            : <div className='page-title'>Edit {this.props.WebModuleSelectedForEdit.browser_url}</div>
+          }
+        {/*<div className='center-float' style={{ width: '80%', height: '400px', borderRadius: '2px' }}>*/}
+          <br/>
+          <br/>
+          <div>Enter URL:</div>
           <input
             type='text'
-            className='center-float'
-            style={{ top: '60px', width: '75%', borderRadius: '2px' }}
+            style={{ width: this.props.placement == 'edit-webmodule' ? '90%' : '50%', borderRadius: '2px' }}
             onChange={this.handleInput}
             value={this.state.urlField}/>
+          <br/>
+          <br/>
           {
             this.state.urlField != ''
-            ? <Button onClick={this.handleSubmit} variant='contained' color='default'>Save Web Module</Button>
+            ?
+              this.props.placement == 'edit-webmodule'
+              ? <Button onClick={this.handleSubmit} variant='contained' color='primary'>Update Web Module</Button>
+              : <Button onClick={this.handleSubmit} variant='contained' color='primary'>Save Web Module</Button>
             : null
           }
           {
@@ -75,7 +123,7 @@ class CreateWebModule extends Component {
               </div>
             : null
           }
-          {
+          {/*
             WebModuleSaved
             ? <div style={{display:'none'}}>
                 {toast.success('web module saved!', {
@@ -84,7 +132,7 @@ class CreateWebModule extends Component {
                 })}
               </div>
             : null
-          }
+          */}
         </div>
       </>
     )

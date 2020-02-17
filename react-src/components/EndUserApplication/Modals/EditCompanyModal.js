@@ -8,11 +8,16 @@ import CreateCompany from '../Pages/CreateCompany'
 
 class EditCompanyModal extends Component {
 
+  handleCloseModal = () => {
+    this.props.setCompanyToEdit(null)
+    this.props.displayEditModal(false)
+  }
+
   render () {
     const { CompanySelectedForEdit } = this.props
     return (
       <>
-        <div className='fullscreen-darken' onClick={() => this.props.displayEditModal(false)}></div>
+        <div className='fullscreen-darken' onClick={this.handleCloseModal}></div>
         <div className='center-float edit-company-modal'>
           {/*<div>
             Edit Company: { CompanySelectedForEdit ? CompanySelectedForEdit.name : null }
@@ -20,7 +25,7 @@ class EditCompanyModal extends Component {
           <div className='padding-div-10' style={{ display: 'inline-block' }}>
             <Button
               style={{ position: 'absolute', top: '4px', right: '4px' }}
-              onClick={() => this.props.displayEditModal(false)}
+              onClick={this.handleCloseModal}
               variant='contained'
               color='secondary'>
               Cancel

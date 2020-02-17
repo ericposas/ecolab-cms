@@ -39,7 +39,7 @@ class AppHome extends Component {
           <Button onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
         </div>
         <div className='center-float' style={{ top: '40px', width: '80%', height: '500px', border: 'none' }}>
-          <div className='dashboard-button-x-large' style={{ backgroundColor: grnblue }} onClick={() => history.push('/create-mode')}>Create Mode</div>
+          <div className='dashboard-button-x-large' style={{ backgroundColor: grnblue }} onClick={() => history.push('/')}>Create Mode</div>
           <div className='dashboard-button-x-large' style={{ backgroundColor: grnblue }}>Edit Mode</div>
         </div>
       </>

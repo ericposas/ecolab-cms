@@ -20,6 +20,12 @@ import {
   SET_WEB_MODULES,
   DELETING_WEB_MODULE,
   WEB_MODULE_DELETED,
+  RETRIEVING_WEB_MODULE,
+  WEB_MODULE_RETRIEVED,
+  SELECTED_WEB_MODULE_TO_EDIT,
+  UPDATING_WEB_MODULE,
+  WEB_MODULE_UPDATED,
+  SET_WEB_MODULE_TO_DELETE,
   // Companies
   SAVING_COMPANY_DATA_TO_DB,
   COMPANY_DATA_SAVED,
@@ -90,7 +96,7 @@ const setSelectedUserForEditing = user => ({ type: SET_SELECTED_USER_FOR_EDITING
 const setSelectedAdminForEditing = admin => ({ type: SET_SELECTED_ADMIN_FOR_EDITING, payload: admin })
 // Eco Lab
 // Web Module
-const saveWebModule = (browser_url) => {
+const saveWebModule = (browser_url, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_WEB_MODULE, payload: true })
     axios.post('/webmodules', { browser_url })
@@ -101,6 +107,7 @@ const saveWebModule = (browser_url) => {
         window.webModuleSavedTimer = setTimeout(() => {
           dispatch({ type: WEB_MODULE_SAVED, payload: false })
         }, 2000)
+        if (callback) callback()
       })
       .catch(err => console.log(err))
   }
@@ -121,19 +128,54 @@ const getWebModules = () => {
 const deleteWebModule = (id, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: DELETING_WEB_MODULE, payload: true })
-    axios.delete(`/companies/delete/${id}`)
+    axios.delete(`/webmodules/delete/${id}`)
       .then(data => {
         dispatch({ type: DELETING_WEB_MODULE, payload: false })
-        dispatch({ type: WEB_MODULE_DELETED, payload: true })
+        if (data.data.success) {
+          dispatch({ type: WEB_MODULE_DELETED, payload: true })
+          if (callback) callback()
+          window.webModuleDeletedTimer = setTimeout(() => {
+            dispatch({ type: WEB_MODULE_DELETED, payload: false })
+          }, 2000)
+        }
+        console.log(data.data)
+      })
+      .catch(err => console.log(err))
+  }
+}
+const updateWebModule = ({ id, browser_url }, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: UPDATING_WEB_MODULE, payload: true })
+    axios.put(`/webmodules/update/${id}`, { browser_url })
+      .then(data => {
+        dispatch({ type: UPDATING_WEB_MODULE, payload: false })
+        dispatch({ type: WEB_MODULE_UPDATED, payload: true })
         if (callback) callback()
-        window.webModuleDeletedTimer = setTimeout(() => {
-          dispatch({ type: WEB_MODULE_DELETED, payload: false })
+        window.webmoduleUpdateTimer = setTimeout(() => dispatch({ type: WEB_MODULE_UPDATED, payload: false }))
+      })
+      .catch(err => console.log(err))
+  }
+}
+const getOneWebModule = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: RETRIEVING_WEB_MODULE, payload: true })
+    axios.post(`/webmodules/${id}`)
+      .then(data => {
+        dispatch({ type: RETRIEVING_WEB_MODULE, payload: false })
+        dispatch({ type: WEB_MODULE_RETRIEVED, payload: true })
+        if (data.data.success) dispatch({ type: SELECTED_WEB_MODULE_TO_EDIT, payload: data.data.success })
+        else console.log(`error: ${data.data.error}`)
+        if (callback) callback()
+        window.webmoduleRetrievalTimer = setTimeout(() => {
+          dispatch({ type: WEB_MODULE_RETRIEVED, payload: false })
         }, 2000)
         console.log(data.data)
       })
       .catch(err => console.log(err))
   }
 }
+const setWebModuleToDelete = (id) => ({ type: SET_WEB_MODULE_TO_DELETE, payload: id })
+const setWebModuleToEdit = (webmodule) => ({ type: SELECTED_WEB_MODULE_TO_EDIT, payload: webmodule })
 // Company
 const getCompanies = (cb) => {
   return (dispatch, getState) => {
@@ -155,11 +197,13 @@ const deleteCompany = (id, callback) => {
     axios.delete(`/companies/delete/${id}`)
       .then(data => {
         dispatch({ type: DELETING_COMPANY, payload: false })
-        dispatch({ type: COMPANY_DELETED, payload: true })
-        if (callback) callback()
-        window.companyDeletedTimer = setTimeout(() => {
-          dispatch({ type: COMPANY_DELETED, payload: false })
-        }, 2000)
+        if (data.data.success) {
+          dispatch({ type: COMPANY_DELETED, payload: true })
+          if (callback) callback()
+          window.companyDeletedTimer = setTimeout(() => {
+            dispatch({ type: COMPANY_DELETED, payload: false })
+          }, 2000)
+        }
         console.log(data.data)
       })
       .catch(err => console.log(err))
@@ -310,11 +354,13 @@ const deleteTour = (id, callback) => {
     axios.delete(`/tourmodules/delete/${id}`)
       .then(data => {
         dispatch({ type: DELETING_TOUR, payload: false })
-        dispatch({ type: TOUR_DELETED, payload: true })
-        if (callback) callback()
-        window.tourDeletedTimer = setTimeout(() => {
-          dispatch({ type: TOUR_DELETED, payload: false })
-        }, 2000)
+        if (data.data.success) {
+          dispatch({ type: TOUR_DELETED, payload: true })
+          if (callback) callback()
+          window.tourDeletedTimer = setTimeout(() => {
+            dispatch({ type: TOUR_DELETED, payload: false })
+          }, 2000)
+        }
         console.log(data.data)
       })
       .catch(err => console.log(err))
@@ -379,7 +425,11 @@ export default {
   // Eco Lab - Web Module Data
   saveWebModule,
   getWebModules,
+  setWebModuleToDelete,
   deleteWebModule,
+  getOneWebModule,
+  updateWebModule,
+  setWebModuleToEdit,
   // Eco Lab - Company Data
   submitCreateCompanyData,
   getCompanies,

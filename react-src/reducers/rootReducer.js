@@ -15,6 +15,10 @@ import FetchingWebModules from './ApplicationSpecific/FetchingWebModules'
 import DeletingWebModule from './ApplicationSpecific/DeletingWebModule'
 import WebModuleDeleted from './ApplicationSpecific/WebModuleDeleted'
 import WebModules from './ApplicationSpecific/WebModules'
+import WebModuleToDelete from './ApplicationSpecific/WebModuleToDelete'
+import UpdatingWebModule from './ApplicationSpecific/UpdatingWebModule'
+import WebModuleUpdated from './ApplicationSpecific/WebModuleUpdated'
+import WebModuleSelectedForEdit from './ApplicationSpecific/WebModuleSelectedForEdit'
 import SavingCompanyData from './ApplicationSpecific/SavingCompanyData'
 import CompanyDataSaved from './ApplicationSpecific/CompanyDataSaved'
 import CompanyDataError from './ApplicationSpecific/CompanyDataError'
@@ -57,7 +61,11 @@ const rootReducer = combineReducers({
   FetchingWebModules,
   WebModules,
   WebModuleDeleted,
+  WebModuleToDelete,
+  UpdatingWebModule,
+  WebModuleUpdated,
   DeletingWebModule,
+  WebModuleSelectedForEdit,
   SavingCompanyData,
   CompanyDataSaved,
   CompanyDataError,

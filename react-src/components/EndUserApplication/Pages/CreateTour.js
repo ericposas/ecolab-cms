@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
-import TitleBar from '../../CMS/UIcomponents/TitleBar'
+import TitleBar from '../UIcomponents/TitleBar'
 import { ToastContainer, toast } from 'react-toastify'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -119,7 +119,7 @@ class CreateTour extends Component {
     }
     else this.setState({ ...this.state, companySelected: company, divisionSelected: dummyDivision, industrySelected: dummyIndustry, segmentSelected: dummyIndustry })
   }
-  
+
   handleDivisionSelector = e => {
     let divisionId = e.target.value
     let division = this.props.Divisions.find(d => d._id === divisionId)
@@ -167,7 +167,7 @@ class CreateTour extends Component {
                   style={{ marginRight: '8px' }}
                   variant='contained'
                   color='primary'
-                  onClick={() => history.push('/create-mode')}>
+                  onClick={() => history.push('/')}>
                     Dashboard
                 </Button>
                 <Button
@@ -184,7 +184,7 @@ class CreateTour extends Component {
           {
             this.props.placement != 'edit-tour'
             ? <div className='page-title'>Create a Tour</div>
-            : <div className='page-title'>Edit {this.props.TourSelectedForEdit.name}</div>
+            : <div className='page-title'>Edit {this.props.TourSelectedForEdit ? this.props.TourSelectedForEdit.name : ''}</div>
           }
           <div className='section-title'>Choose Company</div>
           <select

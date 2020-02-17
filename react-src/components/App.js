@@ -67,9 +67,9 @@ class App extends Component {
             <Route path='/logout/:type' component={AdminLogout}/>
             <Route path='/users' component={ViewUsers}/>
 
-            <Route exact path='/' component={AppHome}/>
+            <Route exact path='/' component={CreateMode}/>
             <Route path='/login' component={AppAuth}/>
-            <Route path='/create-mode' component={CreateMode}/>
+            {/*<Route path='/create-mode' component={CreateMode}/>*/}
             <Route path='/create-web-module' component={CreateWebModule}/>
             <Route path='/view-web-modules' component={ViewWebModules}/>
             <Route path='/file-upload' component={FileUpload}/>
