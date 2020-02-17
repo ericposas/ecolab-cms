@@ -22,7 +22,7 @@ class EditCustomModuleModal extends Component {
               Cancel
             </Button>
             <br/>
-            <CreateCustomModule placement='edit-webmodule' displayEditModal={this.props.displayEditModal}/>
+            <CreateCustomModule placement='edit-custom-module' displayEditModal={this.props.displayEditModal}/>
           </div>
         </div>
       </>

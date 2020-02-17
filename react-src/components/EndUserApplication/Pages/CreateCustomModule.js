@@ -27,17 +27,17 @@ class CreateCustomModule extends Component {
     skipUpload: false
   }
 
-  // componentDidMount() {
-  //   const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
-  //   checkAppUserAuth(data => {
-  //     console.log(data.data)
-  //     const { auth, fullaccess, peer, name, email } = data.data
-  //     if (!auth) history.push('/login')
-  //     else {
-  //       if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
-  //     }
-  //   })
-  // }
+  componentDidMount() {
+    const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
+    checkAppUserAuth(data => {
+      console.log(data.data)
+      const { auth, fullaccess, peer, name, email } = data.data
+      if (!auth) history.push('/login')
+      else {
+        if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+      }
+    })
+  }
 
   componentWillUnmount() {
     if (this.loadedResetTimer) clearTimeout(this.loadedResetTimer)
@@ -120,12 +120,21 @@ class CreateCustomModule extends Component {
   }
 
   handleSubmit = () => {
-    const { saveCustomModule, history } = this.props
-    saveCustomModule({ image_url: this.state.imageFilePath }, () => {
-      history.push('/view-custom-modules')
-      // console.log('file path saved to db')
-    })
-
+    const { saveCustomModule, updateCustomModule, getCustomModules, CustomModuleSelectedForEdit, history } = this.props
+    switch (this.props.placement) {
+      case 'edit-custom-module':
+        // console.log(CustomModuleSelectedForEdit._id)
+        updateCustomModule({ id: CustomModuleSelectedForEdit._id, name: this.state.customModuleName, image_url: this.state.imageFilePath }, () => {
+          this.props.displayEditModal(false)
+          getCustomModules()
+        })
+        break;
+      default:
+        saveCustomModule({ name: this.state.customModuleName, image_url: this.state.imageFilePath }, () => {
+          history.push('/view-custom-modules')
+          console.log('file path saved to db')
+      })
+    }
   }
 
   handleViewCustomModulesBtnClick = () => this.props.history.push('/view-custom-modules')
@@ -167,8 +176,8 @@ class CreateCustomModule extends Component {
           }
           {
             this.props.placement != 'edit-custom-module'
-            ? <div className='page-title'>Add a Custom Module</div>
-            : null
+            ? <div className='page-title'>Upload a Custom Module</div>
+            : <div className='page-title'>Edit {this.props.CustomModuleSelectedForEdit.name}</div>
           }
           {/*: <div className='page-title'>Edit {this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : ''}</div>*/}
           <div className='section-title'>Custom Module Name</div>
@@ -248,7 +257,7 @@ class CreateCustomModule extends Component {
               </div>
             : null
           }
-          
+
         </div>
       </>
     )

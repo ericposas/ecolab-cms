@@ -11,7 +11,7 @@ import AdminPasswordReset from './CMS/Pages/AdminPasswordReset'
 import PasswordReset from './CMS/Pages/PasswordReset'
 // Application frontend
 import AppAuth from './EndUserApplication/AppAuth'
-import AppHome from './EndUserApplication/AppHome'
+// import AppHome from './EndUserApplication/AppHome'
 import CreateMode from './EndUserApplication/Pages/CreateMode'
 import CreateWebModule from './EndUserApplication/Pages/CreateWebModule'
 import ViewWebModules from './EndUserApplication/Pages/ViewWebModules'

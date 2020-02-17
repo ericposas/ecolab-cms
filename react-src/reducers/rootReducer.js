@@ -44,6 +44,7 @@ import TourToDelete from './ApplicationSpecific/TourToDelete'
 import TourSelectedForEdit from './ApplicationSpecific/TourSelectedForEdit'
 import UpdatingTour from './ApplicationSpecific/UpdatingTour'
 import TourUpdated from './ApplicationSpecific/TourUpdated'
+import DeletingCustomModule from './ApplicationSpecific/DeletingCustomModule'
 import CustomModuleDeleted from './ApplicationSpecific/CustomModuleDeleted'
 import CustomModuleSelectedForEdit from './ApplicationSpecific/CustomModuleSelectedForEdit'
 import CustomModuleToDelete from './ApplicationSpecific/CustomModuleToDelete'
@@ -109,6 +110,7 @@ const rootReducer = combineReducers({
   RetrievingCustomModule,
   SavingCustomModule,
   UpdatingCustomModule,
+  DeletingCustomModule,
 
 })
 

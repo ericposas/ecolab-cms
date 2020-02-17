@@ -1,6 +1,10 @@
 import { model, Schema } from 'mongoose'
 
 const CustomModule = model('CustomModule', new Schema({
+  name: {
+    type: String,
+    default: ''
+  },
   image_url: {
     type: String,
     default: ''

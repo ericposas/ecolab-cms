@@ -86,7 +86,7 @@ class ViewWebModules extends Component {
                     onClick={() => {
                       setWebModuleToDelete(module._id)
                       this.displayDeleteModal(true)
-                    }}>&#10005;</div>
+                    }}>&times;</div>
                   {module.browser_url}
                 <img className='web-module-in-list-edit-icon' src='./img/pencil.svg'/>
                 <div

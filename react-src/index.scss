@@ -235,9 +235,11 @@ body {
 
 .web-module-x-btn {
   position: absolute;
-  top: -66px; right: 4px;
+  top: -66px; right: 6px;
+  font-weight: bold;
   border-radius: 10px;
   width: 10px; height: 10px;
+  font-size: 1.35rem;
   z-index: 2;
 }
 
@@ -366,6 +368,38 @@ body {
   display: inline;
 }
 
+// Custom Module
+.custom-module-in-list {
+  margin: 6px;
+  width: 500px;
+  height: 350px;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  border-radius: 2px;
+  line-height: 50px;
+  background-color: $grnblue;
+  vertical-align: top;
+}
+
+.custom-module-in-list-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  user-select: none;
+  display: inline;
+}
+
+.custom-module-x-btn {
+  position: absolute;
+  font-size: 1.35rem;
+  font-weight: bold;
+  top: -16px; right: 6px;
+  border-radius: 10px;
+  width: 10px; height: 10px;
+  z-index: 2;
+}
 
 // Transition Group - CSS Transitions
 .item-enter {

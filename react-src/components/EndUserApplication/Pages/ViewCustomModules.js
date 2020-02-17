@@ -19,18 +19,18 @@ class ViewCustomModules extends Component {
     showEditModal: false
   }
 
-  // componentDidMount() {
-  //   const { getTours, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
-  //   checkAppUserAuth(data => {
-  //     console.log(data.data)
-  //     const { auth, fullaccess, peer, name, email } = data.data
-  //     if (!auth) history.push('/login')
-  //     else {
-  //       if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
-  //       getCustomModules()
-  //     }
-  //   })
-  // }
+  componentDidMount() {
+    const { getTours, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
+    checkAppUserAuth(data => {
+      console.log(data.data)
+      const { auth, fullaccess, peer, name, email } = data.data
+      if (!auth) history.push('/login')
+      else {
+        if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+        getCustomModules()
+      }
+    })
+  }
 
   componentDidMount() {
     this.props.getCustomModules()
@@ -98,20 +98,21 @@ class ViewCustomModules extends Component {
                       timeout={500}
                       classNames='item'>
                       {/*<CustomModuleInList displayDeleteModal={this.displayDeleteModal} displayEditModal={this.displayEditModal} cmod={cmod}/>*/}
-                      <div className='web-module-in-list'>
+                      <div className='custom-module-in-list'>
                         <div
-                          className='x-symbol web-module-x-btn'
+                          className='custom-module-x-btn'
                           onClick={() => {
-                            setCustomModuleToDelete(module._id)
+                            this.props.setCustomModuleToDelete(cmod._id)
                             this.displayDeleteModal(true)
-                          }}>&#10005;</div>
+                          }}>&times;</div>
                         {/*module.image_url*/}
+                      <div className='custom-module-in-list-title'>{cmod.name}</div>
                       <img className='web-module-in-list-edit-icon' src='./img/pencil.svg'/>
-                      <img width='50%' src={cmod.image_url}/>
+                      <img width='80%' src={cmod.image_url}/>
                       <div
                         className='web-module-in-list-backing'
                         onClick={() => {
-                          setCustomModuleToEdit(module)
+                          this.props.setCustomModuleToEdit(cmod)
                           this.displayEditModal(true)
                         }}></div>
                       </div>
@@ -128,7 +129,7 @@ class ViewCustomModules extends Component {
           in={this.state.showDeleteModal}
           timeout={500}
           classNames='item'>
-          <DeleteConfirmModal type={'tour'} displayDeleteModal={this.displayDeleteModal} showDeleteModal={this.state.showDeleteModal}/>
+          <DeleteConfirmModal type={'custommodule'} displayDeleteModal={this.displayDeleteModal} showDeleteModal={this.state.showDeleteModal}/>
         </CSSTransition>
         <CSSTransition
           appear

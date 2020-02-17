@@ -419,10 +419,10 @@ const updateTourModule = ({
 const setTourToDelete = (id) => ({ type: SET_TOUR_TO_DELETE, payload: id })
 const setTourToEdit = (tour) => ({ type: SELECTED_TOUR_TO_EDIT, payload: tour })
 // Custom Module
-const saveCustomModule = ({ image_url }, callback) => {
+const saveCustomModule = ({ name, image_url }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_CUSTOM_MODULE, payload: true })
-    axios.post(`/custommodules`, { image_url })
+    axios.post(`/custommodules`, { name, image_url })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: SAVING_CUSTOM_MODULE, payload: false })
@@ -454,7 +454,7 @@ const getCustomModules = (callback) => {
       .catch(err => console.log(err))
   }
 }
-const getOneCustomModule = ({ id }, callback) => {
+const getOneCustomModule = (id, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: RETRIEVING_CUSTOM_MODULE, payload: true })
     axios.post(`/custommodules/${id}`)
@@ -469,10 +469,10 @@ const getOneCustomModule = ({ id }, callback) => {
       })
   }
 }
-const deleteCustomModule = ({ id }, callback) => {
+const deleteCustomModule = (id, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: DELETING_CUSTOM_MODULE, payload: true })
-    axios.delete(`/custommodules/${id}`)
+    axios.delete(`/custommodules/delete/${id}`)
       .then(data => {
         if (data.data.success) {
           dispatch({ type: DELETING_CUSTOM_MODULE, payload: false })
@@ -487,8 +487,25 @@ const deleteCustomModule = ({ id }, callback) => {
       })
   }
 }
-const setCustomModuleToDelete = (id) => dispatch({ type: SET_CUSTOM_MODULE_TO_DELETE, payload: id })
-const setCustomModuleToEdit = (cmodule) => dispatch({ type: SELECTED_CUSTOM_MODULE_TO_EDIT, payload: cmodule })
+const updateCustomModule = ({ id, name, image_url }, callback) => {
+  return (dispatch, getState) => {
+    console.log(id)
+    dispatch({ type: UPDATING_CUSTOM_MODULE, payload: true })
+    axios.put(`/custommodules/update/${id}`, { name, image_url })
+      .then(data => {
+        if (data.data.success) {
+          dispatch({ type: UPDATING_CUSTOM_MODULE, payload: false })
+          dispatch({ type: CUSTOM_MODULE_UPDATED, payload: true })
+          window.customModuleUpdatingTimer = setTimeout(() => dispatch({ type: CUSTOM_MODULE_UPDATED, payload: false }), 2000)
+          if (callback) callback()
+        } else {
+          console.log(data.data.error)
+        }
+      })
+  }
+}
+const setCustomModuleToDelete = (id) => ({ type: SET_CUSTOM_MODULE_TO_DELETE, payload: id })
+const setCustomModuleToEdit = (cmodule) => ({ type: SELECTED_CUSTOM_MODULE_TO_EDIT, payload: cmodule })
 
 export default {
   // CMS - User mgmt
@@ -537,6 +554,8 @@ export default {
   getCustomModules,
   getOneCustomModule,
   deleteCustomModule,
+  updateCustomModule,
   setCustomModuleToEdit,
   setCustomModuleToDelete,
+
 }
