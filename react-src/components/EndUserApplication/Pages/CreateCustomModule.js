@@ -41,8 +41,6 @@ class CreateCustomModule extends Component {
 
   componentWillUnmount() {
     if (this.loadedResetTimer) clearTimeout(this.loadedResetTimer)
-    if (this.incorrectImageDimensionsTimer) clearTimeout(this.incorrectImageDimensionsTimer)
-    if (this.correctImageDimensionsTimer) clearTimeout(this.correctImageDimensionsTimer)
 
   }
 
@@ -62,13 +60,12 @@ class CreateCustomModule extends Component {
         window.URL.revokeObjectURL(img.src)
         if (width >= FileWidth && height >= FileHeight) {
           console.log('correct dimensions')
-          this.setState({ correctImageDimensions: true })
-          this.correctImageDimensionsTimer = setTimeout(() => this.setState({ correctImageDimensions: null }))
           return resolve(true)
         } else {
           console.log('wrong dimensions')
-          this.setState({ correctImageDimensions: false })
-          this.incorrectImageDimensionsTimer = setTimeout(() => this.setState({ correctImageDimensions: null }))
+          toast.error(`Incorrect logo dimensions. Please upload an image that is at least ${FileWidth}px wide and ${FileHeight}px tall.`, {
+            autoClose: 5000
+          })
           return resolve(false)
         }
       }
@@ -79,12 +76,14 @@ class CreateCustomModule extends Component {
   })
 
   checkMimeType = (file) => {
-    const types = ['image/png', 'image/jpeg', 'image/gif']
+    const types = ['image/png'] //, 'image/jpeg', 'image/gif']
     if (types.includes(file.type)) {
       console.log(`${file.type} is a valid file type`)
       return true
     } else {
-      console.log('incorrect mime type')
+      toast.error('Incorrect file type. Please upload a PNG file.', {
+        autoClose: 2500
+      })
       return false
     }
   }
@@ -105,7 +104,7 @@ class CreateCustomModule extends Component {
           })
           .then(data => {
             console.log(data)
-            toast.success(`uploaded ${file.name} successfully!`)
+            toast.success(`uploaded ${file.name} successfully!`, { autoClose: 1000 })
             this.setState({ imageUploaded: true, imageFilePath: data.data.path })
             this.loadedResetTimer = setTimeout(() => {
               this.setState({ imageLoadedPercent: 0 })
@@ -122,25 +121,29 @@ class CreateCustomModule extends Component {
   handleSubmit = () => {
     const { saveCustomModule, updateCustomModule, getCustomModules, CustomModuleSelectedForEdit, history } = this.props
     switch (this.props.placement) {
-      case 'edit-custom-module':
-        // console.log(CustomModuleSelectedForEdit._id)
+      case 'edit-custom-module': {
+        let toastId = toast(<div>Updating custom module...</div>, { type: toast.TYPE.WARNING, autoClose: 5000 })
         updateCustomModule({ id: CustomModuleSelectedForEdit._id, name: this.state.customModuleName, image_url: this.state.imageFilePath }, () => {
           this.props.displayEditModal(false)
           getCustomModules()
+          toast.dismiss(toastId)
         })
+      }
         break;
-      default:
+      default: {
+        let toastId = toast(<div>Updating custom module...</div>, { type: toast.TYPE.WARNING, autoClose: 5000 })
         saveCustomModule({ name: this.state.customModuleName, image_url: this.state.imageFilePath }, () => {
           history.push('/view-custom-modules')
+          toast.dismiss(toastId)
           console.log('file path saved to db')
-      })
+        })
+      }
     }
   }
 
   handleViewCustomModulesBtnClick = () => this.props.history.push('/view-custom-modules')
 
   render() {
-    const grnblue = '#00ffae'
     const { history } = this.props
     return (
       <>
@@ -149,7 +152,7 @@ class CreateCustomModule extends Component {
           this.props.placement != 'edit-custom-module'
           ?
             <>
-              <TitleBar title='Eco Lab Application' color={grnblue}/>
+              <TitleBar title='Eco Lab Application'/>
             </>
           : null
         }
@@ -179,9 +182,9 @@ class CreateCustomModule extends Component {
             ? <div className='page-title'>Upload a Custom Module</div>
             : <div className='page-title'>Edit {this.props.CustomModuleSelectedForEdit.name}</div>
           }
-          {/*: <div className='page-title'>Edit {this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : ''}</div>*/}
           <div className='section-title'>Custom Module Name</div>
           <TextField
+            label='module name'
             error={this.state.customModuleNameError}
             variant='outlined'
             onChange={this.handleCustomModuleNameChange}
@@ -239,25 +242,6 @@ class CreateCustomModule extends Component {
                 </Button>
               </>
           </CSSTransition>
-          {
-            this.state.correctImageDimensions == false
-            ? <div style={{ display: 'none' }}>
-                {toast.error(`Incorrect logo dimensions. Please upload a logo that is at least ${FileWidth}px wide.`, {
-                  autoClose: 5000
-                })}
-              </div>
-            : null
-          }
-          {
-            this.props.SavingWebModule
-            ? <div style={{ display: 'none' }}>
-                {toast.warn(`Saving custom module...`, {
-                  autoClose: 5000
-                })}
-              </div>
-            : null
-          }
-
         </div>
       </>
     )

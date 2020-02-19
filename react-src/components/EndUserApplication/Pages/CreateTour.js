@@ -148,14 +148,13 @@ class CreateTour extends Component {
   }
 
   render() {
-    const grnblue = '#00ffae'
     const { Companies, Divisions, history } = this.props
     return (
       <>
         <ToastContainer/>
         {
           this.props.placement != 'edit-tour'
-          ? <TitleBar title='Eco Lab Application' color={grnblue}/>
+          ? <TitleBar title='Eco Lab Application'/>
           : null
         }
         <div className='padding-div-20'>

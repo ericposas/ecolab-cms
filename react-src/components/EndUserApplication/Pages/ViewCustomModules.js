@@ -6,7 +6,6 @@ import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
-// import TourInList from '../ListComponents/TourInList'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import DeleteConfirmModal from '../Modals/DeleteConfirmModal'
 import EditCustomModuleModal from '../Modals/EditCustomModuleModal'
@@ -54,12 +53,11 @@ class ViewCustomModules extends Component {
   }
 
   render() {
-    const grnblue = '#00ffae'
     const { CustomModules, FetchingCustomModules, DeletingCustomModule, CustomModuleDeleted, history } = this.props
     return (
       <>
         <ToastContainer/>
-        <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+        <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
           <Button
             style={{ marginRight: '8px' }}
@@ -78,15 +76,6 @@ class ViewCustomModules extends Component {
           <br/>
           <div className='section-title'>Custom Modules</div>
           {
-            FetchingCustomModules
-            ? <div style={{ display: 'none' }}>
-                {toast.warn('fetching custom modules...', {
-                  autoClose: 500
-                })}
-              </div>
-            : null
-          }
-          {
             CustomModules && CustomModules.map
             ? <>
                 <TransitionGroup>
@@ -97,7 +86,6 @@ class ViewCustomModules extends Component {
                       in={cmod != null}
                       timeout={500}
                       classNames='item'>
-                      {/*<CustomModuleInList displayDeleteModal={this.displayDeleteModal} displayEditModal={this.displayEditModal} cmod={cmod}/>*/}
                       <div className='custom-module-in-list'>
                         <div
                           className='custom-module-x-btn'
@@ -105,9 +93,9 @@ class ViewCustomModules extends Component {
                             this.props.setCustomModuleToDelete(cmod._id)
                             this.displayDeleteModal(true)
                           }}>&times;</div>
-                        {/*module.image_url*/}
                       <div className='custom-module-in-list-title'>{cmod.name}</div>
                       <img className='web-module-in-list-edit-icon' src='./img/pencil.svg'/>
+                      <br/>
                       <img width='80%' src={cmod.image_url}/>
                       <div
                         className='web-module-in-list-backing'

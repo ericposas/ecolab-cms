@@ -1,10 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { mapState, mapDispatch } from '../../mapStateMapDispatch'
+import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import axios from 'axios'
 import validator from 'email-validator'
-import TitleBar from '../CMS/UIcomponents/TitleBar'
+import TitleBar from '../../CMS/UIcomponents/TitleBar'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+// import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { ToastContainer, toast } from 'react-toastify'
 
 class AppAuth extends Component {
 
@@ -59,83 +63,55 @@ class AppAuth extends Component {
     }
   }
 
-  displayUserDataError = () => {
-    this.setState({
-      ...this.state,
-      showUserDataError: true
-    })
-    this.userDataErrorTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showUserDataError: false
-      })
-    }, 2000)
-  }
+  displayUserDataError = () => toast.error('Invalid password', { autoClose: 2000 })
+
+  displayInvalidEmailError = () => toast.error('Invalid e-mail', { autoClose: 2000 })
 
   displayUserAuthenticatedMsg = () => {
     const { history } = this.props
-    this.setState({
-      ...this.state,
-      showUserAuthenticatedMsg: true
+    toast.success('You are now authenticated!', {
+      autoClose: 2000,
+      onClose: () => history.push('/')
     })
-    this.userDataAuthTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showUserAuthenticatedMsg: false
-      })
-      // redirect
-      history.push('/')
-    }, 2000)
   }
-
-  displayInvalidEmailError = () => {
-    this.setState({
-      ...this.state,
-      showInvalidEmailError: true
-    })
-    this.invalidEmailErrorTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showInvalidEmailError: false
-      })
-    }, 2000)
-  }
-
+  
   render() {
     return (
       <>
-        <TitleBar title={'Login'} color={'#00ffae'}/>
+        <ToastContainer/>
+        <TitleBar title={'Eco Lab CMS Login'}/>
         <br/>
         <div className='padding-div-10'>
-          <form>
-            <div>Email address:</div>
-            <input type='text' onChange={this.onEmailInput} value={this.state.email}/>
-            <div>Password:</div>
-            <input type='password' onChange={this.onPasswordInput} value={this.state.password}/>
-          </form>
-          <br/>
-          <button onClick={this.onFormSubmit}>submit</button>
+          <div className='center-float' style={{ backgroundColor: '#e5e5e5', width: '300px', height: '280px', borderRadius: '3px', textAlign: 'center', border: 'none' }}>
+            <br/>
+            <div className='padding-div-10'>
+              <div><b>Login</b></div>
+              <br/>
+              <TextField
+                label='email address'
+                variant='outlined'
+                onChange={this.onEmailInput}
+                value={this.state.email}/>
+            </div>
+              <br/>
+            <div>
+              <TextField
+                label='password'
+                variant='outlined'
+                type='password'
+                onChange={this.onPasswordInput}
+                value={this.state.password}/>
+              <br/>
+              <br/>
+            </div>
+            <Button variant='contained' color='primary' onClick={this.onFormSubmit}>Submit</Button>
+          </div>
         </div>
-        {
-          this.state.showInvalidEmailError
-          ? <>
-              <div className='padding-div-10'>Invalid Email.</div>
-            </>
-          : null
-        }
         {
           this.state.showUserDataError
           ?
             <>
               <div className='padding-div-10'>Invalid credentials.</div>
-            </>
-          : null
-        }
-        {
-          this.props.AppUserData.name && this.state.showUserAuthenticatedMsg
-          ?
-            <>
-              <div className='padding-div-10'>{this.props.AppUserData.name}, you are now authenticated.</div>
             </>
           : null
         }

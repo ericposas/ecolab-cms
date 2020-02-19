@@ -18,12 +18,13 @@ class TitleBar extends Component {
         <div
           className={'ui-title-bar'}
           style={{
-            backgroundColor: this.props.color || 'lightblue'
+            color: this.props.textColor || '#fff',
+            backgroundColor: this.props.color || '#000'
           }}>
           {this.props.title}
         </div>
         <div style={logoutAreaStyle}>
-          <div className='padding-div-20' style={{ display: 'inline-block' }}>Welcome {AppUserData ? AppUserData.name : null}</div>
+          <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>Welcome {AppUserData ? AppUserData.name : null}</div>
           <Button onClick={() => this.props.history.push('/logout/user')} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
         </div>
       </>

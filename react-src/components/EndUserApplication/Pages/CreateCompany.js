@@ -198,7 +198,6 @@ class CreateCompany extends Component {
   handleViewCompaniesBtnClick = () => this.props.history.push('/view-companies')
 
   render() {
-    const grnblue = '#00ffae'
     const { SavingCompanyData, CompanyDataSaved, CompanyDataError, history } = this.props
     return (
       <>
@@ -207,7 +206,7 @@ class CreateCompany extends Component {
           this.props.placement != 'edit-company'
           ?
             <>
-              <TitleBar title='Eco Lab Application' color={grnblue}/>
+              <TitleBar title='Eco Lab Application'/>
             </>
           : null
         }
@@ -371,35 +370,6 @@ class CreateCompany extends Component {
               }
             </Button>
           </CSSTransition>
-          {
-            SavingCompanyData
-            ? <div style={{ display: 'none' }}>
-                {toast.warn('Attempting to save company data...', {
-                  autoClose: 1000
-                })}
-              </div>
-            : null
-          }
-          {
-            CompanyDataSaved
-            ? <div style={{ display: 'none' }}>
-                {toast.success('Company data saved successfully...', {
-                  autoClose: 1000,
-                  // onOpen: () => {},
-                  onClose: () => history.push('/view-companies')
-                })}
-              </div>
-            : null
-          }
-          {
-            CompanyDataError
-            ? <div style={{ display: 'none' }}>
-                {toast.error('Error saving company...', {
-                  autoClose: 1500
-                })}
-              </div>
-            : null
-          }
           {
             this.state.correctLogoDimensions == false
             ? <div style={{ display: 'none' }}>

@@ -18,7 +18,7 @@ class ViewTours extends Component {
     showDeleteModal: false,
     showEditModal: false
   }
-
+  
   componentDidMount() {
     const { getTours, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
@@ -50,12 +50,11 @@ class ViewTours extends Component {
   }
 
   render() {
-    const grnblue = '#00ffae'
     const { Tours, FetchingTours, DeletingTour, TourDeleted, history } = this.props
     return (
       <>
         <ToastContainer/>
-        <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+        <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
           <Button
             style={{ marginRight: '8px' }}
@@ -73,15 +72,6 @@ class ViewTours extends Component {
           <br/>
           <br/>
           <div className='section-title'>Tour Modules</div>
-          {
-            FetchingTours
-            ? <div style={{ display: 'none' }}>
-                {toast.warn('fetching tour modules...', {
-                  autoClose: 500
-                })}
-              </div>
-            : null
-          }
           {
             Tours && Tours.map
             ? <>

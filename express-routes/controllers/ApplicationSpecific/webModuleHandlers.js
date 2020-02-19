@@ -18,7 +18,7 @@ const viewWebModules = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else
     WebModule.find()
-      .then(results => res.send(results))
+      .then(results => res.send({ success: results }))
       .catch(err => res.send({ error: 'could not fetch data' }))
 }
 

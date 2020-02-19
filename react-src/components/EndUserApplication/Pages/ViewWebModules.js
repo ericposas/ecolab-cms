@@ -6,7 +6,8 @@ import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import DeleteConfirmModal from '../Modals/DeleteConfirmModal'
 import EditWebModuleModal from '../Modals/EditWebModuleModal'
-import { CSSTransition } from 'react-transition-group'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
 import axios from 'axios'
 
@@ -30,12 +31,6 @@ class ViewWebModules extends Component {
     })
   }
 
-  handleDelete = module => {
-    const { deleteWebModule, getWebModules } = this.props
-    console.log('delete ' + module.browser_url)
-    deleteWebModule(module._id, getWebModules)
-  }
-
   displayEditModal = (value) => {
     this.setState({
       showEditModal: value
@@ -53,7 +48,8 @@ class ViewWebModules extends Component {
     const { setWebModuleToDelete, setWebModuleToEdit, WebModules, DeletingWebModule, WebModuleDeleted, history } = this.props
     return (
       <>
-        <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+        <ToastContainer/>
+        <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
           <Button
             style={{ marginRight: '8px' }}
@@ -78,39 +74,39 @@ class ViewWebModules extends Component {
         {
           WebModules
           ?
-            WebModules.map(module => (
-              <Fragment key={module._id}>
-                <div className='web-module-in-list'>
-                  <div
-                    className='x-symbol web-module-x-btn'
-                    onClick={() => {
-                      setWebModuleToDelete(module._id)
-                      this.displayDeleteModal(true)
-                    }}>&times;</div>
-                  {module.browser_url}
-                <img className='web-module-in-list-edit-icon' src='./img/pencil.svg'/>
-                <div
-                  className='web-module-in-list-backing'
-                  onClick={() => {
-                    setWebModuleToEdit(module)
-                    this.displayEditModal(true)
-                  }}></div>
-                </div>
-              </Fragment>
-            ))
+            <TransitionGroup>
+              {
+                WebModules.map(module => (
+                  <CSSTransition
+                    key={module._id}
+                    appear
+                    unmountOnExit
+                    in={module != null}
+                    timeout={500}
+                    classNames='item'>
+                    <div className='web-module-in-list'>
+                      <div
+                        className='x-symbol web-module-x-btn'
+                        onClick={() => {
+                          setWebModuleToDelete(module._id)
+                          this.displayDeleteModal(true)
+                        }}>&times;</div>
+                      {module.browser_url}
+                      <img className='web-module-in-list-edit-icon' src='./img/pencil.svg'/>
+                      <div
+                        className='web-module-in-list-backing'
+                        onClick={() => {
+                          setWebModuleToEdit(module)
+                          this.displayEditModal(true)
+                        }}></div>
+                      </div>
+                    </CSSTransition>
+                  ))
+                }
+            </TransitionGroup>
           : null
         }
       </div>
-        {
-          DeletingWebModule
-          ? <div className='padding-div-10'>Deleting web module...</div>
-          : null
-        }
-        {
-          WebModuleDeleted
-          ? <div className='padding-div-10'>Web module deleted!</div>
-          : null
-        }
         <CSSTransition
           appear
           unmountOnExit

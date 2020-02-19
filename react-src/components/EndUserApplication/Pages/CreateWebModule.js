@@ -5,6 +5,7 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import { ToastContainer, toast } from 'react-toastify'
 import axios from 'axios'
 
@@ -62,7 +63,7 @@ class CreateWebModule extends Component {
         {
           this.props.placement != 'edit-webmodule'
           ?
-            <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+            <TitleBar title={'Eco Lab Application'}/>
           : null
         }
         <div className='padding-div-20'>
@@ -94,12 +95,10 @@ class CreateWebModule extends Component {
             ? <div className='page-title'>Create a Web Module</div>
             : <div className='page-title'>Edit {this.props.WebModuleSelectedForEdit.browser_url}</div>
           }
-        {/*<div className='center-float' style={{ width: '80%', height: '400px', borderRadius: '2px' }}>*/}
           <br/>
-          <br/>
-          <div>Enter URL:</div>
-          <input
-            type='text'
+          <TextField
+            label='web module URL'
+            variant='outlined'
             style={{ width: this.props.placement == 'edit-webmodule' ? '90%' : '50%', borderRadius: '2px' }}
             onChange={this.handleInput}
             value={this.state.urlField}/>

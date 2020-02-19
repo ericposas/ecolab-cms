@@ -18,7 +18,7 @@ class ViewCompanies extends Component {
     showDeleteModal: false,
     showEditModal: false
   }
-
+  
   componentDidMount() {
     const { getCompanies, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
@@ -57,7 +57,7 @@ class ViewCompanies extends Component {
     return (
       <>
         <ToastContainer/>
-        <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+        <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
           <Button
             style={{ marginRight: '8px' }}
@@ -76,7 +76,7 @@ class ViewCompanies extends Component {
           <br/>
           <br/>
           <div className='section-title'>Companies</div>
-          {
+          {/*
             FetchingCompanies
             ? <div style={{ display: 'none' }}>
                 {toast.warn('fetching companies...', {
@@ -84,7 +84,7 @@ class ViewCompanies extends Component {
                 })}
               </div>
             : null
-          }
+          */}
           {
             Companies
             ? <>

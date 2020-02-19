@@ -21,17 +21,16 @@ class CreateMode extends Component {
   }
 
   render() {
-    const grnblue = '#00ffae'
     const { history } = this.props
     return (
       <>
-        <TitleBar title={'Eco Lab Application'} color={grnblue}/>
+        <TitleBar title={'Eco Lab Application'}/>
         <div className='center-float'
-          style={{ width: '80%', height: '600px', border: 'none' }}>
-          <div className='dashboard-button-large' onClick={() => history.push('/create-custom-module')} style={{ backgroundColor: grnblue }}>Custom Module</div>
-          <div className='dashboard-button-large' onClick={() => history.push('/create-company')} style={{ backgroundColor: grnblue }}>Add a Company</div>
-          <div className='dashboard-button-large' onClick={() => history.push('/create-web-module')} style={{ backgroundColor: grnblue }}>Web Module</div>
-          <div className='dashboard-button-large' onClick={() => history.push('/create-tour')} style={{ backgroundColor: grnblue }}>Tour Module</div>
+          style={{ width: '80%', height: '600px', border: 'none', backgroundColor: 'rgba(0,0,0,0)' }}>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-custom-module')}>Custom Module</div>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-company')}>Add a Company</div>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-web-module')}>Web Module</div>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-tour')}>Tour Module</div>
         </div>
       </>
     )
