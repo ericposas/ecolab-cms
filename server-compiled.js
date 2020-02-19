@@ -40,6 +40,8 @@ var _segmentRoutes = _interopRequireDefault(require("./express-routes/routes/App
 
 var _tourModuleRoutes = _interopRequireDefault(require("./express-routes/routes/ApplicationSpecific/tourModuleRoutes"));
 
+var _customModuleRoutes = _interopRequireDefault(require("./express-routes/routes/ApplicationSpecific/customModuleRoutes"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // Eco lab specific
@@ -114,7 +116,8 @@ app.use('/companies', _companyRoutes["default"]);
 app.use('/divisions', _divisionRoutes["default"]);
 app.use('/industries', _industryRoutes["default"]);
 app.use('/segments', _segmentRoutes["default"]);
-app.use('/tourmodules', _tourModuleRoutes["default"]); // File upload
+app.use('/tourmodules', _tourModuleRoutes["default"]);
+app.use('/custommodules', _customModuleRoutes["default"]); // File upload
 // app.post('/testupload', upload.single('file'), (req, res, next) => {
 //   // console.log(req)
 //   res.send({ success: `upload ${req.file.originalname} success!` })
