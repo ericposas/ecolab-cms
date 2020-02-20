@@ -110,26 +110,21 @@ const setSelectedAdminForEditing = admin => ({ type: SET_SELECTED_ADMIN_FOR_EDIT
 // Web Module
 const saveWebModule = (browser_url, callback) => {
   return (dispatch, getState) => {
-    // let toastId = toast('Saving web module..', { type: toast.TYPE.WARNING, autoClose: 2000 })
     dispatch({ type: SAVING_WEB_MODULE, payload: true })
     axios.post('/webmodules', { browser_url })
       .then(data => {
-        // toast.dismiss(toastId)
-        // toast('Web module saved!', { type: toast.TYPE.SUCCESS, autoClose: 2000 })
-        // console.log(data.data)
-        dispatch({ type: SAVING_WEB_MODULE, payload: false })
-        if (callback) callback()
-        // dispatch({ type: WEB_MODULE_SAVED, payload: true })
-        // window.webModuleSavedTimer = setTimeout(() => {
-        //   dispatch({ type: WEB_MODULE_SAVED, payload: false })
-        // }, 2000)
+        if (data.data.success) {
+          dispatch({ type: SAVING_WEB_MODULE, payload: false })
+          if (callback) callback()
+        } else {
+          console.log(`error: ${data.data.error}`)
+        }
       })
       .catch(err => console.log(err))
   }
 }
 const getWebModules = (cb) => {
   return (dispatch, getState) => {
-    // let toastId = toast('Getting web modules data..', { type: toast.TYPE.WARNING, autoClose: 2000 })
     dispatch({ type: GETTING_WEB_MODULES, payload: true })
     axios.post('/webmodules/view')
       .then(data => {
@@ -140,9 +135,6 @@ const getWebModules = (cb) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // toast.dismiss(toastId)
-        // toast('Web module data retrieved..', { type: toast.TYPE.SUCCESS, autoClose: 1000 })
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -155,21 +147,15 @@ const deleteWebModule = (id, callback) => {
         dispatch({ type: DELETING_WEB_MODULE, payload: false })
         if (data.data.success) {
           if (callback) callback()
-          // dispatch({ type: WEB_MODULE_DELETED, payload: true })
-          // window.webModuleDeletedTimer = setTimeout(() => {
-          //   dispatch({ type: WEB_MODULE_DELETED, payload: false })
-          // }, 2000)
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
 }
 const updateWebModule = ({ id, browser_url }, callback) => {
   return (dispatch, getState) => {
-    // let toastId = toast(`Updating web module ${browser_url}..`, { type: toast.TYPE.WARNING, autoClose: 2000 })
     dispatch({ type: UPDATING_WEB_MODULE, payload: true })
     axios.put(`/webmodules/update/${id}`, { browser_url })
       .then(data => {
@@ -179,10 +165,6 @@ const updateWebModule = ({ id, browser_url }, callback) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // toast.dismiss(toastId)
-        // toast('Updated web module!', { type: toast.TYPE.WARNING, autoClose: 1000 })
-        // dispatch({ type: WEB_MODULE_UPDATED, payload: true })
-        // window.webmoduleUpdateTimer = setTimeout(() => dispatch({ type: WEB_MODULE_UPDATED, payload: false }))
       })
       .catch(err => console.log(err))
   }
@@ -193,17 +175,12 @@ const getOneWebModule = (id, callback) => {
     axios.post(`/webmodules/${id}`)
       .then(data => {
         dispatch({ type: RETRIEVING_WEB_MODULE, payload: false })
-        // dispatch({ type: WEB_MODULE_RETRIEVED, payload: true })
         if (data.data.success) {
           dispatch({ type: SELECTED_WEB_MODULE_TO_EDIT, payload: data.data.success })
           if (callback) callback()
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // window.webmoduleRetrievalTimer = setTimeout(() => {
-        //   dispatch({ type: WEB_MODULE_RETRIEVED, payload: false })
-        // }, 2000)
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -217,7 +194,6 @@ const getCompanies = (cb) => {
     axios.post('/companies/view')
       .then(data => {
         dispatch({ type: GETTING_COMPANIES, payload: false })
-        // console.log(data.data)
         if (data.data.success) {
           dispatch({ type: SET_COMPANIES, payload: data.data.success })
           if (cb) cb()
@@ -236,14 +212,9 @@ const deleteCompany = (id, callback) => {
         dispatch({ type: DELETING_COMPANY, payload: false })
         if (data.data.success) {
           if (callback) callback()
-          // dispatch({ type: COMPANY_DELETED, payload: true })
-          // window.companyDeletedTimer = setTimeout(() => {
-          //   dispatch({ type: COMPANY_DELETED, payload: false })
-          // }, 2000)
         } else {
-          console.log(data.data.error)
+          console.log(`error: ${data.data.error}`)
         }
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -256,18 +227,9 @@ const submitCreateCompanyData = ({ name, logo, customer_names, notes }, callback
         dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: false })
         if (data.data.success) {
           if (callback) callback()
-          // dispatch({ type: COMPANY_DATA_SAVED, payload: true })
-          // window.customerDataSavedTimer = setTimeout(() => {
-          //   dispatch({ type: COMPANY_DATA_SAVED, payload: false })
-          // })
         } else {
-          console.log(data.data.error)
-          // dispatch({ type: COMPANY_DATA_ERROR, payload: true })
-          // window.customerDataErrorTimer = setTimeout(() => {
-          //   dispatch({ type: COMPANY_DATA_ERROR, payload: false })
-          // })
+          console.log(`error: ${data.data.error}`)
         }
-        console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -281,10 +243,8 @@ const updateCompanyData = ({ id, name, logo, customer_names, notes }, callback) 
           dispatch({ type: UPDATING_COMPANY, payload: false })
           if (callback) callback()
         } else {
-          console.log(data.data.error)
+          console.log(`error: ${data.data.error}`)
         }
-        // dispatch({ type: COMPANY_UPDATED, payload: true })
-        // window.companyUpdateTimer = setTimeout(() => dispatch({ type: COMPANY_UPDATED, payload: false }))
       })
       .catch(err => console.log(err))
   }
@@ -301,11 +261,6 @@ const getOneCompany = (id, callback) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // dispatch({ type: COMPANY_RETRIEVED, payload: true })
-        // window.companyRetrievalTimer = setTimeout(() => {
-        //   dispatch({ type: COMPANY_RETRIEVED, payload: false })
-        // }, 2000)
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -326,7 +281,6 @@ const getDivisions = (cb) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // console.log(data)
       })
       .catch(err => console.log(err))
   }
@@ -344,7 +298,6 @@ const getIndustries = (cb) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // console.log(data)
       })
       .catch(err => console.log(err))
   }
@@ -362,7 +315,6 @@ const getSegments = (cb) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // console.log(data)
       })
       .catch(err => console.log(err))
   }
@@ -374,8 +326,6 @@ const createTourModule = ({
   }, cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_TOURS, payload: true })
-    // let toastId = toast('Creating tour module..', { type: toast.TYPE.WARNING, autoClose: 2000 })
-    // console.log(tourName, company_id, division_id, industry_id, segment_id)
     axios.post(`/tourmodules`, {
         name: tourName,
         company_id, division_id, industry_id, segment_id,
@@ -389,9 +339,6 @@ const createTourModule = ({
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // toast.dismiss(toastId)
-        // toast('Tour module saved..', { type: toast.TYPE.SUCCESS, autoClose: 1000 })
-        // console.log(data)
       })
       .catch(err => console.log(err))
   }
@@ -402,8 +349,6 @@ const getTours = (cb) => {
     dispatch({ type: GETTING_TOURS, payload: true })
     axios.post('/tourmodules/view')
       .then(data => {
-        // toast.dismiss(toastId)
-        // toast('Tour data retrieved!', { type: toast.TYPE.SUCCESS, autoClose: 1000 })
         dispatch({ type: GETTING_TOURS, payload: false })
         if (data.data.success) {
           dispatch({ type: SET_TOURS, payload: data.data.success })
@@ -411,7 +356,6 @@ const getTours = (cb) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -424,14 +368,9 @@ const deleteTour = (id, callback) => {
         dispatch({ type: DELETING_TOUR, payload: false })
         if (data.data.success) {
           if (callback) callback()
-          // dispatch({ type: TOUR_DELETED, payload: true })
-          // window.tourDeletedTimer = setTimeout(() => {
-          //   dispatch({ type: TOUR_DELETED, payload: false })
-          // }, 2000)
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -448,11 +387,6 @@ const getOneTour = (id, callback) => {
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // dispatch({ type: TOUR_RETRIEVED, payload: true })
-        // window.tourRetrievalTimer = setTimeout(() => {
-        //   dispatch({ type: TOUR_RETRIEVED, payload: false })
-        // }, 2000)
-        // console.log(data.data)
       })
       .catch(err => console.log(err))
   }
@@ -463,7 +397,6 @@ const updateTourModule = ({
   company_name, division_name, industry_name, segment_name,
   }, callback) => {
   return (dispatch, getState) => {
-    // let toastId = toast('Updating tour data..', { type: toast.TYPE.WARNING, autoClose: 2000 })
     dispatch({ type: UPDATING_TOUR, payload: true })
     axios.put(`/tourmodules/update/${tour_id}`, {
         name: tourName,
@@ -477,10 +410,6 @@ const updateTourModule = ({
         } else {
           console.log(`error: ${data.data.error}`)
         }
-        // toast.dismiss(toastId)
-        // toast('Tour updated!', { type: toast.TYPE.SUCCESS, autoClose: 1000 })
-        // dispatch({ type: TOUR_UPDATED, payload: true })
-        // window.tourUpdateTimer = setTimeout(() => dispatch({ type: TOUR_UPDATED, payload: false }), 2000)
       })
       .catch(err => console.log(err))
   }
@@ -490,17 +419,12 @@ const setTourToEdit = (tour) => ({ type: SELECTED_TOUR_TO_EDIT, payload: tour })
 // Custom Module
 const saveCustomModule = ({ name, image_url }, callback) => {
   return (dispatch, getState) => {
-    // let toastId = toast('Saving custom module data..', { type: toast.TYPE.WARNING, autoClose: 2000 })
     dispatch({ type: SAVING_CUSTOM_MODULE, payload: true })
     axios.post(`/custommodules`, { name, image_url })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: SAVING_CUSTOM_MODULE, payload: false })
           if (callback) callback()
-          // toast.dismiss(toastId)
-          // toast('Custom module saved!', { type: toast.TYPE.SUCCESS, autoClose: 1000 })
-          // dispatch({ type: CUSTOM_MODULE_SAVED, payload: true })
-          // window.customModuleSavedTimer = setTimeout(() => dispatch({ type: CUSTOM_MODULE_SAVED, payload: false }), 2000)
         } else {
           console.log(`error: ${data.data.error}`)
         }
@@ -510,7 +434,6 @@ const saveCustomModule = ({ name, image_url }, callback) => {
 }
 const getCustomModules = (callback) => {
   return (dispatch, getState) => {
-    // let toastId = toast('Getting custom module data..', { type: toast.TYPE.WARNING, autoClose: 2000 })
     dispatch({ type: GETTING_CUSTOM_MODULES, payload: true })
     axios.post(`/custommodules/view`)
       .then(data => {
@@ -518,13 +441,8 @@ const getCustomModules = (callback) => {
           dispatch({ type: GETTING_CUSTOM_MODULES, payload: false })
           dispatch({ type: SET_CUSTOM_MODULES, payload: data.data.success })
           if (callback) callback()
-          // toast.dismiss(toastId)
-          // toast('Custom module data retrieved!', { type: toast.TYPE.SUCCESS, autoClose: 1000 })
         } else {
-          // let toastId = toast(data.data.error, { type: toast.TYPE.ERROR, autoClose: 2000 })
           console.log(`error: ${data.data.error}`)
-          // dispatch({ type: GETTING_CUSTOM_MODULES_ERROR, payload: true })
-          // window.gettingCustomModulesErrorTimer = setTimeout(() => dispatch({ type: GETTING_CUSTOM_MODULES_ERROR, payload: false }), 2000)
         }
       })
       .catch(err => console.log(err))
@@ -553,10 +471,6 @@ const deleteCustomModule = (id, callback) => {
         if (data.data.success) {
           dispatch({ type: DELETING_CUSTOM_MODULE, payload: false })
           if (callback) callback()
-          // dispatch({ type: CUSTOM_MODULE_DELETED, payload: true })
-          // window.customModuleDeletedTimer = setTimeout(() => {
-          //   dispatch({ type: CUSTOM_MODULE_DELETED, payload: false })
-          // }, 2000)
         } else {
           console.log(`error: ${data.data.error}`)
         }
@@ -565,15 +479,12 @@ const deleteCustomModule = (id, callback) => {
 }
 const updateCustomModule = ({ id, name, image_url }, callback) => {
   return (dispatch, getState) => {
-    // console.log(id)
     dispatch({ type: UPDATING_CUSTOM_MODULE, payload: true })
     axios.put(`/custommodules/update/${id}`, { name, image_url })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: UPDATING_CUSTOM_MODULE, payload: false })
           if (callback) callback()
-          // dispatch({ type: CUSTOM_MODULE_UPDATED, payload: true })
-          // window.customModuleUpdatingTimer = setTimeout(() => dispatch({ type: CUSTOM_MODULE_UPDATED, payload: false }), 2000)
         } else {
           console.log(`error: ${data.data.error}`)
         }

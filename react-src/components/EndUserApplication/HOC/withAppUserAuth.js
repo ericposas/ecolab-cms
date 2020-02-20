@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 
 const withAppUserAuth = (ComponentWithAppUserAuth) => {
@@ -10,7 +11,7 @@ const withAppUserAuth = (ComponentWithAppUserAuth) => {
         .then(cb)
         .catch(err => console.log(err))
     }
-    
+
     render() {
       return (
         <ComponentWithAppUserAuth

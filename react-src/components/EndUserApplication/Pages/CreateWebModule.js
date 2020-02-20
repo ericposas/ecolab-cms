@@ -27,11 +27,6 @@ class CreateWebModule extends Component {
     })
   }
 
-  componentWillUnmount() {
-    if (window.webModuleSavedTimer) clearTimeout(window.webModuleSavedTimer)
-
-  }
-
   handleInput = e => {
     this.setState({
       ...this.state,
@@ -41,14 +36,11 @@ class CreateWebModule extends Component {
 
   handleSubmit = () => {
     const { saveWebModule, updateWebModule, WebModuleSelectedForEdit, getWebModules, history } = this.props
-    // do url validation here..
-    // console.log(this.props.placement)
     if (this.props.placement == 'edit-webmodule') {
       updateWebModule({ id: WebModuleSelectedForEdit._id, browser_url: this.state.urlField }, () => {
         this.props.displayEditModal(false)
         getWebModules()
       })
-      // this.setState({ urlField: '' })
     } else {
       saveWebModule(this.state.urlField, () => history.push('/view-web-modules'))
     }
@@ -112,26 +104,6 @@ class CreateWebModule extends Component {
               : <Button onClick={this.handleSubmit} variant='contained' color='primary'>Save Web Module</Button>
             : null
           }
-          {
-            SavingWebModule
-            ? <div style={{display:'none'}}>
-                {toast.success('saving web module..', {
-                  autoClose: 500,
-                  position: 'bottom-left'
-                })}
-              </div>
-            : null
-          }
-          {/*
-            WebModuleSaved
-            ? <div style={{display:'none'}}>
-                {toast.success('web module saved!', {
-                  autoClose: 2500,
-                  position: 'bottom-left'
-                })}
-              </div>
-            : null
-          */}
         </div>
       </>
     )

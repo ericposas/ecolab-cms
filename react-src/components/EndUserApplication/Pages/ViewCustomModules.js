@@ -19,9 +19,8 @@ class ViewCustomModules extends Component {
   }
 
   componentDidMount() {
-    const { getTours, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
+    const { getCustomModules, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
-      console.log(data.data)
       const { auth, fullaccess, peer, name, email } = data.data
       if (!auth) history.push('/login')
       else {
@@ -30,11 +29,7 @@ class ViewCustomModules extends Component {
       }
     })
   }
-
-  componentDidMount() {
-    this.props.getCustomModules()
-  }
-
+  
   displayDeleteModal = value => {
     this.setState({
       showDeleteModal: value
