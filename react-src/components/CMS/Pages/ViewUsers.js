@@ -79,7 +79,7 @@ class ViewUsers extends Component {
     switch (this.state.bulkAction) {
       case 'DELETE':
         let selUsers = BulkActionSelectedUsers.length
-        toast.success(`Admin${ selUsers > 1 ? 's' : '' } deleted!`, { autoClose: 1000 })
+        toast.success(`User${ selUsers > 1 ? 's' : '' } deleted!`, { autoClose: 1000 })
         for (let i = 0; i < BulkActionSelectedUsers.length; i++) {
           await this.deleteUser(BulkActionSelectedUsers[i])
           deselectUserForBulkAction(BulkActionSelectedUsers[i])
@@ -90,7 +90,7 @@ class ViewUsers extends Component {
         //
     }
   }
-
+  
   executeBulkActionAdmins = async () => {
     const { BulkActionSelectedAdmins, deselectAdminForBulkAction } = this.props
     switch (this.state.bulkAction) {
