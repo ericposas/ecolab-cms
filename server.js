@@ -58,7 +58,8 @@ app.set('trust proxy', 1)
 app.use(session({
   genid: (req) => uuid(),
   secret: 'mysecret',
-  resave: false,
+  resave: true,
+  rolling: true,
   saveUninitialized: true,
   cookie: MODE == 'development' ? { httpOnly: false } : { secure: true }
 }))
