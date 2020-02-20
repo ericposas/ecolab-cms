@@ -7,6 +7,7 @@ import TitleBar from '../UIcomponents/TitleBar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { ToastContainer, toast } from 'react-toastify'
+import validUrl from 'valid-url'
 import axios from 'axios'
 
 class CreateWebModule extends Component {
@@ -23,10 +24,11 @@ class CreateWebModule extends Component {
       if (!auth) history.push('/login')
       else {
         if (!AppUserData.auth) setAppUserData(auth, fullaccess, peer, name, email)
+        if (this.props.placement != 'edit-webmodule') this.setState({ urlField: '' })
       }
     })
   }
-
+  
   handleInput = e => {
     this.setState({
       ...this.state,
@@ -36,13 +38,17 @@ class CreateWebModule extends Component {
 
   handleSubmit = () => {
     const { saveWebModule, updateWebModule, WebModuleSelectedForEdit, getWebModules, history } = this.props
-    if (this.props.placement == 'edit-webmodule') {
-      updateWebModule({ id: WebModuleSelectedForEdit._id, browser_url: this.state.urlField }, () => {
-        this.props.displayEditModal(false)
-        getWebModules()
-      })
+    if (validUrl.isUri(this.state.urlField)) {
+      if (this.props.placement == 'edit-webmodule') {
+        updateWebModule({ id: WebModuleSelectedForEdit._id, browser_url: this.state.urlField }, () => {
+          this.props.displayEditModal(false)
+          getWebModules()
+        })
+      } else {
+        saveWebModule(this.state.urlField, () => history.push('/view-web-modules'))
+      }
     } else {
-      saveWebModule(this.state.urlField, () => history.push('/view-web-modules'))
+      toast.error('invalid URL - please include full path, e.g. (http://www.google.com)', { autoClose: 3500 })
     }
   }
 

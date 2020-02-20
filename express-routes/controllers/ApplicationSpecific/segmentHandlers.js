@@ -1,4 +1,3 @@
-import { Schema, Types } from 'mongoose'
 import Segment from '../../models/ApplicationSpecific/Segment'
 
 const getSegments = (req, res) => {

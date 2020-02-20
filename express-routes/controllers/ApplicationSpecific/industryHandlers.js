@@ -1,4 +1,3 @@
-import { Schema, Types } from 'mongoose'
 import Industry from '../../models/ApplicationSpecific/Industry'
 
 const getIndustries = (req, res) => {

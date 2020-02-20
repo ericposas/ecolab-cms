@@ -1,11 +1,11 @@
-import { Schema, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import CustomModule from '../../models/ApplicationSpecific/CustomModule'
 
 const createCustomModule = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
     if (req.body.name && req.body.image_url) {
-      CustomModule({ name: req.body.name, image_url: req.body.image_url, creator_id: Types.ObjectId(req.session.appuserid) || '' })
+      CustomModule({ name: req.body.name, image_url: req.body.image_url, creator_id: Types.ObjectId(req.session.appuserid) })
       .save()
       .then(() => res.send({ success: 'custom module saved' }))
       .catch(err => res.send({ error: 'db err occurred' }))

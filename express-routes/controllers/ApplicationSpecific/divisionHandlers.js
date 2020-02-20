@@ -1,4 +1,3 @@
-import { Schema, Types } from 'mongoose'
 import Division from '../../models/ApplicationSpecific/Division'
 
 const getDivisions = (req, res) => {

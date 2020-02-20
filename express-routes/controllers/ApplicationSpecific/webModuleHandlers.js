@@ -1,13 +1,17 @@
+import { Types } from 'mongoose'
 import WebModule from '../../models/ApplicationSpecific/WebModule'
 
 const createWebModule = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
     if (req.body.browser_url) {
-      WebModule({ browser_url: req.body.browser_url })
-        .save()
-        .then(() => res.send({ success: 'web module document saved!' }))
-        .catch(err => res.send({ error: 'could not save web module' }))
+      WebModule({
+        browser_url: req.body.browser_url,
+        creator_id: Types.ObjectId(req.session.appuserid)
+      })
+      .save()
+      .then(() => res.send({ success: 'web module document saved!' }))
+      .catch(err => res.send({ error: 'could not save web module' }))
     } else {
       res.send({ error: 'no web module url provided' })
     }

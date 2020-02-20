@@ -1,4 +1,4 @@
-import { Schema, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import TourModule from '../../models/ApplicationSpecific/TourModule'
 
 const createTourModule = (req, res) => {

@@ -1,4 +1,4 @@
-import { Schema, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import Company from '../../models/ApplicationSpecific/Company'
 
 const createCompany = (req, res) => {
@@ -23,7 +23,6 @@ const createCompany = (req, res) => {
 
 const viewCompanies = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
-  // console.log(req.session, req.session.appuserid)
   else {
     Company.find()
       .then(data => res.send({ success: data }))
