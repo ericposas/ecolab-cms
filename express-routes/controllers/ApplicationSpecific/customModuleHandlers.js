@@ -4,7 +4,6 @@ import CustomModule from '../../models/ApplicationSpecific/CustomModule'
 const createCustomModule = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
-    // console.log(req.body)
     if (req.body.name && req.body.image_url) {
       CustomModule({ name: req.body.name, image_url: req.body.image_url, creator_id: Types.ObjectId(req.session.appuserid) || '' })
       .save()

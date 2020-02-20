@@ -5,6 +5,6 @@ import {
 
 } from '../../controllers/ApplicationSpecific/industryHandlers'
 
-industryRoutes.post('/view', getIndustries)
+industryRoutes.get('/', getIndustries)
 
 export default industryRoutes

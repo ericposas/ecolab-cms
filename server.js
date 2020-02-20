@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
     cb(null, `${file.originalname.split('.').slice(0, -1).join('.')}-${Date.now()}${path.extname(file.originalname)}`)
   }
 })
-const upload = multer({ storage: storage }) //.single('file')
+const upload = multer({ storage: storage })
 dotenv.config()
 const {
   MODE,
@@ -66,14 +66,6 @@ app.use(session({
 app.use(express.static(__dirname+'/public'))
 app.use('/uploads', express.static(__dirname+'/uploads'))
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/public/index.html'))
-})
-
-app.get('/', (req, res) => {
-  res.send('Home.')
-})
-
 // Password Reset Routes
 app.use('/password', passwordResetRoutes)
 // Login -- at base URL
@@ -86,33 +78,18 @@ app.use('/admins', adminRoutes)
 // Eco Lab Application specific
 app.use('/webmodules', webModuleRoutes)
 app.use('/companies', companyRoutes)
+app.use('/tourmodules', tourModuleRoutes)
+app.use('/custommodules', customModuleRoutes)
+// Divisions, Industries, Segments
 app.use('/divisions', divisionRoutes)
 app.use('/industries', industryRoutes)
 app.use('/segments', segmentRoutes)
-app.use('/tourmodules', tourModuleRoutes)
-app.use('/custommodules', customModuleRoutes)
 
 // File upload
-// app.post('/testupload', upload.single('file'), (req, res, next) => {
-//   // console.log(req)
-//   res.send({ success: `upload ${req.file.originalname} success!` })
-// })
-//upload.single('file')
-
 app.post('/upload', upload.single('file'), (req, res) => {
   console.log(req.session)
   res.send({ success: true, path: `/uploads/${req.file.filename}` })
 })
-
-// app.post('/upload', (req, res) => {
-//   console.log(req.session)
-//   upload(req, res, err => {
-//     if (err instanceof multer.MulterError) { return res.status(500).json(err) }
-//     else if (err) { return res.status(500).json(err) }
-//     // return res.status(200).send(req.file)
-//     return res.send({ success: true, path: `/uploads/${req.file.filename}` })
-//   })
-// })
 
 app.listen(port, err => {
   if (err) throw err

@@ -126,7 +126,7 @@ const saveWebModule = (browser_url, callback) => {
 const getWebModules = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_WEB_MODULES, payload: true })
-    axios.post('/webmodules/view')
+    axios.get('/webmodules')
       .then(data => {
         if (data.data.success) {
           dispatch({ type: GETTING_WEB_MODULES, payload: false })
@@ -137,6 +137,22 @@ const getWebModules = (cb) => {
         }
       })
       .catch(err => console.log(err))
+  }
+}
+const getOneWebModule = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: RETRIEVING_WEB_MODULE, payload: true })
+    axios.get(`/webmodules/${id}`)
+    .then(data => {
+      dispatch({ type: RETRIEVING_WEB_MODULE, payload: false })
+      if (data.data.success) {
+        dispatch({ type: SELECTED_WEB_MODULE_TO_EDIT, payload: data.data.success })
+        if (callback) callback()
+      } else {
+        console.log(`error: ${data.data.error}`)
+      }
+    })
+    .catch(err => console.log(err))
   }
 }
 const deleteWebModule = (id, callback) => {
@@ -169,29 +185,13 @@ const updateWebModule = ({ id, browser_url }, callback) => {
       .catch(err => console.log(err))
   }
 }
-const getOneWebModule = (id, callback) => {
-  return (dispatch, getState) => {
-    dispatch({ type: RETRIEVING_WEB_MODULE, payload: true })
-    axios.post(`/webmodules/${id}`)
-      .then(data => {
-        dispatch({ type: RETRIEVING_WEB_MODULE, payload: false })
-        if (data.data.success) {
-          dispatch({ type: SELECTED_WEB_MODULE_TO_EDIT, payload: data.data.success })
-          if (callback) callback()
-        } else {
-          console.log(`error: ${data.data.error}`)
-        }
-      })
-      .catch(err => console.log(err))
-  }
-}
 const setWebModuleToDelete = (id) => ({ type: SET_WEB_MODULE_TO_DELETE, payload: id })
 const setWebModuleToEdit = (webmodule) => ({ type: SELECTED_WEB_MODULE_TO_EDIT, payload: webmodule })
 // Company
 const getCompanies = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_COMPANIES, payload: true })
-    axios.post('/companies/view')
+    axios.get('/companies')
       .then(data => {
         dispatch({ type: GETTING_COMPANIES, payload: false })
         if (data.data.success) {
@@ -202,6 +202,22 @@ const getCompanies = (cb) => {
         }
       })
       .catch(err => console.log(err))
+  }
+}
+const getOneCompany = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: RETRIEVING_COMPANY, payload: true })
+    axios.get(`/companies/${id}`)
+    .then(data => {
+      dispatch({ type: RETRIEVING_COMPANY, payload: false })
+      if (data.data.success) {
+        dispatch({ type: SELECTED_COMPANY_TO_EDIT, payload: data.data.success })
+        if (callback) callback()
+      } else {
+        console.log(`error: ${data.data.error}`)
+      }
+    })
+    .catch(err => console.log(err))
   }
 }
 const deleteCompany = (id, callback) => {
@@ -249,22 +265,6 @@ const updateCompanyData = ({ id, name, logo, customer_names, notes }, callback) 
       .catch(err => console.log(err))
   }
 }
-const getOneCompany = (id, callback) => {
-  return (dispatch, getState) => {
-    dispatch({ type: RETRIEVING_COMPANY, payload: true })
-    axios.post(`/companies/${id}`)
-      .then(data => {
-        dispatch({ type: RETRIEVING_COMPANY, payload: false })
-        if (data.data.success) {
-          dispatch({ type: SELECTED_COMPANY_TO_EDIT, payload: data.data.success })
-          if (callback) callback()
-        } else {
-          console.log(`error: ${data.data.error}`)
-        }
-      })
-      .catch(err => console.log(err))
-  }
-}
 const setCompanyToDelete = (id) => ({ type: SET_COMPANY_TO_DELETE, payload: id })
 const setCompanyToEdit = (company) => ({ type: SELECTED_COMPANY_TO_EDIT, payload: company })
 
@@ -272,7 +272,7 @@ const setCompanyToEdit = (company) => ({ type: SELECTED_COMPANY_TO_EDIT, payload
 const getDivisions = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_DIVISIONS, payload: true })
-    axios.post(`/divisions/view`)
+    axios.get(`/divisions`)
       .then(data => {
         dispatch({ type: GETTING_DIVISIONS, payload: false })
         if (data.data.success) {
@@ -289,7 +289,7 @@ const getDivisions = (cb) => {
 const getIndustries = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_INDUSTRIES, payload: true })
-    axios.post(`/industries/view`)
+    axios.get(`/industries`)
       .then(data => {
         dispatch({ type: GETTING_INDUSTRIES, payload: false })
         if (data.data.success) {
@@ -306,7 +306,7 @@ const getIndustries = (cb) => {
 const getSegments = (cb) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_SEGMENTS, payload: true })
-    axios.post(`/segments/view`)
+    axios.get(`/segments`)
       .then(data => {
         dispatch({ type: GETTING_SEGMENTS, payload: false })
         if (data.data.success) {
@@ -347,7 +347,7 @@ const getTours = (cb) => {
   return (dispatch, getState) => {
     // let toastId = toast('Getting tour data..', { type: toast.TYPE.WARNING, autoClose: 2000 })
     dispatch({ type: GETTING_TOURS, payload: true })
-    axios.post('/tourmodules/view')
+    axios.get('/tourmodules')
       .then(data => {
         dispatch({ type: GETTING_TOURS, payload: false })
         if (data.data.success) {
@@ -360,6 +360,22 @@ const getTours = (cb) => {
       .catch(err => console.log(err))
   }
 }
+const getOneTour = (id, callback) => {
+  return (dispatch, getState) => {
+    dispatch({ type: RETRIEVING_TOUR, payload: true })
+    axios.get(`/tourmodules/${id}`)
+    .then(data => {
+      dispatch({ type: RETRIEVING_TOUR, payload: false })
+      if (data.data.success) {
+        dispatch({ type: SELECTED_TOUR_TO_EDIT, payload: data.data.success })
+        if (callback) callback()
+      } else {
+        console.log(`error: ${data.data.error}`)
+      }
+    })
+    .catch(err => console.log(err))
+  }
+}
 const deleteTour = (id, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: DELETING_TOUR, payload: true })
@@ -367,22 +383,6 @@ const deleteTour = (id, callback) => {
       .then(data => {
         dispatch({ type: DELETING_TOUR, payload: false })
         if (data.data.success) {
-          if (callback) callback()
-        } else {
-          console.log(`error: ${data.data.error}`)
-        }
-      })
-      .catch(err => console.log(err))
-  }
-}
-const getOneTour = (id, callback) => {
-  return (dispatch, getState) => {
-    dispatch({ type: RETRIEVING_TOUR, payload: true })
-    axios.post(`/tourmodules/${id}`)
-      .then(data => {
-        dispatch({ type: RETRIEVING_TOUR, payload: false })
-        if (data.data.success) {
-          dispatch({ type: SELECTED_TOUR_TO_EDIT, payload: data.data.success })
           if (callback) callback()
         } else {
           console.log(`error: ${data.data.error}`)
@@ -435,7 +435,7 @@ const saveCustomModule = ({ name, image_url }, callback) => {
 const getCustomModules = (callback) => {
   return (dispatch, getState) => {
     dispatch({ type: GETTING_CUSTOM_MODULES, payload: true })
-    axios.post(`/custommodules/view`)
+    axios.get(`/custommodules`)
       .then(data => {
         if (data.data.success) {
           dispatch({ type: GETTING_CUSTOM_MODULES, payload: false })
@@ -451,7 +451,7 @@ const getCustomModules = (callback) => {
 const getOneCustomModule = (id, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: RETRIEVING_CUSTOM_MODULE, payload: true })
-    axios.post(`/custommodules/${id}`)
+    axios.get(`/custommodules/${id}`)
       .then(data => {
         if (data.data.success) {
           dispatch({ type: RETRIEVING_CUSTOM_MODULE, payload: false })

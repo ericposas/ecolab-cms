@@ -5,6 +5,6 @@ import {
 
 } from '../../controllers/ApplicationSpecific/segmentHandlers'
 
-segmentRoutes.post('/view', getSegments)
+segmentRoutes.get('/', getSegments)
 
 export default segmentRoutes

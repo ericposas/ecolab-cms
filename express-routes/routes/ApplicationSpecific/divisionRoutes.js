@@ -5,6 +5,6 @@ import {
 
 } from '../../controllers/ApplicationSpecific/divisionHandlers'
 
-divisionRoutes.post('/view', getDivisions)
+divisionRoutes.get('/', getDivisions)
 
 export default divisionRoutes

@@ -9,9 +9,9 @@ import {
 } from '../../controllers/ApplicationSpecific/webModuleHandlers'
 
 webModuleRoutes.post('/', createWebModule)
-webModuleRoutes.post('/view', viewWebModules)
+webModuleRoutes.get('/', viewWebModules)
+webModuleRoutes.get('/:id', getOneWebModule)
 webModuleRoutes.delete('/delete/:id', deleteWebModule)
 webModuleRoutes.put('/update/:id', updateWebModule)
-webModuleRoutes.post('/:id', getOneWebModule)
 
 export default webModuleRoutes

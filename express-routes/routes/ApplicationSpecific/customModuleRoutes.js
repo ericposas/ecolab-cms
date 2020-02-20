@@ -9,9 +9,9 @@ import {
 } from '../../controllers/ApplicationSpecific/customModuleHandlers'
 
 customModuleRoutes.post('/', createCustomModule)
-customModuleRoutes.post('/view', viewCustomModules)
+customModuleRoutes.get('/', viewCustomModules)
+customModuleRoutes.get('/:id', getOneCustomModule)
 customModuleRoutes.delete('/delete/:id', deleteCustomModule)
-customModuleRoutes.post('/:id', getOneCustomModule)
 customModuleRoutes.put('/update/:id', updateCustomModule)
 
 export default customModuleRoutes
