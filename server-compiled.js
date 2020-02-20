@@ -54,7 +54,7 @@ var storage = _multer["default"].diskStorage({
 
 var upload = (0, _multer["default"])({
   storage: storage
-}); //.single('file')
+});
 
 _dotenv["default"].config();
 
@@ -95,13 +95,7 @@ app.use((0, _expressSession["default"])({
   }
 }));
 app.use(_express["default"]["static"](__dirname + '/public'));
-app.use('/uploads', _express["default"]["static"](__dirname + '/uploads'));
-app.get('*', function (req, res) {
-  res.sendFile(_path["default"].join(__dirname + '/public/index.html'));
-});
-app.get('/', function (req, res) {
-  res.send('Home.');
-}); // Password Reset Routes
+app.use('/uploads', _express["default"]["static"](__dirname + '/uploads')); // Password Reset Routes
 
 app.use('/password', _passwordResetRoutes["default"]); // Login -- at base URL
 
@@ -113,16 +107,12 @@ app.use('/admins', _adminRoutes["default"]); // Eco Lab Application specific
 
 app.use('/webmodules', _webModuleRoutes["default"]);
 app.use('/companies', _companyRoutes["default"]);
+app.use('/tourmodules', _tourModuleRoutes["default"]);
+app.use('/custommodules', _customModuleRoutes["default"]); // Divisions, Industries, Segments
+
 app.use('/divisions', _divisionRoutes["default"]);
 app.use('/industries', _industryRoutes["default"]);
-app.use('/segments', _segmentRoutes["default"]);
-app.use('/tourmodules', _tourModuleRoutes["default"]);
-app.use('/custommodules', _customModuleRoutes["default"]); // File upload
-// app.post('/testupload', upload.single('file'), (req, res, next) => {
-//   // console.log(req)
-//   res.send({ success: `upload ${req.file.originalname} success!` })
-// })
-//upload.single('file')
+app.use('/segments', _segmentRoutes["default"]); // File upload
 
 app.post('/upload', upload.single('file'), function (req, res) {
   console.log(req.session);
@@ -130,16 +120,7 @@ app.post('/upload', upload.single('file'), function (req, res) {
     success: true,
     path: "/uploads/".concat(req.file.filename)
   });
-}); // app.post('/upload', (req, res) => {
-//   console.log(req.session)
-//   upload(req, res, err => {
-//     if (err instanceof multer.MulterError) { return res.status(500).json(err) }
-//     else if (err) { return res.status(500).json(err) }
-//     // return res.status(200).send(req.file)
-//     return res.send({ success: true, path: `/uploads/${req.file.filename}` })
-//   })
-// })
-
+});
 app.listen(port, function (err) {
   if (err) throw err;else console.log('server started in ES6!');
 });
