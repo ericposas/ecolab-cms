@@ -86,7 +86,8 @@ app.use((0, _expressSession["default"])({
     return (0, _uuid["default"])();
   },
   secret: 'mysecret',
-  resave: false,
+  resave: true,
+  rolling: true,
   saveUninitialized: true,
   cookie: MODE == 'development' ? {
     httpOnly: false
