@@ -14,5 +14,3 @@
 ##TODO
   - code() submit route doesn't work directly; code reset working when we pass it to the login function, strange.
   - Add function of "enabled/disabled" for modules (will disable on the tablet/screen view)
-  - make sure pages cannot be seen at all if user is not logged in; when we reload the server, and refresh the page, the page can still be seen even though an error of "not authorized" is logged
-  
