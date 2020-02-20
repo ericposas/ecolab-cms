@@ -42,9 +42,13 @@ const getAdmins = (req, res) => {
 
 const deleteAdmin = (req, res) => {
   if (req.params.id) {
-    Admin.deleteOne({ _id: req.params.id })
-      .then(data => res.send(data))
-      .catch(err => console.log(err))
+    if (req.session.owner == true) {
+      Admin.deleteOne({ _id: req.params.id })
+        .then(data => res.send(data))
+        .catch(err => console.log(err))
+    } else {
+      res.send({ error: 'must be an "owner" to delete another Admin' })
+    }
   }
 }
 

@@ -24,7 +24,7 @@ class TitleBar extends Component {
       })
       .catch(err => console.log(err))
   }
-  
+
   render () {
     const { AppUserData } = this.props
     const logoutAreaStyle = {
@@ -40,10 +40,15 @@ class TitleBar extends Component {
           }}>
           {this.props.title}
         </div>
-        <div style={logoutAreaStyle}>
-          <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>Welcome {AppUserData ? AppUserData.name : null}</div>
-          <Button onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
-        </div>
+        {
+          AppUserData && AppUserData.auth
+          ?
+            <div style={logoutAreaStyle}>
+              <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>Welcome {AppUserData ? AppUserData.name : null}</div>
+              <Button onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
+            </div>
+          : null
+        }
       </>
     )
   }

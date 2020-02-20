@@ -22,7 +22,6 @@ class AdminEditView extends Component {
       adminEmail: this.props.SelectedAdminForEditing.email,
       adminOwner: this.props.SelectedAdminForEditing.owner
     })
-    // this.adminOwnerToggle(this.props.SelectedAdminForEditing.owner)
   }
 
   componentWillUnmount() {
@@ -115,7 +114,7 @@ class AdminEditView extends Component {
           className='fullscreen-darken'
           onClick={() => setSelectedAdminForEditing(null)}></div>
         <div
-          style={{ width: '500px', height: '500px' }}
+          style={{ width: '500px', height: '440px' }}
           className='modal-user-edit-view-container center-float'>
           <div className='modal-user-edit-title-ribbon'>
             Edit Application User: &nbsp;

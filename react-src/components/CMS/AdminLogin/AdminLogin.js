@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
-import axios from 'axios'
-import validator from 'email-validator'
+import { toast, ToastContainer } from 'react-toastify'
 import TitleBar from '../UIcomponents/TitleBar'
+import validator from 'email-validator'
+import axios from 'axios'
 
 class AdminLogin extends Component {
 
@@ -26,7 +27,12 @@ class AdminLogin extends Component {
 
   componentWillUnmount() {
     if (this.userMsgTimer) clearTimeout(this.userMsgTimer)
-    if (this.displayInvalidEmailErrorTimer) clearTimeout(this.displayInvalidEmailErrorTimer)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // this.state.emailValue != prevProps.emailValue
+    // ? console.log('should be typing')
+    // : console.log('...')
   }
 
   onEmailInput = e => {
@@ -55,16 +61,11 @@ class AdminLogin extends Component {
   }
 
   displayInvalidEmailError = () => {
-    this.setState({
-      ...this.state,
-      showInvalidEmailError: true
-    })
-    this.displayInvalidEmailErrorTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showInvalidEmailError: false
-      })
-    }, 2000)
+    toast.error('Invalid email address..', { autoClose: 2000 })
+  }
+
+  displayAdminUserError = () => {
+    toast.error('You need admin priviledges to access the admin panel.', { autoClose: 2000 })
   }
 
   logIn = e => {
@@ -77,32 +78,23 @@ class AdminLogin extends Component {
       })
       .then(data => {
         const { auth, owner, name, email, reset } = data.data
-        if (auth) this.props.history.push('/users')
-        else if (reset) this.props.history.push('/reset-password/adminCodeResetSuccess')
-        else {
-          this.setState({ ...this.state, userMsg: true })
-          this.userMsgTimer = setTimeout(() => this.setState({ ...this.state, userMsg: false }), 2000)
-        }
+        if (auth) {
+          toast.success('Authenticated as Admin', { autoClose: 750, onClose: () => this.props.history.push('/users') })
+        } else if (reset) this.props.history.push('/reset-password/adminCodeResetSuccess')
+        else this.displayAdminUserError()
       })
       .catch(err => console.log(err))
     } else {
       this.displayInvalidEmailError()
     }
   }
-
+  
   render() {
     const { AdminData } = this.props
     return (
       <>
+        <ToastContainer/>
         <TitleBar title={process.env.APP_NAME}/>
-        {
-          this.state.showInvalidEmailError
-          ?
-            <>
-              <div>Invalid e-mail address</div>
-            </>
-          : null
-        }
         {
           AdminData && AdminData.auth
           ?
@@ -112,15 +104,6 @@ class AdminLogin extends Component {
             </>
           :
             <>
-              {
-                this.state.userMsg
-                ?
-                  <div>
-                    You need admin priviledges to access the admin panel.
-                    Regular users should use the supplied /auth route for your application.
-                  </div>
-                : null
-              }
               <div
                 className='center-float'
                 style={{

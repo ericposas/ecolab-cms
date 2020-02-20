@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import axios from 'axios'
 import validator from 'email-validator'
-import TitleBar from '../../CMS/UIcomponents/TitleBar'
+import TitleBar from '../UIcomponents/TitleBar'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { ToastContainer, toast } from 'react-toastify'
@@ -67,7 +67,7 @@ class AppAuth extends Component {
       onClose: () => history.push('/')
     })
   }
-  
+
   render() {
     return (
       <>

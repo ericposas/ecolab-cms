@@ -12,5 +12,7 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - code() submit route doesn't work directly; code reset working when we pass it to the login function, strange.
   - Add function of "enabled/disabled" for modules (will disable on the tablet/screen view)
+  - May need to delete all Tours associated with a deleted company
+  - Rename "Tour Module" to "Tour Setup"
+  - Spell out the specs for PNG upload (tell the users): 1920x1200 & PNG file type

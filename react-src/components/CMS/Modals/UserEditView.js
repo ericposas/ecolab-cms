@@ -115,7 +115,7 @@ class UserEditView extends Component {
           className='fullscreen-darken'
           onClick={() => setSelectedUserForEditing(null)}></div>
         <div
-          style={{ width: '500px', height: '500px' }}
+          style={{ width: '500px', height: '540px' }}
           className='modal-user-edit-view-container center-float'>
           <div className='modal-user-edit-title-ribbon'>
             Edit Application User: &nbsp;

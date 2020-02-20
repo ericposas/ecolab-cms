@@ -7,11 +7,12 @@ html,
 body {
   overflow-x: hidden;
   background-color: #d6d6d6;
-  // color: #fff;
 }
 
-input {
-  color: #fff;
+@media (min-width: 640px) {
+  .left-side-panel {
+    background-color: #000;
+  }
 }
 
 // Misc.
@@ -94,7 +95,12 @@ input {
 // LeftSidePanel <Component>
 .left-side-panel {
   height: 100vh;
-  background-color: #d6d6d6;
+}
+
+.panel-button-users {
+}
+
+.panel-button-admins {
 }
 
 .left-side-panel-button {
@@ -129,7 +135,6 @@ input {
 }
 
 .user-component-email {
-  // border-left: 1px solid black;
 }
 
 .user-edit-clickable-region {
@@ -140,15 +145,14 @@ input {
   cursor: pointer;
 }
 
-
-// .user-component-delete-button {
-//   cursor: pointer;
-//   display: block;
-//   position: absolute;
-// }
-
 // ViewUsers <Component>
+.user-search-box-label {
+  display: inline;
+}
+
 .user-bulk-actions-and-search-container {
+  padding: 20px;
+  background-color: #c1c1c1;
 }
 
 .users-list-labels-container {
