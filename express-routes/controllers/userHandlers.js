@@ -15,8 +15,6 @@ const appLogin = (req, res) => {
   if (req.body.email && req.body.password) {
     User.findOne({ email: req.body.email })
       .then(doc => {
-        // console.log(doc)
-        // if (doc.resetCode) { doc.resetCode = null }
         bcrypt.compare(req.body.password, doc.password, (err, result) => {
           if (result == true) {
             // add session for application user
@@ -25,7 +23,6 @@ const appLogin = (req, res) => {
             req.session.appusername = doc.name
             req.session.appuseremail = doc.email
             req.session.appuserfullaccess = doc.full_access
-            // console.log(doc.full_access, req.session.appuserfullaccess)
             req.session.appuserpeer = doc.peer
             req.session.maxAge = 1000 * 60 * 15
             req.session.save(() => {
@@ -40,7 +37,6 @@ const appLogin = (req, res) => {
             code(req, res, () => {
               res.send({ reset: 'correct reset code provided.' })
             })
-            // res.send({ error: 'wrong password.' })
           }
         })
       })

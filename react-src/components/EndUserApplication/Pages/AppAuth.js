@@ -7,7 +7,6 @@ import validator from 'email-validator'
 import TitleBar from '../../CMS/UIcomponents/TitleBar'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-// import { makeStyles, withStyles } from '@material-ui/core/styles'
 import { ToastContainer, toast } from 'react-toastify'
 
 class AppAuth extends Component {
@@ -18,12 +17,6 @@ class AppAuth extends Component {
     showUserDataError: false,
     showUserAuthenticatedMsg: false,
     showInvalidEmailError: false
-  }
-
-  componentWillUnmount() {
-    if (this.userDataAuthTimer) clearTimeout(this.userDataAuthTimer)
-    if (this.userDataErrorTimer) clearTimeout(this.userDataErrorTimer)
-    if (this.invalidEmailErrorTimer) clearTimeout(this.invalidEmailErrorTimer)
   }
 
   onEmailInput = e => {
@@ -57,20 +50,20 @@ class AppAuth extends Component {
             this.displayUserDataError()
           }
         })
-        .catch(err => this.showUserDataError)
+        .catch(err => { this.displayUserDataError() })
     } else {
       this.displayInvalidEmailError()
     }
   }
 
-  displayUserDataError = () => toast.error('Invalid password', { autoClose: 2000 })
+  displayUserDataError = () => toast.error('Invalid credentials', { autoClose: 2000 })
 
   displayInvalidEmailError = () => toast.error('Invalid e-mail', { autoClose: 2000 })
 
   displayUserAuthenticatedMsg = () => {
     const { history } = this.props
-    toast.success('You are now authenticated!', {
-      autoClose: 2000,
+    toast.success('Authenticated!', {
+      autoClose: 1000,
       onClose: () => history.push('/')
     })
   }
@@ -107,14 +100,6 @@ class AppAuth extends Component {
             <Button variant='contained' color='primary' onClick={this.onFormSubmit}>Submit</Button>
           </div>
         </div>
-        {
-          this.state.showUserDataError
-          ?
-            <>
-              <div className='padding-div-10'>Invalid credentials.</div>
-            </>
-          : null
-        }
       </>
     )
   }

@@ -53,7 +53,6 @@ const updateAdmin = (req, res) => {
   if (req.params.id) {
     Admin.findOne({ _id: req.params.id })
       .then(doc => {
-        // console.log(doc)
         if (doc) {
           doc.name = req.body.name
           doc.email = req.body.email

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
+import { ToastContainer } from 'react-toastify'
 import axios from 'axios'
 
 class CreateMode extends Component {
@@ -24,6 +25,7 @@ class CreateMode extends Component {
     const { history } = this.props
     return (
       <>
+        <ToastContainer/>
         <TitleBar title={'Eco Lab Application'}/>
         <div className='center-float'
           style={{ width: '80%', height: '600px', border: 'none', backgroundColor: 'rgba(0,0,0,0)' }}>
