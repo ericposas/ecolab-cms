@@ -13,6 +13,5 @@
 
 ##TODO
   - Add function of "enabled/disabled" for modules (will disable on the tablet/screen view)
-  - May need to delete all Tours associated with a deleted company
-  - Rename "Tour Module" to "Tour Setup"
   - Spell out the specs for PNG upload (tell the users): 1920x1200 & PNG file type
+  

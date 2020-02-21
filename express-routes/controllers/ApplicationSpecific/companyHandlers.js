@@ -1,5 +1,6 @@
 import { Types } from 'mongoose'
 import Company from '../../models/ApplicationSpecific/Company'
+import TourModule from '../../models/ApplicationSpecific/TourModule'
 
 const createCompany = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
@@ -36,8 +37,16 @@ const deleteCompany = (req, res) => {
     if (req.params.id) {
       let id = req.params.id
       Company.deleteOne({ _id: id })
-        .then(doc => res.send({ success: id + ' successfully deleted.' }))
-        .catch(err => res.send({ error: 'db error' }))
+        .then(doc => {
+          console.log('now deleting associated Tours..')
+          TourModule.deleteMany({ company_id: id })
+            .then(results => {
+              console.log('associated Tours deleted!')
+              res.send({ success: `Company ${id} successfully deleted along with associated Tours.` })
+            })
+            .catch(err => res.send({ error: 'error deleting associated tours' }))
+        })
+        .catch(err => res.send({ error: 'error deleting company' }))
     } else {
       res.send({ error: 'no object id provided' })
     }

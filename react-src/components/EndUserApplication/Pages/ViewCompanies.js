@@ -18,7 +18,7 @@ class ViewCompanies extends Component {
     showDeleteModal: false,
     showEditModal: false
   }
-  
+
   componentDidMount() {
     const { getCompanies, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
@@ -76,15 +76,6 @@ class ViewCompanies extends Component {
           <br/>
           <br/>
           <div className='section-title'>Companies</div>
-          {/*
-            FetchingCompanies
-            ? <div style={{ display: 'none' }}>
-                {toast.warn('fetching companies...', {
-                  autoClose: 500
-                })}
-              </div>
-            : null
-          */}
           {
             Companies
             ? <>
