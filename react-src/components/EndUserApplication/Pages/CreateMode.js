@@ -29,10 +29,10 @@ class CreateMode extends Component {
         <TitleBar title={'Eco Lab Application'}/>
         <div className='center-float'
           style={{ width: '80%', height: '600px', border: 'none', backgroundColor: 'rgba(0,0,0,0)' }}>
-          <div className='dashboard-button-large' onClick={() => history.push('/create-custom-module')}>Custom Module</div>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-custom-module')}>Create a Custom Module</div>
           <div className='dashboard-button-large' onClick={() => history.push('/create-company')}>Add a Company</div>
-          <div className='dashboard-button-large' onClick={() => history.push('/create-web-module')}>Web Module</div>
-          <div className='dashboard-button-large' onClick={() => history.push('/create-tour')}>Tour Module</div>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-web-module')}>Create a Web Module</div>
+          <div className='dashboard-button-large' onClick={() => history.push('/create-tour')}>Create a Tour</div>
         </div>
       </>
     )

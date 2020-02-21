@@ -110,7 +110,6 @@ class CreateTour extends Component {
   }
 
   handleCompanySelector = e => {
-    // console.log(e.target.value)
     let companyName = e.target.value
     let company = this.props.Companies.find(c => c.name === companyName)
     if (e.target.value == CREATE_NEW_COMPANY && this.props.placement != 'edit-tour') {
@@ -125,10 +124,8 @@ class CreateTour extends Component {
     let division = this.props.Divisions.find(d => d._id === divisionId)
     console.log(divisionId, division)
     this.setState({ ...this.state, divisionSelected: division, industrySelected: dummyIndustry, segmentSelected: dummySegment })
-    // console.log(division.name)
-    // this.setState({ divisionSelected: division.name, industriesOfSelectedDivision: division.industries })
   }
-
+  
   handleIndustrySelector = e => {
     let industryName = e.target.value
     let industry = this.props.Industries.find(i => i.name === industryName)

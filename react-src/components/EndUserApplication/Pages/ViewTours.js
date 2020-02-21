@@ -18,7 +18,7 @@ class ViewTours extends Component {
     showDeleteModal: false,
     showEditModal: false
   }
-  
+
   componentDidMount() {
     const { getTours, checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
@@ -71,7 +71,7 @@ class ViewTours extends Component {
           </Button>
           <br/>
           <br/>
-          <div className='section-title'>Tour Modules</div>
+          <div className='section-title'>Created Tours</div>
           {
             Tours && Tours.map
             ? <>
