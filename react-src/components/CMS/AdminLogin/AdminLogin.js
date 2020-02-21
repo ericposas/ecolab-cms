@@ -5,6 +5,7 @@ import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import { toast, ToastContainer } from 'react-toastify'
 import TitleBar from '../UIcomponents/TitleBar'
+import { TextField, Button } from '@material-ui/core'
 import validator from 'email-validator'
 import axios from 'axios'
 
@@ -88,13 +89,13 @@ class AdminLogin extends Component {
       this.displayInvalidEmailError()
     }
   }
-  
+
   render() {
     const { AdminData } = this.props
     return (
       <>
         <ToastContainer/>
-        <TitleBar title={process.env.APP_NAME}/>
+        <TitleBar title={`${process.env.APP_NAME} Administrator Panel`}/>
         {
           AdminData && AdminData.auth
           ?
@@ -106,20 +107,19 @@ class AdminLogin extends Component {
             <>
               <div
                 className='center-float'
-                style={{
-                  width: '400px',
-                  height: '200px',
-                  padding: '20px'
-                }}>
-                <div>log in</div>
+                style={{ width: '400px', height: '240px', padding: '20px', border: 'none', borderRadius: '4px' }}>
+                <div>Administrator log in</div>
+                <br/>
                 <div>
-                  <form method='post'>
-                    <label>email: &nbsp;</label>
-                    <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
-                    <label>password: &nbsp;</label>
-                    <input onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>
-                    <input onClick={this.logIn} type='submit' value='log in'/>
-                  </form>
+                  <TextField label='email' onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
+                  <TextField label='password' onChange={this.onPasswordInput} type='password' value={this.state.passwordValue}/><br/>
+                  <br/>
+                  <Button
+                    onClick={this.logIn}
+                    variant='contained'
+                    color='default'>
+                    Log in
+                  </Button>
                 </div>
               </div>
             </>

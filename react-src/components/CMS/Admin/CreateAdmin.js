@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
+import { TextField, Button } from '@material-ui/core'
 import validator from 'email-validator'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 
 class CreateAdmin extends Component {
@@ -25,12 +27,6 @@ class CreateAdmin extends Component {
     })
   }
 
-  componentWillUnmount() {
-    if (this.displayAdminCreatedMsgTimer) clearTimeout(this.displayAdminCreatedMsgTimer)
-    if (this.displayAdminCreateErrorTimer) clearTimeout(this.displayAdminCreateErrorTimer)
-    if (this.displayInvalidEmailErrorTimer) clearTimeout(this.displayInvalidEmailErrorTimer)
-  }
-
   onNameInput = e => {
     this.setState({
       ...this.state,
@@ -45,47 +41,6 @@ class CreateAdmin extends Component {
     })
   }
 
-  displayAdminCreatedMsg = () => {
-    const { history } = this.props
-    this.setState({
-      ...this.state,
-      showAdminCreatedMsg: true
-    })
-    this.displayAdminCreatedMsgTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showAdminCreatedMsg: false
-      })
-      history.push('/users')
-    }, 2000)
-  }
-
-  displayAdminCreateError = () => {
-    this.setState({
-      ...this.state,
-      showAdminCreateError: true
-    })
-    this.displayAdminCreateErrorTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showAdminCreateError: false
-      })
-    }, 2000)
-  }
-
-  displayInvalidEmailError = () => {
-    this.setState({
-      ...this.state,
-      showInvalidEmailError: true
-    })
-    this.displayAdminCreateErrorTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showInvalidEmailError: false
-      })
-    }, 2000)
-  }
-
   submitForm = e => {
     const { history } = this.props
     const { nameValue, emailValue } = this.state //, passwordValue } = this.state
@@ -94,12 +49,15 @@ class CreateAdmin extends Component {
       axios.post('/admins/create', { name: nameValue, email: emailValue })
         .then(data => {
           const { success } = data.data
-          if (success) this.displayAdminCreatedMsg()
-          else this.displayAdminCreateError()
+          if (success) {
+            toast.success(`New Admin ${nameValue} created!`, { autoClose: 1500 })
+            this.props.getAdmins(() => this.props.setDisplay(false))
+          }
+          else toast.error('Could not create Admin account.', { autoClose: 2000 })
         })
         .catch(err => console.log({ error: err.errmsg }))
     } else {
-      this.displayInvalidEmailError()
+      toast.error('Invalid email.', { autoClose: 1500 })
     }
   }
 
@@ -109,33 +67,21 @@ class CreateAdmin extends Component {
     return (
       <>
         {
-          showInvalidEmailError
-          ? <><div>Invalid email address.</div><br/><br/></>
-          : null
-        }
-        {
-          showAdminCreateError
-          ? <><div>Admin could not be created.</div><br/><br/></>
-          : null
-        }
-        {
-          showAdminCreatedMsg
-          ? <><div>Admin created succesfully.</div><br/><br/></>
-          : null
-        }
-        {
           AdminData.auth
           ?
             <>
-              <div>Admin - Create New Administrator</div><br/>
-              <div>
-                <form method='post'>
-                  <label>name: &nbsp;</label>
-                  <input onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
-                  <label>email: &nbsp;</label>
-                  <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/><br/>
-                  <input onClick={this.submitForm} type='submit' value='Create User'/>
-                </form>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>Create New Admin</div>
+              <div className='center-float' style={{ width: '240px', height: '200px', border: 'none' }}>
+                <br/>
+                <TextField variant='outlined' label='name' onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
+                <TextField variant='outlined' label='email' onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
+                <br/>
+                <Button variant='contained' color='secondary' onClick={this.submitForm} type='submit'>
+                  Create Admin
+                </Button>
+                <Button style={{ marginLeft: '4px' }} variant='contained' color='default' onClick={() => this.props.setDisplay(false)} type='submit'>
+                  Cancel
+                </Button>
               </div>
             </>
           :

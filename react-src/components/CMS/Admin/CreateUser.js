@@ -3,7 +3,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
+import { TextField, Button } from '@material-ui/core'
 import validator from 'email-validator'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 
 class CreateUser extends Component {
@@ -45,47 +47,6 @@ class CreateUser extends Component {
     })
   }
 
-  displayInvalidEmailMsg = () => {
-    this.setState({
-      ...this.state,
-      showInvalidEmailMsg: true
-    })
-    this.displayInvalidEmailMsgTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showInvalidEmailMsg: false
-      })
-    }, 2000)
-  }
-
-  displayUserCreatedMsg = () => {
-    const { history } = this.props
-    this.setState({
-      ...this.state,
-      showUserCreatedMsg: true
-    })
-    this.userCreatedMsgTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showUserCreatedMsg: false
-      })
-      history.push('/users')
-    }, 2000)
-  }
-
-  displayUserCreateErrorMsg = () => {
-    this.setState({
-      ...this.state,
-      showUserCreateError: true
-    })
-    this.userCreateErrorTimer = setTimeout(() => {
-      this.setState({
-        ...this.state,
-        showUserCreateError: false
-      })
-    }, 2000)
-  }
-
   submitForm = e => {
     const { history } = this.props
     const { nameValue, emailValue } = this.state
@@ -94,12 +55,15 @@ class CreateUser extends Component {
       axios.post('/users/create', { name: nameValue, email: emailValue })
         .then(data => {
           const { success } = data.data
-          if (success) this.displayUserCreatedMsg()
-          else this.displayUserCreateErrorMsg()
+          if (success) {
+            toast.success(`New user ${nameValue} created!`, { autoClose: 1500 })
+            this.props.getUsers(() => this.props.setDisplay(false))
+          }
+          else toast.error('Could not create user.', { autoClose: 2000 })
         })
         .catch(err => console.log({ error: err.errmsg }))
     } else {
-      this.displayInvalidEmailMsg()
+      toast.error('Invalid email.', { autoClose: 1500 })
     }
   }
 
@@ -109,33 +73,21 @@ class CreateUser extends Component {
     return (
       <>
         {
-          showInvalidEmailMsg
-          ? <><div>Invalid email address.</div></>
-          : null
-        }
-        {
-          showUserCreateError
-          ? <><div>User could not be created.</div></>
-          : null
-        }
-        {
-          showUserCreatedMsg
-          ? <><div>User created succesfully.</div><br/><br/></>
-          : null
-        }
-        {
           AdminData.auth
           ?
             <>
-              <div>Admin - Create New User</div>
-              <div>
-                <form method='post'>
-                  <label>name: &nbsp;</label>
-                  <input onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
-                  <label>email: &nbsp;</label>
-                  <input onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
-                  <input onClick={this.submitForm} type='submit' value='Create User'/>
-                </form>
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>Create New User</div>
+              <div className='center-float' style={{ width: '240px', height: '200px', border: 'none' }}>
+                <br/>
+                <TextField variant='outlined' label='name' onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
+                <TextField variant='outlined' label='email' onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
+                <br/>
+                <Button variant='contained' color='primary' onClick={this.submitForm} type='submit'>
+                  Create User
+                </Button>
+                <Button style={{ marginLeft: '4px' }} variant='contained' color='default' onClick={() => this.props.setDisplay(false)} type='submit'>
+                  Cancel
+                </Button>
               </div>
             </>
           :

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withAuthCheck from '../HOC/withAuthCheck'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
+import { toast } from 'react-toastify'
 import Button from '@material-ui/core/Button'
 import axios from 'axios'
 
@@ -14,12 +15,13 @@ class TitleBar extends Component {
     axios.post('/logout')
       .then(data => {
         if (data.data == 'logged out') {
-          setTimeout(() => history.push('/admin'), 1000)
-          setAdminData(null, null, null, null, null)
           toast.dismiss(toastId)
           toast.success('logged out', {
             autoClose: 500,
-            onClose: () => window.location.reload()
+            onClose: () => {
+              setAdminData(null, null, null, null, null)
+              history.push('/admin')
+            }
           })
         }
       })
@@ -45,7 +47,7 @@ class TitleBar extends Component {
           AdminData && AdminData.auth
           ?
             <div style={logoutAreaStyle}>
-              <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>Admin: {AdminData ? AdminData.name : null}</div>
+              <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>{AdminData.email}</div>
               <Button onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
             </div>
           : null
@@ -56,4 +58,4 @@ class TitleBar extends Component {
 
 }
 
-export default TitleBar
+export default connect(mapState, mapDispatch)(withRouter(TitleBar))

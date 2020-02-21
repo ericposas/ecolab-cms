@@ -12,7 +12,10 @@ import Admin from '../ListItems/Admin'
 import UserEditView from '../Modals/UserEditView'
 import AdminEditView from '../Modals/AdminEditView'
 import { toast, ToastContainer } from 'react-toastify'
-import Button from '@material-ui/core/Button'
+import { Button, TextField, Input } from '@material-ui/core'
+import { Autocomplete } from '@material-ui/lab'
+import CreateUser from '../Admin/CreateUser'
+import CreateAdmin from '../Admin/CreateAdmin'
 const entities = new Entities()
 
 const minWidth = 640
@@ -26,7 +29,9 @@ class ViewUsers extends Component {
     bulkAction: null,
     searchFilter: '',
     sort: 'by-name-ascending',
-    lastTypeSelected: 'USERS'
+    lastTypeSelected: 'USERS',
+    displayCreateUserModal: false,
+    displayCreateAdminModal: false
   }
 
   componentDidMount() {
@@ -42,6 +47,14 @@ class ViewUsers extends Component {
       else history.push('/admin')
     })
   }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevState.usersButtonSelected != this.state.usersButtonSelected) {
+  //     this.setState({
+  //       searchText: ''
+  //     })
+  //   }
+  // }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResizeHandler)
@@ -79,29 +92,37 @@ class ViewUsers extends Component {
     switch (this.state.bulkAction) {
       case 'DELETE':
         let selUsers = BulkActionSelectedUsers.length
-        toast.success(`User${ selUsers > 1 ? 's' : '' } deleted!`, { autoClose: 1000 })
-        for (let i = 0; i < BulkActionSelectedUsers.length; i++) {
-          await this.deleteUser(BulkActionSelectedUsers[i])
-          deselectUserForBulkAction(BulkActionSelectedUsers[i])
+        if (selUsers > 0) {
+          toast.success(`User${ selUsers > 1 ? 's' : '' } deleted!`, { autoClose: 1000 })
+          for (let i = 0; i < BulkActionSelectedUsers.length; i++) {
+            await this.deleteUser(BulkActionSelectedUsers[i])
+            deselectUserForBulkAction(BulkActionSelectedUsers[i])
+          }
+          console.log(BulkActionSelectedUsers.length + ' deleted.')
+        } else {
+          toast.warn('No user(s) selected for deletion', { autoClose: 2000 })
         }
-        console.log(BulkActionSelectedUsers.length + ' deleted.')
         break;
       default:
         //
     }
   }
-  
+
   executeBulkActionAdmins = async () => {
     const { BulkActionSelectedAdmins, deselectAdminForBulkAction } = this.props
     switch (this.state.bulkAction) {
       case 'DELETE':
         let selAdmins = BulkActionSelectedAdmins.length
-        toast.success(`Admin${ selAdmins > 1 ? 's' : '' } deleted!`, { autoClose: 1000 })
-        for (let i = 0; i < BulkActionSelectedAdmins.length; i++) {
-          await this.deleteAdmin(BulkActionSelectedAdmins[i])
-          deselectAdminForBulkAction(BulkActionSelectedAdmins[i])
+        if (selAdmins > 0) {
+          toast.success(`Admin${ selAdmins > 1 ? 's' : '' } deleted!`, { autoClose: 1000 })
+          for (let i = 0; i < BulkActionSelectedAdmins.length; i++) {
+            await this.deleteAdmin(BulkActionSelectedAdmins[i])
+            deselectAdminForBulkAction(BulkActionSelectedAdmins[i])
+          }
+          console.log(BulkActionSelectedAdmins.length + ' deleted.')
+        } else {
+          toast.warn('No Admin(s) selected for deletion', { autoClose: 2000 })
         }
-        console.log(BulkActionSelectedAdmins.length + ' deleted.')
         break;
       default:
         //
@@ -226,41 +247,109 @@ class ViewUsers extends Component {
     </>
   )
 
+  handleAutoCompleteChange = (e, values) => {
+    this.setState({
+      bulkAction: (
+        values ? values.value : ''
+      )
+    },
+    () => console.log(this.state.bulkAction))
+  }
+
+  setDisplayCreateUserModal = val => {
+    this.setState({
+      displayCreateUserModal: val
+    })
+  }
+
+  setDisplayCreateAdminModal = val => {
+    this.setState({
+      displayCreateAdminModal: val
+    })
+  }
+
+  // handleAutoCompleteInput = e => {
+  //   this.setState({
+  //     searchText: e.target.value
+  //   },
+  //   () => console.log(this.state.searchText))
+  // }
+
   renderMain = () => (
     <>
       <br/>
       <div className={'user-bulk-actions-and-search-container row'}>
-        <select
+        {/*<select
           className='col-4'
           onChange={e => {
             this.setState({ bulkAction: e.target.value })
           }}>
           <option value=''>Bulk Actions</option>
           <option value='DELETE'>Delete {this.state.usersButtonSelected ? ' Users' : ' Admins'}</option>
-        </select>
-        <button
+        </select>*/}
+        <Autocomplete
+          onChange={this.handleAutoCompleteChange}
+          style={{ width: 200 }}
+          options={
+            [
+              { type: `Delete`, value: `DELETE` }
+            ]
+          }
+          getOptionLabel={option => option.type}
+          renderInput={ params => (
+            <TextField
+              {...params}
+              label='Select Action'
+              variant='outlined'
+              fullWidth
+              />
+          )}
+          />
+        <Button
+          style={{ minWidth: '70px', marginLeft: '4px' }}
+          variant='contained'
+          color='default'
           className={'col-2 user-bulk-action-dropdown'}
           onClick={this.state.usersButtonSelected ? this.executeBulkActionUsers : this.executeBulkActionAdmins}>
-          {this.state.bulkAction ? this.state.bulkAction : 'No Action'}
-        </button>
+          {
+            this.state.bulkAction
+            ? this.state.bulkAction
+            : 'No Action'
+          }
+        </Button>
         <div className='col-6'>
-          <div className='user-search-box-label'>Search: &nbsp;</div>
-          <input
-            type='text'
-            value={this.state.searchFilter}
-            onChange={this.setSearchFilter}/>
-          <div className='x-symbol' onClick={this.clearSearchFilter}>&#10006;</div>
+          <div className='padding-div-10'>
+            <div className='user-search-box-label'>Search: &nbsp;</div>
+            <Input
+              type='text'
+              value={this.state.searchFilter}
+              onChange={this.setSearchFilter}/>
+            <div className='x-symbol' onClick={this.clearSearchFilter}>&#10006;</div>
+          </div>
         </div>
       </div>
       <br/>
       <div className={'row'}>
-        <button
-          style={{ padding: '10px' }}
+        <Button
+          style={{ padding: '10px', marginLeft: '4px' }}
+          color={ this.state.usersButtonSelected ? 'primary' : 'secondary' }
+          variant='contained'
           onClick={() => {
-            this.state.usersButtonSelected
-            ? this.props.history.push('/create-user')
-            : this.props.history.push('/create-admin')
-          }}>Create new {this.state.usersButtonSelected ? 'user' : 'admin'}</button>
+            if (this.state.usersButtonSelected) {
+              this.setState({
+                displayCreateUserModal: true,
+                displayCreateAdminModal: false
+              })
+            }
+            else {
+              this.setState({
+                displayCreateUserModal: false,
+                displayCreateAdminModal: true
+              })
+            }
+          }}>
+          Create new {this.state.usersButtonSelected ? 'user' : 'admin'}
+        </Button>
       </div>
       <br/>
       <div className={'users-list-labels-container row'}>
@@ -387,12 +476,28 @@ class ViewUsers extends Component {
           ? <AdminEditView refreshAdminsList={this.props.getAdmins}/>
           : null
         }
-        <button
-          style={{
-            top: '10px', right: '10px',
-            position: 'absolute'
-          }}
-          onClick={this.logout}>log out</button>
+        {
+          this.state.displayCreateUserModal
+          ?
+            <>
+              <div className='fullscreen-darken' onClick={() => this.setDisplayCreateUserModal(false)}></div>
+              <div className='center-float' style={{ width: '340px', height: '300px' }}>
+                <CreateUser setDisplay={this.setDisplayCreateUserModal}/>
+              </div>
+            </>
+          : null
+        }
+        {
+          this.state.displayCreateAdminModal
+          ?
+            <>
+              <div className='fullscreen-darken' onClick={() => this.setDisplayCreateAdminModal(false)}></div>
+              <div className='center-float' style={{ width: '340px', height: '300px' }}>
+                <CreateAdmin setDisplay={this.setDisplayCreateAdminModal}/>
+              </div>
+            </>
+          : null
+        }
       </>
     )
   }

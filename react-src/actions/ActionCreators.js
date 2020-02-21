@@ -83,18 +83,30 @@ import axios from 'axios'
 // CMS - User management
 const setAdminData = (auth, owner, name, email) => ({ type: SET_ADMIN_DATA, payload: { auth, owner, name, email } })
 const setAppUserData = (auth, fullaccess, peer, name, email) => ({ type: SET_APP_USER_DATA, payload: { auth, fullaccess, peer, name, email } })
-const getUsers = () => {
+const getUsers = (callback) => {
   // turning setUsers into a thunk, getUsers()
   return (dispatch, getState) => {
     axios.post('/users/all')
-      .then(data => dispatch({ type: SET_USERS, payload: data.data }))
+      .then(data => {
+        if (!data.data.error) {
+          dispatch({ type: SET_USERS, payload: data.data })
+          if (callback) callback()
+        }
+        else console.log(`error: ${data.data.error}`)
+      })
       .catch(err => console.log(err))
   }
 }
-const getAdmins = () => {
+const getAdmins = (callback) => {
   return (dispatch, getState) => {
     axios.post('/admins/all')
-      .then(data => dispatch({ type: SET_ADMINS, payload: data.data }))
+      .then(data => {
+        if (!data.data.error) {
+          dispatch({ type: SET_ADMINS, payload: data.data })
+          if (callback) callback()
+        }
+        else console.log(`error: ${data.data.error}`)
+      })
       .catch(err => console.log(err))
   }
 }
