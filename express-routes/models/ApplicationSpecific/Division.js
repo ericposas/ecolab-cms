@@ -3,7 +3,8 @@ import { model, Schema } from 'mongoose'
 const Division = model('Division', new Schema({
   name: {
     type: String,
-    default: ''
+    required: true,
+    unique: true
   },
   industries: {
     type: Array,

@@ -3,11 +3,13 @@ import { model, Schema } from 'mongoose'
 const CustomModule = model('CustomModule', new Schema({
   name: {
     type: String,
-    default: ''
+    required: true,
+    unique: true,
+    dropdups: true
   },
   image_url: {
     type: String,
-    default: ''
+    required: true
   },
   enabled: {
     type: Boolean,

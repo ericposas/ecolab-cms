@@ -5,9 +5,11 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import axios from 'axios'
 import validator from 'email-validator'
 import TitleBar from '../UIcomponents/TitleBar'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import { Button, TextField } from '@material-ui/core/'
+import TextFieldWithEcoStyles from '../UIcomponents/TextFieldWithEcoStyles'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import { ToastContainer, toast } from 'react-toastify'
+import EcoLabColors from '../Colors/EcoLabColors'
 
 class AppAuth extends Component {
 
@@ -40,7 +42,7 @@ class AppAuth extends Component {
       axios.post('/users/appauth', { email: this.state.email, password: this.state.password })
         .then(data => {
           const { auth, fullaccess, peer, name, email } = data.data
-          console.log(data.data)
+          console.log(data)
           if (auth && name && email) {
             setAppUserData(auth, fullaccess, peer, name, email)
             this.displayUserAuthenticatedMsg()
@@ -72,23 +74,33 @@ class AppAuth extends Component {
     return (
       <>
         <ToastContainer/>
-        <TitleBar title={'Eco Lab CMS Login'}/>
+        <TitleBar title={'Eco Lab CMS Login'} color={EcoLabColors.blue}/>
         <br/>
         <div className='padding-div-10'>
-          <div className='center-float' style={{ backgroundColor: '#e5e5e5', width: '300px', height: '280px', borderRadius: '3px', textAlign: 'center', border: 'none' }}>
+          <div
+            className='center-float'
+            style={{
+              backgroundColor: '#0088CE',
+              width: '300px', height: '280px',
+              // borderRadius: '3px',
+              textAlign: 'center',
+              border: 'none',
+              color: '#fff'
+            }}>
             <br/>
             <div className='padding-div-10'>
               <div><b>Login</b></div>
               <br/>
-              <TextField
-                label='email address'
+              <TextFieldWithEcoStyles
+                label='email'
                 variant='outlined'
+                type='text'
                 onChange={this.onEmailInput}
                 value={this.state.email}/>
             </div>
               <br/>
             <div>
-              <TextField
+              <TextFieldWithEcoStyles
                 label='password'
                 variant='outlined'
                 type='password'
@@ -97,7 +109,12 @@ class AppAuth extends Component {
               <br/>
               <br/>
             </div>
-            <Button variant='contained' color='primary' onClick={this.onFormSubmit}>Submit</Button>
+            <ButtonWithEcoStyles
+              border='true'
+              variant='contained'
+              onClick={this.onFormSubmit}>
+              Submit
+            </ButtonWithEcoStyles>
           </div>
         </div>
       </>

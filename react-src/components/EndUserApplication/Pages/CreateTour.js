@@ -10,6 +10,9 @@ import Button from '@material-ui/core/Button'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { CSSTransition } from 'react-transition-group'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import EcoLabColors from '../Colors/EcoLabColors'
 import axios from 'axios'
 
 const CHOOSE_COMPANY = 'Choose company'
@@ -125,7 +128,7 @@ class CreateTour extends Component {
     console.log(divisionId, division)
     this.setState({ ...this.state, divisionSelected: division, industrySelected: dummyIndustry, segmentSelected: dummySegment })
   }
-  
+
   handleIndustrySelector = e => {
     let industryName = e.target.value
     let industry = this.props.Industries.find(i => i.name === industryName)
@@ -159,19 +162,22 @@ class CreateTour extends Component {
             this.props.placement != 'edit-tour'
             ?
               <>
-                <Button
+                <ButtonWithEcoStyles
                   style={{ marginRight: '8px' }}
                   variant='contained'
-                  color='primary'
+                  textcolor='white'
+                  backgroundcolor={EcoLabColors.blue}
                   onClick={() => history.push('/')}>
                     Dashboard
-                </Button>
-                <Button
+                </ButtonWithEcoStyles>
+                <ButtonWithEcoStyles
+                  marginleft='10px'
                   variant='contained'
-                  color='default'
+                  textcolor='white'
+                  backgroundcolor={EcoLabColors.green}
                   onClick={this.handleViewToursBtnClick}>
                     View Existing Tours
-                </Button>
+                </ButtonWithEcoStyles>
                 <br/>
                 <br/>
               </>
@@ -214,7 +220,8 @@ class CreateTour extends Component {
             classNames='item'>
               <>
                 <div className='section-title'>Tour Name</div>
-                <TextField
+                <TextFieldWithEcoStylesDark
+                  label='tour name'
                   error={this.state.tourNameError}
                   variant='outlined'
                   onChange={this.handleTourNameChange}
@@ -309,16 +316,18 @@ class CreateTour extends Component {
             timeout={500}
             classNames='item'>
             <>
-              <Button
+              <ButtonWithEcoStyles
                 onClick={this.handleTourSubmit}
                 variant='contained'
-                color='primary'>
+                textcolor='white'
+                backgroundcolor={EcoLabColors.blue}
+                >
                 {
                   this.props.placement == 'edit-tour'
                   ? 'Update Tour'
                   : 'Create Tour'
                 }
-              </Button>
+              </ButtonWithEcoStyles>
             </>
           </CSSTransition>
         </div>

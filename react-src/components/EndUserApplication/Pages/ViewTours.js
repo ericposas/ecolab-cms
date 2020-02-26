@@ -10,6 +10,9 @@ import TourInList from '../ListComponents/TourInList'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import DeleteConfirmModal from '../Modals/DeleteConfirmModal'
 import EditTourModal from '../Modals/EditTourModal'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import EcoLabColors from '../Colors/EcoLabColors'
 import axios from 'axios'
 
 class ViewTours extends Component {
@@ -56,19 +59,24 @@ class ViewTours extends Component {
         <ToastContainer/>
         <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
-          <Button
+          <ButtonWithEcoStyles
             style={{ marginRight: '8px' }}
             variant='contained'
-            color='primary'
-            onClick={() => history.push('/')}>
+            textcolor='white'
+            backgroundcolor={EcoLabColors.blue}
+            onClick={() => history.push('/')}
+            >
               Dashboard
-          </Button>
-          <Button
+          </ButtonWithEcoStyles>
+          <ButtonWithEcoStyles
+            marginleft='10px'
             variant='contained'
-            color='secondary'
-            onClick={this.handleBackBtnClick}>
+            textcolor='white'
+            backgroundcolor={EcoLabColors.green}
+            onClick={this.handleBackBtnClick}
+            >
               Create a Tour
-          </Button>
+          </ButtonWithEcoStyles>
           <br/>
           <br/>
           <div className='section-title'>Created Tours</div>

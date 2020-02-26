@@ -5,8 +5,10 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import { Progress as ProgressBar } from 'reactstrap'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import { Button } from '@material-ui/core'
+import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import EcoLabColors from '../Colors/EcoLabColors'
 import { ToastContainer, toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 import axios from 'axios'
@@ -44,24 +46,8 @@ class CreateCompany extends Component {
     })
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   const { CompanySelectedForEdit } = this.props
-  //   console.log(CompanySelectedForEdit)
-  //   if (prevProps.CompanySelectedForEdit != this.props.CompanySelectedForEdit) {
-  //     this.setState({
-  //       companyName: CompanySelectedForEdit ? CompanySelectedForEdit.name : '',
-  //       companyLogoFilePath: CompanySelectedForEdit ? CompanySelectedForEdit.logo_image_url : '',
-  //       customerNameFields: CompanySelectedForEdit ? CompanySelectedForEdit.customer_names : [],
-  //       noteFieldValue: CompanySelectedForEdit ? CompanySelectedForEdit.notes : ''
-  //     })
-  //   }
-  // }
-
   componentWillUnmount() {
     if (this.loadedResetTimer) clearTimeout(this.loadedResetTimer)
-    if (this.incorrectLogoDimensionsTimer) clearTimeout(this.incorrectLogoDimensionsTimer)
-    if (this.correctLogoDimensionsTimer) clearTimeout(this.correctLogoDimensionsTimer)
-
   }
 
   handleCompanyNameChange = e => {
@@ -78,16 +64,14 @@ class CreateCompany extends Component {
         const width  = img.naturalWidth
         const height = img.naturalHeight
         window.URL.revokeObjectURL(img.src)
-        // return resolve({width, height})
         if (width >= FileWidth) {
           console.log('correct dimensions')
-          this.setState({ correctLogoDimensions: true })
-          this.correctLogoDimensionsTimer = setTimeout(() => this.setState({ correctLogoDimensions: null }))
           return resolve(true)
         } else {
           console.log('wrong dimensions')
-          this.setState({ correctLogoDimensions: false })
-          this.incorrectLogoDimensionsTimer = setTimeout(() => this.setState({ correctLogoDimensions: null }))
+          toast.error(`Invalid logo dimensions -- must be at least ${FileWidth}px wide`, {
+            autoClose: 5000
+          })
           return resolve(false)
         }
       }
@@ -98,21 +82,25 @@ class CreateCompany extends Component {
   })
 
   checkMimeType = (file) => {
-    const types = ['image/png', 'image/jpeg', 'image/gif']
+    const types = ['image/png'] //, 'image/jpeg', 'image/gif']
     if (types.includes(file.type)) {
       console.log(`${file.type} is a valid file type`)
       return true
     } else {
       console.log('incorrect mime type')
+      toast.error(`Invalid file type -- must be a .PNG with alpha (transparent background)`, {
+        autoClose: 5000
+      })
       return false
     }
   }
 
   handleFileSelect = e => {
     let file = e.target.files[0]
-    this.getUploadedFileDimensions(file)
+    if (this.checkMimeType(file)) {
+      this.getUploadedFileDimensions(file)
       .then(correctDimensions => {
-        if (correctDimensions && this.checkMimeType(file)) {
+        if (correctDimensions) {
           const formData = new FormData()
           formData.append('file', file)
           axios.post('/upload', formData, {
@@ -136,7 +124,7 @@ class CreateCompany extends Component {
           })
         }
       })
-
+    }
   }
 
   addCustomerNameInputBox = () => {
@@ -172,8 +160,8 @@ class CreateCompany extends Component {
       case 'edit-company':
         updateCompanyData({
           id: CompanySelectedForEdit ? CompanySelectedForEdit._id : null,
-          name: companyName, logo: companyLogoFilePath,
-          customer_names: customerNameFields, notes: noteFieldValue
+          name: companyName.trim(), logo: companyLogoFilePath,
+          customer_names: customerNameFields.filter(value => value == ''), notes: noteFieldValue
         },
         () => {
           this.props.displayEditModal(false)
@@ -182,7 +170,7 @@ class CreateCompany extends Component {
         break;
       default:
         submitCreateCompanyData({
-          name: companyName, logo: companyLogoFilePath,
+          name: companyName.trim(), logo: companyLogoFilePath,
           customer_names: customerNameFields, notes: noteFieldValue
         },
         () => {
@@ -215,17 +203,22 @@ class CreateCompany extends Component {
             this.props.placement != 'edit-company'
             ?
               <>
-                <Button
+                <ButtonWithEcoStyles
                   style={{ marginRight: '8px' }}
                   variant='contained'
-                  color='primary'
-                  onClick={() => history.push('/')}>Dashboard</Button>
-                <Button
+                  textcolor='white'
+                  marginright='10px'
+                  backgroundcolor={EcoLabColors.blue}
+                  onClick={() => history.push('/')}>
+                    Dashboard
+                </ButtonWithEcoStyles>
+                <ButtonWithEcoStyles
                   variant='contained'
-                  color='default'
+                  textcolor='white'
+                  backgroundcolor={EcoLabColors.green}
                   onClick={this.handleViewCompaniesBtnClick}>
                     View Existing Companies
-                </Button>
+                </ButtonWithEcoStyles>
                 <br/>
                 <br/>
               </>
@@ -237,7 +230,8 @@ class CreateCompany extends Component {
             : <div className='page-title'>Edit {this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : ''}</div>
           }
           <div className='section-title'>Company Name</div>
-          <TextField
+          <TextFieldWithEcoStylesDark
+            label='company'
             error={this.state.companyNameError}
             variant='outlined'
             onChange={this.handleCompanyNameChange}
@@ -259,32 +253,36 @@ class CreateCompany extends Component {
             timeout={500}
             classNames='item'>
               <>
-                { this.state.skipUpload == false ? <div className='section-title'>Company Logo</div> : null }
+                { this.state.skipUpload == false ? <div className='section-title'>Company Logo <span style={{ fontSize: '.85rem' }}>(Must be a .PNG file at least {FileWidth}px wide)</span></div> : null }
                 <form method='post' encType='multipart/form-data'>
                   {
                     this.state.skipUpload == false
                     ?
                       <>
-                        <Button
-                          style={{ display: 'inline-block' }}
+                        <ButtonWithEcoStyles
+                          diplay='inline-block'
                           variant='contained'
-                          component='label'>
+                          component='label'
+                          border='true'
+                        >
                           Select a File
                           <input type='file' onChange={this.handleFileSelect} style={{ display: 'none' }}/>
-                        </Button>
+                        </ButtonWithEcoStyles>
                       </>
                     : null
                   }
                   {
                     this.props.placement == 'edit-company' && this.state.skipUpload == false
                     ? <>
-                        <Button
+                        <ButtonWithEcoStyles
                           onClick={() => this.setState({ companyLogoUploaded: true, skipUpload: true }) }
                           style={{ display: 'inline-block', marginLeft: '8px' }}
-                          color='secondary'
+                          textcolor='white'
+                          marginleft='8px'
+                          backgroundcolor={EcoLabColors.blue}
                           variant='contained'>
                             Skip new logo upload
-                        </Button>
+                        </ButtonWithEcoStyles>
                         <CSSTransition
                           appear
                           unmountOnExit
@@ -322,7 +320,7 @@ class CreateCompany extends Component {
                   this.state.customerNameFields.map((field, idx) => ((
                     <Fragment key={idx}>
                       <div className='padding-div-10' style={{ display: 'inline-block' }}>
-                        <TextField
+                        <TextFieldWithEcoStylesDark
                           variant='outlined'
                           label={`Customer name ${idx}`}
                           onChange={this.handleCustomerNameEntry(idx)}
@@ -346,11 +344,12 @@ class CreateCompany extends Component {
             >
             <>
               <div className='section-title'>Additional notes?</div>
-              <TextField
-                variant='outlined'
-                onChange={this.handleNotesEntry}
-                value={this.state.noteFieldValue}>
-              </TextField>
+              <TextFieldWithEcoStylesDark
+                  label='note'
+                  variant='outlined'
+                  onChange={this.handleNotesEntry}
+                  value={this.state.noteFieldValue}
+                />
               <br/>
               <br/>
             </>
@@ -361,24 +360,16 @@ class CreateCompany extends Component {
             in={this.state.customerNameFields.length > 0 && this.state.customerNameFields[0] != ''}
             timeout={500}
             classNames='item'>
-            <Button
+            <ButtonWithEcoStyles
+              textcolor='white'
+              backgroundcolor={EcoLabColors.blue}
               variant='contained'
-              color='primary'
               onClick={this.handleSubmit}>
               {
                 this.props.placement != 'edit-company' ? 'Submit' : 'Update Company'
               }
-            </Button>
+            </ButtonWithEcoStyles>
           </CSSTransition>
-          {
-            this.state.correctLogoDimensions == false
-            ? <div style={{ display: 'none' }}>
-                {toast.error(`Incorrect logo dimensions. Please upload a logo that is at least ${FileWidth}px wide.`, {
-                  autoClose: 5000
-                })}
-              </div>
-            : null
-          }
         </div>
       </>
     )

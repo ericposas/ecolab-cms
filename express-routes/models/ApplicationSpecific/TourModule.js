@@ -3,7 +3,8 @@ import { model, Schema } from 'mongoose'
 const TourModule = model('TourModule', new Schema({
   name: {
     type: String,
-    default: ''
+    required: true,
+    unique: true
   },
   enabled: {
     type: Boolean,

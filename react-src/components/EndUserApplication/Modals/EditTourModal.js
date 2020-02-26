@@ -5,6 +5,9 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import Button from '@material-ui/core/Button'
 import CreateTour from '../Pages/CreateTour'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import EcoLabColors from '../Colors/EcoLabColors'
 
 class EditTourModal extends Component {
 
@@ -14,17 +17,18 @@ class EditTourModal extends Component {
       <>
         <div className='fullscreen-darken' onClick={() => this.props.displayEditModal(false)}></div>
         <div className='center-float edit-tour-modal'>
-          {/*<div>
-            Edit Tour: { TourSelectedForEdit ? TourSelectedForEdit.name : null }
-          </div>*/}
           <div className='padding-div-10' style={{ display: 'inline-block' }}>
-            <Button
-              style={{ position: 'absolute', top: '4px', right: '4px' }}
+            <ButtonWithEcoStyles
+              top='4px'
+              left='4px'
+              position='absolute'
               onClick={() => this.props.displayEditModal(false)}
               variant='contained'
-              color='secondary'>
+              textcolor='white'
+              backgroundcolor={EcoLabColors.green}
+              >
               Cancel
-            </Button>
+            </ButtonWithEcoStyles>
             <br/>
             <CreateTour placement='edit-tour' displayEditModal={this.props.displayEditModal}/>
           </div>

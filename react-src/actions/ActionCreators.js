@@ -129,6 +129,7 @@ const saveWebModule = (browser_url, callback) => {
           dispatch({ type: SAVING_WEB_MODULE, payload: false })
           if (callback) callback()
         } else {
+          toast.error('Error saving web module, possible duplicate', { autoClose: 3500 })
           console.log(`error: ${data.data.error}`)
         }
       })
@@ -256,6 +257,7 @@ const submitCreateCompanyData = ({ name, logo, customer_names, notes }, callback
         if (data.data.success) {
           if (callback) callback()
         } else {
+          toast.error('Error saving company, possible duplicate..', { autoClose: 3500 })
           console.log(`error: ${data.data.error}`)
         }
       })

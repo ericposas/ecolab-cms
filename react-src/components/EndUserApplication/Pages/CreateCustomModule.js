@@ -5,10 +5,11 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import { Progress as ProgressBar } from 'reactstrap'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import { ToastContainer, toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
+import EcoLabColors from '../Colors/EcoLabColors'
 import axios from 'axios'
 import uuid from 'uuid'
 
@@ -77,10 +78,12 @@ class CreateCustomModule extends Component {
 
   checkMimeType = (file) => {
     const types = ['image/png'] //, 'image/jpeg', 'image/gif']
+    console.log('what')
     if (types.includes(file.type)) {
       console.log(`${file.type} is a valid file type`)
       return true
     } else {
+      console.log('should work...')
       toast.error('Incorrect file type. Please upload a PNG file.', {
         autoClose: 2500
       })
@@ -90,9 +93,10 @@ class CreateCustomModule extends Component {
 
   handleFileSelect = e => {
     let file = e.target.files[0]
-    this.getUploadedFileDimensions(file)
+    if (this.checkMimeType(file)) {
+      this.getUploadedFileDimensions(file)
       .then(correctDimensions => {
-        if (correctDimensions && this.checkMimeType(file)) {
+        if (correctDimensions) {
           const formData = new FormData()
           formData.append('file', file)
           axios.post('/upload', formData, {
@@ -116,6 +120,7 @@ class CreateCustomModule extends Component {
           })
         }
       })
+    }
   }
 
   handleSubmit = () => {
@@ -161,17 +166,19 @@ class CreateCustomModule extends Component {
             this.props.placement != 'edit-custom-module'
             ?
               <>
-                <Button
-                  style={{ marginRight: '8px' }}
+                <ButtonWithEcoStyles
                   variant='contained'
-                  color='primary'
-                  onClick={() => history.push('/')}>Dashboard</Button>
-                <Button
+                  textcolor={'#FFF'}
+                  backgroundcolor={EcoLabColors.blue}
+                  onClick={() => history.push('/')}>Dashboard</ButtonWithEcoStyles>
+                <ButtonWithEcoStyles
+                  marginleft='10px'
+                  textcolor={'#FFF'}
+                  backgroundcolor={EcoLabColors.green}
                   variant='contained'
-                  color='default'
                   onClick={this.handleViewCustomModulesBtnClick}>
                     View Existing Custom Modules
-                </Button>
+                </ButtonWithEcoStyles>
                 <br/>
                 <br/>
               </>
@@ -179,11 +186,15 @@ class CreateCustomModule extends Component {
           }
           {
             this.props.placement != 'edit-custom-module'
-            ? <div className='page-title'>Upload a Custom Module</div>
+            ? <>
+                <div className='page-title'>Upload a Custom Module</div>
+                <div className='section-title'>(Must be a .PNG file @ 1920x1200)</div>
+                <br/>
+              </>
             : <div className='page-title'>Edit {this.props.CustomModuleSelectedForEdit.name}</div>
           }
           <div className='section-title'>Custom Module Name</div>
-          <TextField
+          <TextFieldWithEcoStylesDark
             label='module name'
             error={this.state.customModuleNameError}
             variant='outlined'
@@ -212,13 +223,14 @@ class CreateCustomModule extends Component {
                     this.state.skipUpload == false
                     ?
                       <>
-                        <Button
+                        <ButtonWithEcoStyles
+                          border={true}
                           style={{ display: 'inline-block' }}
                           variant='contained'
                           component='label'>
                           Select a File
                           <input type='file' onChange={this.handleFileSelect} style={{ display: 'none' }}/>
-                        </Button>
+                        </ButtonWithEcoStyles>
                       </>
                     : null
                   }
@@ -234,12 +246,13 @@ class CreateCustomModule extends Component {
             timeout={500}
             classNames='item'>
               <>
-                <Button
+                <ButtonWithEcoStyles
+                  textcolor='white'
                   variant='contained'
-                  color='primary'
+                  backgroundcolor={EcoLabColors.blue}
                   onClick={this.handleSubmit}>
                   Submit Custom Module
-                </Button>
+                </ButtonWithEcoStyles>
               </>
           </CSSTransition>
         </div>

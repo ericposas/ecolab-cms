@@ -3,7 +3,8 @@ import { model, Schema } from 'mongoose'
 const WebModule = model('WebModule', new Schema({
   browser_url: {
     type: String,
-    default: ''
+    required: true,
+    unique: true
   },
   image_url: {
     type: String,

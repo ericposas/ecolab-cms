@@ -4,8 +4,7 @@ const { model, Schema } = require('mongoose')
 const Segment = model('Segment', new Schema({
   name: {
     type: String,
-    unique: true,
-    default: ''
+    unique: true
   },
   parent_industry: {
     type: String,

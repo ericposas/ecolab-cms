@@ -5,7 +5,8 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
-import Button from '@material-ui/core/Button'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import EcoLabColors from '../Colors/EcoLabColors'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import DeleteConfirmModal from '../Modals/DeleteConfirmModal'
 import EditCustomModuleModal from '../Modals/EditCustomModuleModal'
@@ -29,7 +30,7 @@ class ViewCustomModules extends Component {
       }
     })
   }
-  
+
   displayDeleteModal = value => {
     this.setState({
       showDeleteModal: value
@@ -54,19 +55,21 @@ class ViewCustomModules extends Component {
         <ToastContainer/>
         <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
-          <Button
-            style={{ marginRight: '8px' }}
+          <ButtonWithEcoStyles
+            marginright='10px'
             variant='contained'
-            color='primary'
+            textcolor='white'
+            backgroundcolor={EcoLabColors.blue}
             onClick={() => history.push('/')}>
               Dashboard
-          </Button>
-          <Button
+          </ButtonWithEcoStyles>
+          <ButtonWithEcoStyles
             variant='contained'
-            color='secondary'
+            textcolor='white'
+            backgroundcolor={EcoLabColors.green}
             onClick={this.handleBackBtnClick}>
               Upload a Custom Module
-          </Button>
+          </ButtonWithEcoStyles>
           <br/>
           <br/>
           <div className='section-title'>Custom Modules</div>

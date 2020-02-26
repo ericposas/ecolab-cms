@@ -4,15 +4,12 @@ const Company = model('Company', new Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    dropdups: true
   },
   logo_image_url: {
     type: String,
-    // required: true
-  },
-  enabled: {
-    type: Boolean,
-    default: true
+    required: true
   },
   customer_names: {
     type: Array,
@@ -22,13 +19,9 @@ const Company = model('Company', new Schema({
     type: String,
     default: ''
   },
-  min_image_file_size: {
-    type: String,
-    default: ''
-  },
-  accepted_file_types: {
-    type: Array,
-    default: []
+  enabled: {
+    type: Boolean,
+    default: true
   },
   creator_id: {
     type: Schema.ObjectId,

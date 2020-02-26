@@ -48,6 +48,7 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "sendmail": "^1.6.1",
+    "styled-components": "^5.0.1",
     "uuid": "^3.3.3",
     "valid-url": "^1.0.9"
   },

@@ -9,6 +9,9 @@ import EditWebModuleModal from '../Modals/EditWebModuleModal'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import EcoLabColors from '../Colors/EcoLabColors'
 import axios from 'axios'
 
 class ViewWebModules extends Component {
@@ -51,22 +54,25 @@ class ViewWebModules extends Component {
         <ToastContainer/>
         <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
-          <Button
+          <ButtonWithEcoStyles
             style={{ marginRight: '8px' }}
             variant='contained'
-            color='primary'
+            textcolor='white'
+            backgroundcolor={EcoLabColors.blue}
             onClick={() => history.push('/')}>
               Dashboard
-          </Button>
-          <Button
+          </ButtonWithEcoStyles>
+          <ButtonWithEcoStyles
+            marginleft='10px'
             variant='contained'
-            color='secondary'
+            textcolor='white'
+            backgroundcolor={EcoLabColors.green}
             onClick={() => {
               setWebModuleToEdit(null)
               history.push('/create-web-module')
             }}>
               Create a Web Module
-          </Button>
+          </ButtonWithEcoStyles>
           <br/>
           <br/>
           <br/>

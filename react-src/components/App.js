@@ -11,7 +11,6 @@ import AdminPasswordReset from './CMS/Pages/AdminPasswordReset'
 import PasswordReset from './CMS/Pages/PasswordReset'
 // Application frontend
 import AppAuth from './EndUserApplication/Pages/AppAuth'
-// import AppHome from './EndUserApplication/AppHome'
 import CreateMode from './EndUserApplication/Pages/CreateMode'
 import CreateWebModule from './EndUserApplication/Pages/CreateWebModule'
 import ViewWebModules from './EndUserApplication/Pages/ViewWebModules'
@@ -22,10 +21,6 @@ import CreateTour from './EndUserApplication/Pages/CreateTour'
 import ViewTours from './EndUserApplication/Pages/ViewTours'
 import CreateCustomModule from './EndUserApplication/Pages/CreateCustomModule'
 import ViewCustomModules from './EndUserApplication/Pages/ViewCustomModules'
-// import ViewTours from './EndUserApplication/Pages/ViewTours'
-// Open / Closed - Extensibility Example
-// import ExampleExtended from './OpenClosedPrinciple/ExampleExtended'
-
 import axios from 'axios'
 
 class App extends Component {

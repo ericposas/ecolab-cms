@@ -3,7 +3,9 @@ import { model, Schema } from 'mongoose'
 const Offering = model('Offering', new Schema({
   name: {
     type: String,
-    default: ''
+    required: true,
+    unique: true,
+    dropdups: true
   },
   parent_segment: {
     type: Array,

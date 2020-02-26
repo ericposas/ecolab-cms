@@ -4,8 +4,10 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
+import { Button, TextField } from '@material-ui/core'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import EcoLabColors from '../Colors/EcoLabColors'
 import { ToastContainer, toast } from 'react-toastify'
 import validUrl from 'valid-url'
 import axios from 'axios'
@@ -28,7 +30,7 @@ class CreateWebModule extends Component {
       }
     })
   }
-  
+
   handleInput = e => {
     this.setState({
       ...this.state,
@@ -69,19 +71,22 @@ class CreateWebModule extends Component {
             this.props.placement != 'edit-webmodule'
             ?
               <>
-                <Button
+                <ButtonWithEcoStyles
                   style={{ marginRight: '8px' }}
                   variant='contained'
-                  color='primary'
+                  textcolor='white'
+                  backgroundcolor={EcoLabColors.blue}
                   onClick={() => history.push('/')}>
                     Dashboard
-                </Button>
-                <Button
+                </ButtonWithEcoStyles>
+                <ButtonWithEcoStyles
+                  marginleft='10px'
                   variant='contained'
-                  color='default'
+                  textcolor='white'
+                  backgroundcolor={EcoLabColors.green}
                   onClick={() => history.push('/view-web-modules')}>
                     View Existing Web Modules
-                </Button>
+                </ButtonWithEcoStyles>
                 <br/>
                 <br/>
               </>
@@ -94,7 +99,7 @@ class CreateWebModule extends Component {
             : <div className='page-title'>Edit {this.props.WebModuleSelectedForEdit.browser_url}</div>
           }
           <br/>
-          <TextField
+          <TextFieldWithEcoStylesDark
             label='web module URL'
             variant='outlined'
             style={{ width: this.props.placement == 'edit-webmodule' ? '90%' : '50%', borderRadius: '2px' }}
@@ -106,8 +111,8 @@ class CreateWebModule extends Component {
             this.state.urlField != ''
             ?
               this.props.placement == 'edit-webmodule'
-              ? <Button onClick={this.handleSubmit} variant='contained' color='primary'>Update Web Module</Button>
-              : <Button onClick={this.handleSubmit} variant='contained' color='primary'>Save Web Module</Button>
+              ? <ButtonWithEcoStyles textcolor='white' backgroundcolor={EcoLabColors.blue} onClick={this.handleSubmit} variant='contained' color='primary'>Update Web Module</ButtonWithEcoStyles>
+              : <ButtonWithEcoStyles textcolor='white' backgroundcolor={EcoLabColors.blue} onClick={this.handleSubmit} variant='contained' color='primary'>Save Web Module</ButtonWithEcoStyles>
             : null
           }
         </div>

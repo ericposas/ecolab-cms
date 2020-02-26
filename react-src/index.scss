@@ -1,12 +1,25 @@
 $moduleColor: #efefef;
 $moduleBorderColor: #bfbfbf;
-$darkGrey: #686868;
+$lightGrey: #B1B3B6;
+$darkGrey: #636466;
+$ecoLabBlue: #0088CE;
 $purp: #3F51B5;
+
+@font-face {
+  font-family: "Interstate Comp Regular";
+  src:
+    url("./fonts/interstate-regular-comp.otf") format('embedded-opentype');
+}
 
 html,
 body {
   overflow-x: hidden;
-  background-color: #d6d6d6;
+  background-color: #FFF;
+  font-family: "Interstate Comp Regular";
+}
+
+input::placeholder {
+  color: #ccc;
 }
 
 @media (min-width: 640px) {
@@ -39,7 +52,7 @@ body {
 .fullscreen-darken {
   top: 0;
   width: 100%;
-  height: 100vh;
+  height: 150%;
   background-color: rgba(0,0,0,0.35);
   position: absolute;
   overflow: hidden;
@@ -78,8 +91,8 @@ body {
   cursor: pointer;
   font-size: 2rem;
   display: inline-block;
-  background-color: $purp;
-  border-radius: 4px;
+  background-color: $ecoLabBlue;
+  // border-radius: 4px;
   text-align: center;
   color: #fff;
 }
@@ -190,9 +203,9 @@ body {
   width: 600px;
   height: 95%;
   text-align: center;
-  border-radius: 4px;
+  // border-radius: 4px;
   overflow: scroll;
-  border: none;
+  border: 1px solid $lightGrey;
 }
 
 .edit-webmodule-modal {
@@ -205,10 +218,10 @@ body {
   min-width: 300px;
   margin: 2px;
   height: 500px;
-  background-color: #ccc;
+  background-color: $ecoLabBlue;
   // border: 1px solid #555;
   display: inline-block;
-  border-radius: 2px;
+  // border-radius: 2px;
   text-align: center;
   line-height: 500px;
   user-select: none;
@@ -218,18 +231,19 @@ body {
 
 .dashboard-button-large {
   width: 49%;
-  min-width: 300px;
   margin: 2px;
+  color: white;
   height: 300px;
+  min-width: 300px;
   cursor: pointer;
   user-select: none;
   font-size: 1.5rem;
   line-height: 300px;
-  border-radius: 2px;
+  // border-radius: 2px;
   text-align: center;
   display: inline-block;
-  background-color: $moduleColor;
-  border: 1px solid $moduleBorderColor;
+  background-color: $ecoLabBlue;
+  border: 1px solid $darkGrey;
   // color: $darkGrey;
 }
 
@@ -243,7 +257,7 @@ body {
   position: relative;
   display: inline-block;
   text-align: center;
-  border-radius: 2px;
+  // border-radius: 2px;
   line-height: 150px;
   background-color: $moduleColor;
   vertical-align: top;
@@ -285,7 +299,7 @@ body {
   width: 240px;
   min-height: 280px;
   position: relative;
-  border-radius: 4px;
+  // border-radius: 4px;
   background-color: $moduleColor;
   border: 2px solid green;
   display: inline-block;
@@ -342,7 +356,7 @@ body {
   width: 280px;
   min-height: 280px;
   position: relative;
-  border-radius: 4px;
+  // border-radius: 4px;
   background-color: $moduleColor;
   border: 1px solid $moduleBorderColor;
   // border: 2px solid green;
@@ -397,7 +411,7 @@ body {
   position: relative;
   display: inline-block;
   text-align: center;
-  border-radius: 2px;
+  // border-radius: 2px;
   line-height: 50px;
   background-color: $moduleColor;
   border: 1px solid $moduleBorderColor;

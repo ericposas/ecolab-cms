@@ -6,6 +6,8 @@ import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import { toast, ToastContainer } from 'react-toastify'
 import Button from '@material-ui/core/Button'
+import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
+import EcoLabColors from '../Colors/EcoLabColors'
 import CompanyInList from '../ListComponents/CompanyInList'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import DeleteConfirmModal from '../Modals/DeleteConfirmModal'
@@ -59,20 +61,25 @@ class ViewCompanies extends Component {
         <ToastContainer/>
         <TitleBar title={'Eco Lab Application'}/>
         <div className='padding-div-20'>
-          <Button
+          <ButtonWithEcoStyles
             style={{ marginRight: '8px' }}
             variant='contained'
-            color='primary'
+            textcolor='white'
+            backgroundcolor={EcoLabColors.blue}
             onClick={() => {
               this.props.setCompanyToEdit(null)
               history.push('/')
-            }}>Dashboard</Button>
-          <Button
+            }}>
+              Dashboard
+          </ButtonWithEcoStyles>
+          <ButtonWithEcoStyles
+            marginleft='10px'
             variant='contained'
-            color='secondary'
+            textcolor='white'
+            backgroundcolor={EcoLabColors.green}
             onClick={this.handleAddCompanyBtnClick}>
               Add a Company
-          </Button>
+          </ButtonWithEcoStyles>
           <br/>
           <br/>
           <div className='section-title'>Companies</div>

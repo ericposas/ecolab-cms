@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
-import Button from '@material-ui/core/Button'
+import ButtonWithEcoStyles from './ButtonWithEcoStyles'
+import EcoLabColors from '../Colors/EcoLabColors'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
@@ -28,27 +29,38 @@ class TitleBar extends Component {
   render () {
     const { AppUserData } = this.props
     const logoutAreaStyle = {
-      top: 0, right: 0, position: 'absolute',
+      top: '-11px', right: 0, position: 'absolute',
     }
     return (
       <>
-        <div
-          className={'ui-title-bar'}
-          style={{
-            color: this.props.textColor || '#fff',
-            backgroundColor: this.props.color || '#000'
-          }}>
-          {this.props.title}
-        </div>
-        {
-          AppUserData && AppUserData.auth
-          ?
+        <div style={{ padding: '4px', backgroundColor: EcoLabColors.blue }}>
+          <div
+            className={'ui-title-bar'}
+            style={{
+              color: this.props.textColor || '#fff',
+              backgroundColor: this.props.color || EcoLabColors.blue
+            }}>
+            {/* this.props.title */}
+          </div>
+          <img
+            style={{
+              top: '8px',
+              left: '8px',
+              position: 'absolute'
+            }}
+            src='./img/Logo_Joint_ECL-NW_Reverse.png'
+            width={340}
+            />
+          {
+            AppUserData && AppUserData.auth
+            ?
             <div style={logoutAreaStyle}>
               <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>Welcome {AppUserData ? AppUserData.name : null}</div>
-              <Button onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
+              <ButtonWithEcoStyles marginright='10px' onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</ButtonWithEcoStyles>
             </div>
-          : null
-        }
+            : null
+          }
+        </div>
       </>
     )
   }

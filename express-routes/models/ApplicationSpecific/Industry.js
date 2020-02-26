@@ -3,7 +3,8 @@ import { model, Schema } from 'mongoose'
 const Industry = model('Industry', new Schema({
   name: {
     type: String,
-    default: ''
+    required: true,
+    unique: true
   },
   parent_division: {
     type: String,
