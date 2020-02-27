@@ -71,7 +71,7 @@ class CreateUser extends Component {
     const { AdminData } = this.props
     const { showUserCreatedMsg, showUserCreateError, showInvalidEmailMsg } = this.state
     return (
-      <>
+      <div style={{ fontFamily: 'arial' }}>
         {
           AdminData.auth
           ?
@@ -79,10 +79,21 @@ class CreateUser extends Component {
               <div style={{ textAlign: 'center', marginTop: '20px' }}>Create New User</div>
               <div className='center-float' style={{ width: '240px', height: '200px', border: 'none' }}>
                 <br/>
-                <TextField variant='outlined' label='name' onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
-                <TextField variant='outlined' label='email' onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
+                <div className='padding-div-5'>
+                  <TextField variant='outlined' label='name' onChange={this.onNameInput} type='text' value={this.state.nameValue}/><br/>
+                </div>
+                <div className='padding-div-5'>
+                  <TextField variant='outlined' label='email' onChange={this.onEmailInput} type='text' value={this.state.emailValue}/><br/>
+                </div>
                 <br/>
-                <Button variant='contained' color='primary' onClick={this.submitForm} type='submit'>
+                <Button
+                  style={{
+                    color: '#FFF',
+                    backgroundColor: '#000'
+                  }}
+                  variant='contained'
+                  onClick={this.submitForm} type='submit'
+                  >
                   Create User
                 </Button>
                 <Button style={{ marginLeft: '4px' }} variant='contained' color='default' onClick={() => this.props.setDisplay(false)} type='submit'>
@@ -93,7 +104,7 @@ class CreateUser extends Component {
           :
             <div>You need to be an admin to use this page.</div>
         }
-      </>
+      </div>
     )
   }
 

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import Toggler from '../UIcomponents/Toggler'
 import { validate } from 'email-validator'
+import { Button } from '@material-ui/core'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 
 class AdminEditView extends Component {
@@ -47,16 +49,19 @@ class AdminEditView extends Component {
       .then(data => {
         console.log(data)
         if (data.data.success) {
-          this.setState({
-            ...this.state,
-            emailSentMsg: true
-          })
-          this.emailSentTimer = setTimeout(() => {
-            this.setState({
-              ...this.state,
-              emailSentMsg: false
-            })
-          }, 3000)
+          toast.success(
+            `Reset password instructions have been emailed to ${this.props.SelectedAdminForEditing.name}.`,
+            {
+              autoClose: 3000
+            }
+          )
+        } else {
+          toast.error(
+            `Error sending password reset email..`,
+            {
+              autoClose: 3000
+            }
+          )
         }
       })
       .catch(err => console.log(err))
@@ -114,8 +119,9 @@ class AdminEditView extends Component {
           className='fullscreen-darken'
           onClick={() => setSelectedAdminForEditing(null)}></div>
         <div
-          style={{ width: '500px', height: '440px' }}
-          className='modal-user-edit-view-container center-float'>
+          className='modal-user-edit-view-container center-float'
+          style={{ width: '500px', height: '440px', fontFamily: 'arial' }}
+          >
           <div className='modal-user-edit-title-ribbon'>
             Edit Application User: &nbsp;
             {SelectedAdminForEditing ? SelectedAdminForEditing.adminName : null}
@@ -129,7 +135,16 @@ class AdminEditView extends Component {
             <input type='text' onChange={this.setAdminEmail} value={this.state.adminEmail}/>
           </div>
           <div className='padding-div-10'>
-            <button onClick={this.sendForgotEmail}>Reset {this.state.adminName}'s password</button>
+            <Button
+              style={{
+                color: '#FFF',
+                backgroundColor: 'red'
+              }}
+              onClick={this.sendForgotEmail}
+              variant='contained'
+            >
+            Reset {this.state.adminName}'s password
+            </Button>
           </div>
           <div className='padding-div-10'>
             <div>Owner</div>
@@ -138,8 +153,24 @@ class AdminEditView extends Component {
           <br/>
           <br/>
           <div className='padding-div-10'>
-            <button onClick={this.updateDatabase}>Save Changes</button>
-            <button onClick={() => this.props.setSelectedAdminForEditing(null)}>Cancel</button>
+            <Button
+              style={{
+                color: '#FFF',
+                backgroundColor: '#000'
+              }}
+              onClick={this.updateDatabase}
+              variant='contained'
+            >
+            Save Changes
+            </Button>
+            <Button
+            style={{ marginLeft: '10px' }}
+            onClick={() => this.props.setSelectedAdminForEditing(null)}
+            variant='contained'
+            color='default'
+            >
+            Cancel
+            </Button>
           </div>
         </div>
         {

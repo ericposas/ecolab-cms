@@ -23,13 +23,15 @@ class Admin extends Component {
     console.log('should go into edit admin mode for ' + admin.name)
     this.props.setSelectedAdminForEditing(admin)
   }
-
+  
   render() {
     const { count, admin, BulkActionSelectedAdmins } = this.props
     return (
       <>
         <div
-          className={'user-component-container row'}>
+          className={'user-component-container row'}
+          style={{ fontFamily: 'arial' }}
+          >
           <div className={'col-5 user-component-name'}>{admin.name}</div>
           <div className={'col-5 user-component-email'}>{admin.email}</div>
           <div

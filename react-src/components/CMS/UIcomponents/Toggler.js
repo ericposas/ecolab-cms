@@ -18,7 +18,7 @@ class Toggler extends Component {
             cursor: 'pointer',
             borderRadius: '10px',
             border: '1px solid #555',
-            backgroundColor: this.props.toggleValue ? 'lightblue' : '#777'
+            backgroundColor: this.props.toggleValue ? '#2b95ff' : '#777'
           }}>
           <div
             style={{

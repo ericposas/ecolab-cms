@@ -29,7 +29,9 @@ class User extends Component {
     return (
       <>
         <div
-          className={'user-component-container row'}>
+          className={'user-component-container row'}
+          style={{ fontFamily: 'arial' }}
+          >
           <div className={'col-5 user-component-name'}>{user.name}</div>
           <div className={'col-5 user-component-email'}>{user.email}</div>
           <div

@@ -38,6 +38,7 @@ class TitleBar extends Component {
         <div
           className={'ui-title-bar'}
           style={{
+            fontFamily: 'arial',
             color: this.props.textColor || '#fff',
             backgroundColor: this.props.color || '#000'
           }}>
@@ -47,7 +48,7 @@ class TitleBar extends Component {
           AdminData && AdminData.auth
           ?
             <div style={logoutAreaStyle}>
-              <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>{AdminData.email}</div>
+              <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff', fontFamily: 'arial' }}>{AdminData.email}</div>
               <Button onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</Button>
             </div>
           : null

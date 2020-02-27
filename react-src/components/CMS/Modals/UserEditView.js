@@ -3,7 +3,9 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import Toggler from '../UIcomponents/Toggler'
+import { Button } from '@material-ui/core'
 import { validate } from 'email-validator'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 
 class UserEditView extends Component {
@@ -51,16 +53,19 @@ class UserEditView extends Component {
       .then(data => {
         console.log(data)
         if (data.data.success) {
-          this.setState({
-            ...this.state,
-            emailSentMsg: true
-          })
-          this.emailSentTimer = setTimeout(() => {
-            this.setState({
-              ...this.state,
-              emailSentMsg: false
-            })
-          }, 3000)
+          toast.success(
+            `Reset password instructions have been emailed to ${this.props.SelectedUserForEditing.name}.`,
+            {
+              autoClose: 3000
+            }
+          )
+        } else {
+          toast.error(
+            `Error sending password reset email..`,
+            {
+              autoClose: 3000
+            }
+          )
         }
       })
       .catch(err => console.log(err))
@@ -115,8 +120,9 @@ class UserEditView extends Component {
           className='fullscreen-darken'
           onClick={() => setSelectedUserForEditing(null)}></div>
         <div
-          style={{ width: '500px', height: '540px' }}
-          className='modal-user-edit-view-container center-float'>
+          className='modal-user-edit-view-container center-float'
+          style={{ width: '500px', height: '540px', fontFamily: 'arial' }}
+          >
           <div className='modal-user-edit-title-ribbon'>
             Edit Application User: &nbsp;
             {SelectedUserForEditing ? SelectedUserForEditing.name : null}
@@ -130,7 +136,16 @@ class UserEditView extends Component {
             <input type='text' onChange={this.setUserEmail} value={this.state.userEmail}/>
           </div>
           <div className='padding-div-10'>
-            <button onClick={this.sendForgotEmail}>Reset {this.state.userName}'s password</button>
+            <Button
+              style={{
+                color: '#FFF',
+                backgroundColor: 'red'
+              }}
+              variant='contained'
+              onClick={this.sendForgotEmail}
+              >
+              Reset {this.state.userName}'s password
+            </Button>
           </div>
           <div className='padding-div-10'>
             <div>Active</div>
@@ -147,8 +162,25 @@ class UserEditView extends Component {
           <br/>
           <br/>
           <div className='padding-div-10'>
-            <button onClick={this.updateDatabase}>Save Changes</button>
-            <button onClick={() => this.props.setSelectedUserForEditing(null)}>Cancel</button>
+            <Button
+              style={{
+                color: '#FFF',
+                backgroundColor: '#000'
+              }}
+              onClick={this.updateDatabase}
+              variant='contained'
+              color='primary'
+            >
+              Save Changes
+            </Button>
+            <Button
+            style={{ marginLeft: '10px' }}
+            onClick={() => this.props.setSelectedUserForEditing(null)}
+            color='default'
+            variant='contained'
+            >
+              Cancel
+            </Button>
           </div>
         </div>
         {

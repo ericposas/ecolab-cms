@@ -107,7 +107,13 @@ class AdminLogin extends Component {
             <>
               <div
                 className='center-float'
-                style={{ width: '400px', height: '240px', padding: '20px', border: 'none', borderRadius: '4px' }}>
+                style={{
+                  border: 'none',
+                  height: '240px',
+                  padding: '20px',
+                  borderRadius: '4px', fontFamily: 'Arial',
+                  textAlign: 'center'
+                }}>
                 <div>Administrator log in</div>
                 <br/>
                 <div>

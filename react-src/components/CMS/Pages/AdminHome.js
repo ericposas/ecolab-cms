@@ -21,7 +21,7 @@ class AdminHome extends Component {
     return (
       <>
         <TitleBar title={process.env.APP_NAME}/>
-        <div>
+        <div style={{ fontFamily: 'Arial' }}>
           {
             AdminData && AdminData.auth
             ? <><div>Welcome {AdminData.name}</div></>

@@ -48,14 +48,6 @@ class ViewUsers extends Component {
     })
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.usersButtonSelected != this.state.usersButtonSelected) {
-  //     this.setState({
-  //       searchText: ''
-  //     })
-  //   }
-  // }
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResizeHandler)
   }
@@ -198,12 +190,16 @@ class ViewUsers extends Component {
   }
 
   renderTopButtons = () => (
-    <>
+    <div style={{ fontFamily: 'arial' }}>
       <div style={{ paddingBottom: '10px' }}>
         <Button
-          style={{ width: '100%', left: '8px' }}
+          style={{
+            width: '100%',
+            left: '8px',
+            color: this.state.usersButtonSelected ? '#FFF' : '#000',
+            backgroundColor: this.state.usersButtonSelected ? '#2b95ff' : '#D5D5D5'
+          }}
           variant='contained'
-          color='default'
           onClick={this.usersButtonClick}
           className={'left-side-panel-button panel-button-users'}>
           Users
@@ -214,9 +210,13 @@ class ViewUsers extends Component {
         ?
           <div>
             <Button
-              style={{ width: '100%', left: '8px' }}
+              style={{
+                width: '100%',
+                left: '8px',
+                color: this.state.adminsButtonSelected ? '#FFF' : '#000',
+                backgroundColor: this.state.adminsButtonSelected ? '#2b95ff' : '#D5D5D5'
+              }}
               variant='contained'
-              color='default'
               onClick={this.adminsButtonClick}
               className={'left-side-panel-button panel-button-admins'}>
               Admins
@@ -224,12 +224,13 @@ class ViewUsers extends Component {
           </div>
         : null
       }
-    </>
+    </div>
   )
 
   renderTopButtonsAsStrips = () => (
     <>
       <div
+        style={{ fontFamily: 'arial' }}
         onClick={this.usersButtonClick}
         className={'left-side-panel-button panel-button-users'}>
         Users
@@ -238,6 +239,7 @@ class ViewUsers extends Component {
         this.props.AdminData.owner == true
         ?
           <div
+            style={{ fontFamily: 'arial' }}
             onClick={this.adminsButtonClick}
             className={'left-side-panel-button panel-button-admins'}>
             Admins
@@ -268,25 +270,14 @@ class ViewUsers extends Component {
     })
   }
 
-  // handleAutoCompleteInput = e => {
-  //   this.setState({
-  //     searchText: e.target.value
-  //   },
-  //   () => console.log(this.state.searchText))
-  // }
-
   renderMain = () => (
     <>
-      <br/>
-      <div className={'user-bulk-actions-and-search-container row'}>
-        {/*<select
-          className='col-4'
-          onChange={e => {
-            this.setState({ bulkAction: e.target.value })
-          }}>
-          <option value=''>Bulk Actions</option>
-          <option value='DELETE'>Delete {this.state.usersButtonSelected ? ' Users' : ' Admins'}</option>
-        </select>*/}
+      <div
+        className={'user-bulk-actions-and-search-container row'}
+        style={{
+          fontFamily: 'arial'
+        }}
+        >
         <Autocomplete
           onChange={this.handleAutoCompleteChange}
           style={{ width: 200 }}
@@ -306,9 +297,21 @@ class ViewUsers extends Component {
           )}
           />
         <Button
-          style={{ minWidth: '70px', marginLeft: '4px' }}
+          style={{
+            minWidth: '70px',
+            marginLeft: '4px',
+            color: (
+              this.state.bulkAction == 'DELETE'
+              ? '#FFF'
+              : '#000'
+            ),
+            backgroundColor: (
+              this.state.bulkAction == 'DELETE'
+              ? 'red'
+              : '##EDEDED'
+            )
+          }}
           variant='contained'
-          color='default'
           className={'col-2 user-bulk-action-dropdown'}
           onClick={this.state.usersButtonSelected ? this.executeBulkActionUsers : this.executeBulkActionAdmins}>
           {
@@ -331,8 +334,12 @@ class ViewUsers extends Component {
       <br/>
       <div className={'row'}>
         <Button
-          style={{ padding: '10px', marginLeft: '4px' }}
-          color={ this.state.usersButtonSelected ? 'primary' : 'secondary' }
+          style={{
+            color: '#fff',
+            backgroundColor: '#000',
+            padding: '10px',
+            marginLeft: '4px'
+          }}
           variant='contained'
           onClick={() => {
             if (this.state.usersButtonSelected) {
@@ -352,7 +359,10 @@ class ViewUsers extends Component {
         </Button>
       </div>
       <br/>
-      <div className={'users-list-labels-container row'}>
+      <div
+        className={'users-list-labels-container row'}
+        style={{ fontFamily: 'arial' }}
+        >
         <div
           style={{ cursor: 'pointer', userSelect: 'none' }}
           className={'users-list-label-name col-5'}
