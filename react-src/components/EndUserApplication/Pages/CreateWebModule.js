@@ -100,7 +100,7 @@ class CreateWebModule extends Component {
           }
           <br/>
           <TextFieldWithEcoStylesDark
-            label='web module URL'
+            // label='web module URL'
             variant='outlined'
             style={{ width: this.props.placement == 'edit-webmodule' ? '90%' : '50%', borderRadius: '2px' }}
             onChange={this.handleInput}

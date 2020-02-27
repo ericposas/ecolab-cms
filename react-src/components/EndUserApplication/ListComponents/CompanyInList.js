@@ -20,7 +20,7 @@ class CompanyInList extends Component {
       <div className='company-in-list'>
         <div
           className='company-in-list-x-symbol'
-          onClick={() => this.handleShowDeleteModal(company._id)}>&times;</div>
+          onClick={() => this.handleShowDeleteModal(company._id)}>&#10006;</div>
         <div className='company-in-list-title'>{company.name}</div>
         <img className='company-in-list-edit-icon' src={'./img/pencil.svg'}/>
         <div className='company-in-list-customer-names'>

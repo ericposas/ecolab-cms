@@ -20,6 +20,11 @@ body {
   font-family: "interstateregular_comp";
 }
 
+select,
+option {
+  font-family: 'interstateregular_comp'
+}
+
 @media (min-width: 640px) {
   .left-side-panel {
     background-color: #000;
@@ -27,6 +32,10 @@ body {
 }
 
 // Misc.
+// .customer-name-input-boxes:not(:first-child) {
+//   padding: 0 0 0 30px;
+// }
+
 .page-title {
   font-weight: bold;
   font-size: 1.85rem;
@@ -100,7 +109,7 @@ body {
 }
 
 .plus-symbol-inner-text {
-  margin-top: -4px;
+  // margin-top: -4px;
 }
 
 // LeftSidePanel <Component>

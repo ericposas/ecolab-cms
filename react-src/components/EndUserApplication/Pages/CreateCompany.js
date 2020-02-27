@@ -161,7 +161,7 @@ class CreateCompany extends Component {
         updateCompanyData({
           id: CompanySelectedForEdit ? CompanySelectedForEdit._id : null,
           name: companyName.trim(), logo: companyLogoFilePath,
-          customer_names: customerNameFields.filter(value => value == ''), notes: noteFieldValue
+          customer_names: customerNameFields.filter(value => value != ''), notes: noteFieldValue
         },
         () => {
           this.props.displayEditModal(false)
@@ -171,7 +171,7 @@ class CreateCompany extends Component {
       default:
         submitCreateCompanyData({
           name: companyName.trim(), logo: companyLogoFilePath,
-          customer_names: customerNameFields, notes: noteFieldValue
+          customer_names: customerNameFields.filter(value => value != ''), notes: noteFieldValue
         },
         () => {
           if (this.props.match.params.lastLocation == 'create-tour') {
@@ -231,7 +231,7 @@ class CreateCompany extends Component {
           }
           <div className='section-title'>Company Name</div>
           <TextFieldWithEcoStylesDark
-            label='company'
+            // label='company'
             error={this.state.companyNameError}
             variant='outlined'
             onChange={this.handleCompanyNameChange}
@@ -316,20 +316,39 @@ class CreateCompany extends Component {
                 <div style={{ display: 'inline-block', marginLeft: '10px' }}>Add Company Member Names</div>
                 <br/>
                 <br/>
-                {
-                  this.state.customerNameFields.map((field, idx) => ((
-                    <Fragment key={idx}>
-                      <div className='padding-div-10' style={{ display: 'inline-block' }}>
-                        <TextFieldWithEcoStylesDark
-                          variant='outlined'
-                          label={`Customer name ${idx}`}
-                          onChange={this.handleCustomerNameEntry(idx)}
-                          value={this.state.customerNameFields[idx]}/>
-                          <div onClick={this.removeCustomerNameInputBox(idx)} style={{ display: 'inline-block' }}>&#10006;</div>
-                      </div>
-                    </Fragment>
-                  )))
-                }
+                <div>
+                  {
+                    this.state.customerNameFields.map((field, idx) => ((
+                      <Fragment key={idx}>
+                        <div
+                          style={{
+                            display: 'inline-block'
+                          }}>
+                          <div>
+                            Customer name {idx}
+                          </div>
+                          <TextFieldWithEcoStylesDark
+                            variant='outlined'
+                            // label={`Customer name ${idx}`}
+                            onChange={this.handleCustomerNameEntry(idx)}
+                            value={this.state.customerNameFields[idx]}/>
+                          <div
+                            onClick={this.removeCustomerNameInputBox(idx)}
+                            style={{
+                              display: 'inline-block',
+                              marginLeft: '6px',
+                              marginRight: '14px',
+                              paddingTop: '12px',
+                              transform: 'scale(1.35)',
+                              cursor: 'pointer'
+                            }}>
+                            &#10006;
+                          </div>
+                        </div>
+                      </Fragment>
+                    )))
+                  }
+                </div>
                 <br/>
                 <br/>
                 <br/>
@@ -345,7 +364,7 @@ class CreateCompany extends Component {
             <>
               <div className='section-title'>Additional notes?</div>
               <TextFieldWithEcoStylesDark
-                  label='note'
+                  // label='note'
                   variant='outlined'
                   onChange={this.handleNotesEntry}
                   value={this.state.noteFieldValue}

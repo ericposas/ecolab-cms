@@ -221,7 +221,7 @@ class CreateTour extends Component {
               <>
                 <div className='section-title'>Tour Name</div>
                 <TextFieldWithEcoStylesDark
-                  label='tour name'
+                  // label='tour name'
                   error={this.state.tourNameError}
                   variant='outlined'
                   onChange={this.handleTourNameChange}

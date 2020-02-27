@@ -90,7 +90,7 @@ class ViewCustomModules extends Component {
                           onClick={() => {
                             this.props.setCustomModuleToDelete(cmod._id)
                             this.displayDeleteModal(true)
-                          }}>&times;</div>
+                          }}>&#10006;</div>
                       <div className='custom-module-in-list-title'>{cmod.name}</div>
                       <img className='web-module-in-list-edit-icon' src='./img/pencil.svg'/>
                       <br/>

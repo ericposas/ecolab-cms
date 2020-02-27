@@ -195,7 +195,7 @@ class CreateCustomModule extends Component {
           }
           <div className='section-title'>Custom Module Name</div>
           <TextFieldWithEcoStylesDark
-            label='module name'
+            // label='module name'
             error={this.state.customModuleNameError}
             variant='outlined'
             onChange={this.handleCustomModuleNameChange}
@@ -227,8 +227,10 @@ class CreateCustomModule extends Component {
                           border={true}
                           style={{ display: 'inline-block' }}
                           variant='contained'
-                          component='label'>
-                          Select a File
+                          component='label'
+                          border='true'
+                          >
+                            Select a File
                           <input type='file' onChange={this.handleFileSelect} style={{ display: 'none' }}/>
                         </ButtonWithEcoStyles>
                       </>

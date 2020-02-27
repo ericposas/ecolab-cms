@@ -55,7 +55,18 @@ class DeleteConfirmModal extends Component {
     return (
       <>
         <div className='fullscreen-darken' onClick={() => this.props.displayDeleteModal(false)}></div>
-        <div className='center-float' style={{ width: '360px', height: this.props.type == 'company' ? '240px' : '160px', textAlign: 'center', border: 'none' }}>
+        <div
+          className='center-float'
+          style={{
+            width: '360px',
+            height: (
+              this.props.type == 'company'
+              ? '200px'
+              : '160px'
+            ),
+            textAlign: 'center',
+            border: 'none'
+          }}>
           <div className='padding-div-20'>
             <div>Are you sure you want to delete this {this.props.type}?</div>
             {

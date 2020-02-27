@@ -20,7 +20,7 @@ class TourInList extends Component {
       <div className='tour-in-list'>
         <div
           className='tour-in-list-x-symbol'
-          onClick={() => this.handleShowDeleteModal(tour._id)}>&times;</div>
+          onClick={() => this.handleShowDeleteModal(tour._id)}>&#10006;</div>
         <div className='tour-in-list-title'>{tour.name}</div>
         <div>Company: {tour.company_name}</div>
         <div>Division: {tour.division_name}</div>

@@ -7,8 +7,7 @@ const styles = {
     borderRadius: 0,
     borderColor: 'white !important',
     fontFamily: 'interstateregular_comp',
-    borderColor: 'white !important',
-    '&::placeholder': {
+    '& input::placeholder': {
       fontFamily: 'interstateregular_comp'
     },
     '& label.Mui-focused': {
@@ -39,6 +38,10 @@ const styles = {
 const ClassNames = (props) => (
   <TextField
     { ...props }
+    style={{
+      marginLeft: props.marginleft ? props.marginleft : null,
+      marginRight: props.marginright ? props.marginright : null,
+    }}
     className={props.classes.root}
     InputProps={{
       className: props.classes.root

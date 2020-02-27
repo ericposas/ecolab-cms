@@ -28,12 +28,9 @@ class TitleBar extends Component {
 
   render () {
     const { AppUserData } = this.props
-    const logoutAreaStyle = {
-      top: '-8px', right: 0, position: 'absolute',
-    }
     return (
       <>
-        <div style={{ padding: '4px', backgroundColor: EcoLabColors.blue }}>
+        <div style={{ padding: '10px', backgroundColor: EcoLabColors.blue }}>
           <div
             className={'ui-title-bar'}
             style={{
@@ -44,7 +41,7 @@ class TitleBar extends Component {
           </div>
           <img
             style={{
-              top: '8px',
+              top: '16px',
               left: '8px',
               position: 'absolute'
             }}
@@ -54,7 +51,7 @@ class TitleBar extends Component {
           {
             AppUserData && AppUserData.auth
             ?
-            <div style={logoutAreaStyle}>
+            <div style={{ top: '-5px', right: 0, position: 'absolute', backgroundColor: EcoLabColors.blue }}>
               <div className='padding-div-20' style={{ display: 'inline-block', color: '#fff' }}>Welcome {AppUserData ? AppUserData.name : null}</div>
               <ButtonWithEcoStyles marginright='10px' onClick={this.logout} variant='contained' style={{ marginRight: '4px' }}>log out</ButtonWithEcoStyles>
             </div>
