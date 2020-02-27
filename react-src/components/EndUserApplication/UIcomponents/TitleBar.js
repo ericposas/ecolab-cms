@@ -29,7 +29,7 @@ class TitleBar extends Component {
   render () {
     const { AppUserData } = this.props
     const logoutAreaStyle = {
-      top: '-11px', right: 0, position: 'absolute',
+      top: '-8px', right: 0, position: 'absolute',
     }
     return (
       <>

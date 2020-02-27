@@ -6,39 +6,39 @@ import thunk from 'redux-thunk'
 import rootReducer from './reducers/rootReducer'
 import App from './components/App'
 import { createGlobalStyle } from 'styled-components'
+import { ThemeProvider } from '@material-ui/styles'
+import { createMuiTheme } from '@material-ui/core/styles'
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import 'react-toastify/dist/ReactToastify.css'
 import './images/Logo_Joint_ECL-NW_Reverse.png'
 import './images/pencil.svg'
-import interstateReg from './fonts/interstate-regular-comp.otf'
 import './index.scss'
 
-console.log(interstateReg)
-
-const requireFonts = require.context('./fonts', false, /.otf$/)
+const requireFonts = require.context('./fonts', false, /.(woff|woff2)$/)
 requireFonts.keys().forEach(font => requireFonts(font))
-
-// const GlobalStyle = createGlobalStyle`
-//   @font-face {
-//     font-family: "interstate-reg";
-//     src:
-//       url("./fonts/interstate-regular-comp.otf");
-//   }
-//
-//   html, body {
-//     font-family: "interstate-reg";
-//   }
-// `
 
 const rootElement = document.getElementById('root')
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 store.subscribe(() => console.log(store.getState()))
 
+const customTheme = createMuiTheme({
+  overrides: {
+    MuiInput: {
+      input: {
+        '&::placeholder': {
+          fontFamily: 'interstateregular_comp'
+        }
+      }
+    }
+  }
+})
+
 ReactDOM.render(
   <Provider store={store}>
-    {/* <GlobalStyle/> */}
-    <App/>
+    <ThemeProvider theme={customTheme}>
+      <App/>
+    </ThemeProvider>
   </Provider>,
   rootElement
 )

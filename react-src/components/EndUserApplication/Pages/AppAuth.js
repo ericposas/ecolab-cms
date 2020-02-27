@@ -5,7 +5,7 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import axios from 'axios'
 import validator from 'email-validator'
 import TitleBar from '../UIcomponents/TitleBar'
-import { Button, TextField } from '@material-ui/core/'
+import { Button, TextField, Label } from '@material-ui/core/'
 import TextFieldWithEcoStyles from '../UIcomponents/TextFieldWithEcoStyles'
 import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import { ToastContainer, toast } from 'react-toastify'
@@ -89,21 +89,43 @@ class AppAuth extends Component {
             }}>
             <br/>
             <div className='padding-div-10'>
-              <div><b>Login</b></div>
+              <div
+                style={{
+                  fontSize: '1.25rem',
+                  fontFamily: 'interstateregular_comp'
+                }}><b>Login</b></div>
               <br/>
+              <div
+                style={{
+                  paddingTop: '10px',
+                  display: 'inline-block',
+                  fontSize: '1.25rem',
+                  marginRight: '10px'
+                }}>
+                  Email:
+              </div>
               <TextFieldWithEcoStyles
-                label='email'
-                variant='outlined'
                 type='text'
+                // label='email'
+                variant='outlined'
                 onChange={this.onEmailInput}
                 value={this.state.email}/>
             </div>
               <br/>
             <div>
+              <div
+                style={{
+                  paddingTop: '10px',
+                  display: 'inline-block',
+                  fontSize: '1.25rem',
+                  marginRight: '10px'
+                }}>
+                  Password:
+              </div>
               <TextFieldWithEcoStyles
-                label='password'
-                variant='outlined'
                 type='password'
+                // label='password'
+                variant='outlined'
                 onChange={this.onPasswordInput}
                 value={this.state.password}/>
               <br/>

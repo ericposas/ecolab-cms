@@ -55,21 +55,13 @@ module.exports = () => {
           }
         },
         {
-          test: /\.(otf|ttf)$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: './fonts/[name].[ext]'
-              }
-            },
-            {
-              loader: 'url-loader',
-              options: {
-                name: './fonts/[name].[ext]'
-              }
+          test: /\.(woff|woff2)$/,
+          use: {
+            loader: 'file-loader',
+            query: {
+              name: './fonts/[name].[ext]'
             }
-          ],
+          },
         }
       ]
     },

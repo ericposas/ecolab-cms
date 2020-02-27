@@ -6,20 +6,18 @@ $ecoLabBlue: #0088CE;
 $purp: #3F51B5;
 
 @font-face {
-  font-family: "Interstate Comp Regular";
-  src:
-    url("./fonts/interstate-regular-comp.otf") format('embedded-opentype');
+    font-family: 'interstateregular_comp';
+    src: url('./fonts/interstate-regular-comp-webfont.woff2') format('woff2'),
+         url('./fonts/interstate-regular-comp-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
 html,
 body {
   overflow-x: hidden;
   background-color: #FFF;
-  font-family: "Interstate Comp Regular";
-}
-
-input::placeholder {
-  color: #ccc;
+  font-family: "interstateregular_comp";
 }
 
 @media (min-width: 640px) {

@@ -4,26 +4,35 @@ import { withStyles, TextField } from '@material-ui/core'
 const styles = {
   root: {
     color: 'white',
+    borderRadius: 0,
     borderColor: 'white !important',
+    fontFamily: 'interstateregular_comp',
+    borderColor: 'white !important',
+    '&::placeholder': {
+      fontFamily: 'interstateregular_comp'
+    },
     '& label.Mui-focused': {
-      color: 'white'
+      color: 'white',
+      fontFamily: 'interstateregular_comp',
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: 'white'
+      borderBottomColor: 'white',
+      fontFamily: 'interstateregular_comp',
     },
     '&.MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: 'white'
+        borderColor: 'white',
+        fontFamily: 'interstateregular_comp',
       },
       '&:hover fieldset': {
-        borderColor: 'white'
+        borderColor: 'white',
+        fontFamily: 'interstateregular_comp',
       },
       '&.Mui-focused fieldset': {
-        borderColor: 'white'
+        borderColor: 'white',
+        fontFamily: 'interstateregular_comp',
       }
     },
-    borderRadius: 0,
-    borderColor: 'white !important'
   }
 }
 
