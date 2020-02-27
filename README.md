@@ -13,5 +13,3 @@
 
 ##TODO
   - Add function of "enabled/disabled" for modules (will disable on the tablet/screen view)
-  - Spell out the specs for PNG upload (tell the users): 1920x1200 & PNG file type
-  
