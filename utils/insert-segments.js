@@ -9,6 +9,7 @@ let mongoConnectionString = (
   ? `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-taijg.mongodb.net/${process.env.DATABASE}?retryWrites=true&w=majority`
   : `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@127.0.0.1:27017/${process.env.DATABASE}?authSource=admin&retryWrites=true&w=majority`
 )
+console.log(mongoConnectionString)
 
 const insertEntry = async item => {
   await Segment.create({ parent_industry: item[0].trim(), name: item[1].trim() })
