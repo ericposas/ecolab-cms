@@ -59,9 +59,11 @@ var upload = (0, _multer["default"])({
 _dotenv["default"].config();
 
 var _process$env = process.env,
+    ENV = _process$env.ENV,
     MODE = _process$env.MODE,
     MONGO_USER = _process$env.MONGO_USER,
-    MONGO_PASSWORD = _process$env.MONGO_PASSWORD;
+    MONGO_PASSWORD = _process$env.MONGO_PASSWORD,
+    DATABASE = _process$env.DATABASE;
 var app = (0, _express["default"])();
 var port = process.env.PORT || 3000;
 
@@ -69,17 +71,14 @@ _mongoose["default"].connection.on('connected', function () {
   console.log('connected!');
 });
 
-_mongoose["default"].connect("mongodb+srv://".concat(MONGO_USER, ":").concat(MONGO_PASSWORD, "@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority"), {
+var mongoConnectionString = ENV == 'local' ? "mongodb+srv://".concat(MONGO_USER, ":").concat(MONGO_PASSWORD, "@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority") : "mongodb://".concat(MONGO_USER, ":").concat(MONGO_PASSWORD, "@127.0.0.1:27017/ecolab?authSource=admin&retryWrites=true&w=majority");
+
+_mongoose["default"].connect(mongoConnectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 
-app.use((0, _cors["default"])()); // app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*")
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-//   next()
-// })
-
+app.use((0, _cors["default"])());
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded({
   extended: false

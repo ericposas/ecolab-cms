@@ -48,21 +48,17 @@ mongoose.connection.on('connected', () => {
   console.log('connected!')
 })
 
-let mongoConnectionString
-ENV == 'local'
-? mongoConnectionString = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority`
-: mongoConnectionString = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/ecolab?authSource=admin&retryWrites=true&w=majority`
+let mongoConnectionString = (
+  ENV == 'local'
+  ? `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority`
+  : `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/ecolab?authSource=admin&retryWrites=true&w=majority`
+)
 mongoose.connect(mongoConnectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 
 app.use(cors())
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*")
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-//   next()
-// })
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
