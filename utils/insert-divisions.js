@@ -11,7 +11,15 @@ let mongoConnectionString = (
 )
 
 const insertEntry = async item => {
-  await Division.create({ name: item[0].trim(), industries: item.filter((item, idx) => idx != 0) })
+  let name
+  let industries = []
+  name = item[0].trim()
+  Object.keys(item).forEach((_item, i) => {
+    if (i > 0) {
+      industries.push(item[_item].trim())
+    }
+  })
+  await Division.create({ name: name, industries: industries })
   console.log(`created ${item} successfully`);
 }
 
