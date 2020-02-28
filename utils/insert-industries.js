@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Segment = require('../express-routes/models/ApplicationSpecific/Segment')
+const Industry = require('../express-routes/models/ApplicationSpecific/Industry')
 const csv = require('csv-parser')
 const fs = require('fs')
 require('dotenv').config()
@@ -19,7 +19,7 @@ const insertEntry = async item => {
       segments.push(item[_item].trim())
     }
   })
-  await Segment.create({ name: name, parent_division: parent_division, segments: segments })
+  await Industry.create({ name: name, parent_division: parent_division, segments: segments })
   console.log(`created ${item} successfully`);
 }
 
