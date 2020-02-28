@@ -17,7 +17,7 @@ const insertEntry = async item => {
 
 const runDBinserts = () => {
   console.log('running db inserts now..')
-  fs.createReadStream('divisions.txt')
+  fs.createReadStream(__dirname+'/divisions.txt')
   .pipe(csv({ escape: '\n', headers: false}))
   .on('data', (data) => results.push(data))
   .on('end', () => {
