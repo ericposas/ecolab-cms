@@ -3,7 +3,12 @@ const Segment = require('../express-routes/models/ApplicationSpecific/Segment')
 const csv = require('csv-parser')
 const fs = require('fs')
 require('dotenv').config()
-const results = [];
+const results = []
+let mongoConnectionString = (
+  process.env.ENV == 'local'
+  ? `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-taijg.mongodb.net/${process.env.DATABASE}?retryWrites=true&w=majority`
+  : `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@127.0.0.1:27017/${process.env.DATABASE}?authSource=admin&retryWrites=true&w=majority`
+)
 
 const insertEntry = async item => {
   await Segment.create({ parent_industry: item[0].trim(), name: item[1].trim() })
@@ -26,9 +31,4 @@ mongoose.connection.on('connected', () => {
   console.log('connected!')
   runDBinserts()
 })
-mongoose.connect(`mongodb+srv://root:root@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-
-console.log(process.env.MONGO_USER)
+mongoose.connect(mongoConnectionString, { useNewUrlParser: true, useUnifiedTopology: true })
