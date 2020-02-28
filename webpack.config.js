@@ -14,6 +14,7 @@ module.exports = () => {
 
   return {
     entry: [ '@babel/polyfill', './react-src/index.js' ],
+    devtool: 'source-map',
     output: {
       path: path.resolve(`${__dirname}/public`),
       filename: 'bundle.js'
@@ -68,7 +69,11 @@ module.exports = () => {
     plugins: [
       new htmlPlugin({
         filename: 'index.html',
-        template: './react-src/index.html',
+        template: (
+          process.env.MODE == true
+          ? './react-src/index.html'
+          : './react-src/index-production.html'
+        ),
         inject: false
       }),
       new webpack.DefinePlugin(envKeys)
