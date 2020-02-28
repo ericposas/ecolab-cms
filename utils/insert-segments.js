@@ -30,9 +30,8 @@ const runDBinserts = () => {
 
 mongoose.connection.on('connected', () => {
   console.log('connected!')
-  // runDBinserts()
-  insertEntry(['F&B', 'Consumer Packaged Goods'])
-
+  runDBinserts()
+  // insertEntry(['F&B', 'Consumer Packaged Goods'])
 })
 mongoose.connect(mongoConnectionString, { useNewUrlParser: true, useUnifiedTopology: true })
 
