@@ -23,7 +23,7 @@ module.exports = () => {
       poll: true,
       ignored: /node_modules/
     },
-    mode: 'development',
+    mode: process.env.NODE_ENV,
     module: {
       rules: [
         {
@@ -70,7 +70,7 @@ module.exports = () => {
       new htmlPlugin({
         filename: 'index.html',
         template: (
-          process.env.MODE == true
+          process.env.NODE_ENV == 'development'
           ? './react-src/index.html'
           : './react-src/index-production.html'
         ),

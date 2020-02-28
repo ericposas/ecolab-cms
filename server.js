@@ -36,7 +36,7 @@ const upload = multer({ storage: storage })
 dotenv.config()
 const {
   ENV,
-  MODE,
+  NODE_ENV,
   MONGO_USER,
   MONGO_PASSWORD,
   DATABASE,
@@ -69,7 +69,7 @@ app.use(session({
   resave: true,
   rolling: true,
   saveUninitialized: true,
-  cookie: MODE == 'development' ? { httpOnly: false } : { secure: true }
+  cookie: NODE_ENV == 'development' ? { httpOnly: false } : { secure: true }
 }))
 
 app.use(express.static(__dirname+'/public'))
