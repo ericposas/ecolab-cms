@@ -1,4 +1,5 @@
-import { model, Schema } from 'mongoose'
+// import { model, Schema } from 'mongoose'
+const { model, Schema } = require('mongoose')
 
 const Industry = model('Industry', new Schema({
   name: {
@@ -28,4 +29,5 @@ const Industry = model('Industry', new Schema({
   }
 }))
 
-export default Industry
+// export default Industry
+module.exports = Industry

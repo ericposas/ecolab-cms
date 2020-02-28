@@ -1,18 +1,18 @@
 const mongoose = require('mongoose')
-const Segment = require('../express-routes/models/ApplicationSpecific/Segment')
+const Division = require('../express-routes/models/ApplicationSpecific/Division')
 const csv = require('csv-parser')
 const fs = require('fs')
 require('dotenv').config()
 const results = [];
 
 const insertEntry = async item => {
-  await Segment.create({ parent_industry: item[0].trim(), name: item[1].trim() })
+  await Division.create({ name: item[0].trim(), industries: item.filter((item, idx) => idx != 0) })
   console.log(`created ${item[1]} successfully`);
 }
 
 const runDBinserts = () => {
   console.log('running db inserts now..')
-  fs.createReadStream('segments.txt')
+  fs.createReadStream('divisions.txt')
   .pipe(csv({ escape: '\n', headers: false}))
   .on('data', (data) => results.push(data))
   .on('end', () => {

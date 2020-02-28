@@ -1,4 +1,5 @@
-import { model, Schema } from 'mongoose'
+// import { model, Schema } from 'mongoose'
+const { model, Schema } = require('mongoose')
 
 const Division = model('Division', new Schema({
   name: {
@@ -24,4 +25,5 @@ const Division = model('Division', new Schema({
   }
 }))
 
-export default Division
+// export default Division
+module.exports = Division

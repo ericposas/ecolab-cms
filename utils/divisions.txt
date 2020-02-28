@@ -1,0 +1,2 @@
+Light, F&B, Manufacturing, Transportation, Institutional
+Heavy, Power, Chemicals, Primary Metals

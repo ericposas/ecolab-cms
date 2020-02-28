@@ -35,9 +35,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 dotenv.config()
 const {
+  ENV,
   MODE,
   MONGO_USER,
   MONGO_PASSWORD,
+  DATABASE,
 } = process.env
 const app = express()
 const port = process.env.PORT || 3000
@@ -45,7 +47,12 @@ const port = process.env.PORT || 3000
 mongoose.connection.on('connected', () => {
   console.log('connected!')
 })
-mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority`, {
+
+let mongoConnectionString
+ENV == 'local'
+? mongoConnectionString = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority`
+: mongoConnectionString = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/ecolab?authSource=admin&retryWrites=true&w=majority`
+mongoose.connect(mongoConnectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
