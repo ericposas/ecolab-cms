@@ -248,10 +248,10 @@ const deleteCompany = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
-const submitCreateCompanyData = ({ name, logo, customer_names, notes }, callback) => {
+const submitCreateCompanyData = ({ name, logo, customer_names, notes, enabled }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: true })
-    axios.post(`/companies`, { name, logo, customer_names, notes })
+    axios.post(`/companies`, { name, logo, customer_names, notes, enabled })
       .then(data => {
         dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: false })
         if (data.data.success) {
@@ -264,10 +264,10 @@ const submitCreateCompanyData = ({ name, logo, customer_names, notes }, callback
       .catch(err => console.log(err))
   }
 }
-const updateCompanyData = ({ id, name, logo, customer_names, notes }, callback) => {
+const updateCompanyData = ({ id, name, logo, customer_names, notes, enabled }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: UPDATING_COMPANY, payload: true })
-    axios.put(`/companies/update/${id}`, { name, logo, customer_names, notes })
+    axios.put(`/companies/update/${id}`, { name, logo, customer_names, notes, enabled })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: UPDATING_COMPANY, payload: false })

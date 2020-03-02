@@ -5,7 +5,9 @@ import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
 import withAppUserAuth from '../HOC/withAppUserAuth'
 import TitleBar from '../UIcomponents/TitleBar'
 import { Progress as ProgressBar } from 'reactstrap'
-import { Button } from '@material-ui/core'
+import { Button, Switch, FormControlLabel } from '@material-ui/core'
+import { withStyles } from '@material-ui/core/styles'
+import { green } from '@material-ui/core/colors'
 import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
 import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import EcoLabColors from '../Colors/EcoLabColors'
@@ -19,6 +21,7 @@ const FileWidth = 960
 class CreateCompany extends Component {
 
   state = {
+    companyEnabled: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.enabled : false,
     companyName: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : '',
     companyNameError: this.props.CompanySelectedForEdit ? false : true,
     companyLogoLoadedPercent: 0,
@@ -160,8 +163,11 @@ class CreateCompany extends Component {
       case 'edit-company':
         updateCompanyData({
           id: CompanySelectedForEdit ? CompanySelectedForEdit._id : null,
-          name: companyName.trim(), logo: companyLogoFilePath,
-          customer_names: customerNameFields.filter(value => value != ''), notes: noteFieldValue
+          name: companyName.trim(),
+          logo: companyLogoFilePath,
+          customer_names: customerNameFields.filter(value => value != ''),
+          notes: noteFieldValue,
+          enabled: this.state.companyEnabled,
         },
         () => {
           this.props.displayEditModal(false)
@@ -170,8 +176,11 @@ class CreateCompany extends Component {
         break;
       default:
         submitCreateCompanyData({
-          name: companyName.trim(), logo: companyLogoFilePath,
-          customer_names: customerNameFields.filter(value => value != ''), notes: noteFieldValue
+          name: companyName.trim(),
+          logo: companyLogoFilePath,
+          customer_names: customerNameFields.filter(value => value != ''),
+          notes: noteFieldValue,
+          enabled: this.state.companyEnabled,
         },
         () => {
           if (this.props.match.params.lastLocation == 'create-tour') {
@@ -187,6 +196,23 @@ class CreateCompany extends Component {
 
   render() {
     const { SavingCompanyData, CompanyDataSaved, CompanyDataError, history } = this.props
+    const greenValue = 500
+    const GreenSwitch = withStyles({
+      switchBase: {
+        color: '#dfdfdf',
+        '&checked': {
+          color: EcoLabColors.green
+        },
+        '&$checked + $track': {
+          backgroundColor: green[greenValue]
+        }
+      },
+      checked: {
+        color: EcoLabColors.green
+      },
+      track: {}
+    })(Switch)
+
     return (
       <>
         <ToastContainer/>
@@ -228,6 +254,22 @@ class CreateCompany extends Component {
             this.props.placement != 'edit-company'
             ? <div className='page-title'>Add a Company</div>
             : <div className='page-title'>Edit {this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : ''}</div>
+          }
+          {
+            this.props.placement == 'edit-company'
+            ? <>
+                <FormControlLabel
+                  label={this.state.companyEnabled ? 'enabled' : 'disabled'}
+                  control={
+                    <GreenSwitch
+                      checked={this.state.companyEnabled}
+                      onChange={() => this.setState({ companyEnabled: !this.state.companyEnabled })}
+                      color='default'
+                      />
+                  }
+                />
+              </>
+            : null
           }
           <div className='section-title'>Company Name</div>
           <TextFieldWithEcoStylesDark
