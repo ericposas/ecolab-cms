@@ -82,7 +82,7 @@ const updateCompany = (req, res) => {
             doc.logo_image_url = req.body.logo == '' ? doc.logo_image_url : req.body.logo,
             doc.customer_names = req.body.customer_names,
             doc.notes = req.body.notes ? req.body.notes : '',
-            doc.enabled = req.body.enabled ? req.body.enabled : false,
+            doc.enabled = req.body.enabled != doc.enabled ? req.body.enabled : doc.enabled,
             doc.creator_id = Types.ObjectId(req.session.appuserid)
             doc.save()
               .then(doc => res.send({ success: `updated company ${doc._id} successfully` }))

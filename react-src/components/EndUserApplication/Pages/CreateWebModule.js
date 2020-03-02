@@ -9,13 +9,23 @@ import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
 import EcoLabColors from '../Colors/EcoLabColors'
 import { ToastContainer, toast } from 'react-toastify'
+import { FormControlLabelCustom, GreenSwitch } from '../UIcomponents/CustomWithStyles'
 import validUrl from 'valid-url'
 import axios from 'axios'
 
 class CreateWebModule extends Component {
 
   state = {
-    urlField: this.props.WebModuleSelectedForEdit ? this.props.WebModuleSelectedForEdit.browser_url : ''
+    webModuleEnabled: (
+      (this.props.WebModuleSelectedForEdit && this.props.placement == 'edit-webmodule')
+      ? this.props.WebModuleSelectedForEdit.enabled
+      : true
+    ),
+    urlField: (
+      (this.props.WebModuleSelectedForEdit && this.props.placement == 'edit-webmodule')
+      ? this.props.WebModuleSelectedForEdit.browser_url
+      : ''
+    )
   }
 
   componentDidMount() {
@@ -42,7 +52,11 @@ class CreateWebModule extends Component {
     const { saveWebModule, updateWebModule, WebModuleSelectedForEdit, getWebModules, history } = this.props
     if (validUrl.isUri(this.state.urlField)) {
       if (this.props.placement == 'edit-webmodule') {
-        updateWebModule({ id: WebModuleSelectedForEdit._id, browser_url: this.state.urlField }, () => {
+        updateWebModule({
+          id: WebModuleSelectedForEdit._id,
+          browser_url: this.state.urlField,
+          enabled: this.state.webModuleEnabled
+        }, () => {
           this.props.displayEditModal(false)
           getWebModules()
         })
@@ -97,6 +111,22 @@ class CreateWebModule extends Component {
             this.props.placement != 'edit-webmodule'
             ? <div className='page-title'>Create a Web Module</div>
             : <div className='page-title'>Edit {this.props.WebModuleSelectedForEdit.browser_url}</div>
+          }
+          {
+            this.props.placement == 'edit-webmodule'
+            ? <>
+                <FormControlLabelCustom
+                  label={this.state.webModuleEnabled ? 'enabled' : 'disabled'}
+                  control={
+                    <GreenSwitch
+                      checked={this.state.webModuleEnabled}
+                      onChange={() => this.setState({ webModuleEnabled: !this.state.webModuleEnabled })}
+                      color='default'
+                      />
+                  }
+                />
+              </>
+            : null
           }
           <br/>
           <TextFieldWithEcoStylesDark

@@ -183,10 +183,10 @@ const deleteWebModule = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
-const updateWebModule = ({ id, browser_url }, callback) => {
+const updateWebModule = ({ id, browser_url, enabled }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: UPDATING_WEB_MODULE, payload: true })
-    axios.put(`/webmodules/update/${id}`, { browser_url })
+    axios.put(`/webmodules/update/${id}`, { browser_url, enabled })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: UPDATING_WEB_MODULE, payload: false })

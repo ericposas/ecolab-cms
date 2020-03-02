@@ -12,7 +12,7 @@ const WebModule = model('WebModule', new Schema({
   },
   enabled: {
     type: Boolean,
-    default: false
+    default: true
   },
   creator_id: {
     type: Schema.ObjectId,

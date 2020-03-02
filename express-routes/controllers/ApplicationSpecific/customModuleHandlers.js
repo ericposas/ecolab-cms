@@ -63,7 +63,7 @@ const updateCustomModule = (req, res) => {
           if (doc) {
             doc.name = req.body.name && req.body.name.trim() != '' ? req.body.name : doc.name
             doc.image_url = req.body.image_url && req.body.image_url.trim() != '' ? req.body.image_url : doc.image_url
-            doc.enabled = req.body.enabled
+            doc.enabled = req.body.enabled != doc.enabled ? req.body.enabled : doc.enabled
             doc.save()
               .then(doc => res.send({ success: `updated ${doc._id} successfully` }))
               .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))

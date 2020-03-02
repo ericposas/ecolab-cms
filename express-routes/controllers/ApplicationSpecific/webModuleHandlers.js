@@ -66,7 +66,8 @@ const updateWebModule = (req, res) => {
       WebModule.findOne({ _id: id })
         .then(doc => {
           if (doc) {
-            doc.browser_url = req.body.browser_url
+            doc.browser_url = req.body.browser_url ? req.body.browser_url : doc.browser_url
+            doc.enabled = req.body.enabled != doc.enabled ? req.body.enabled : doc.enabled
             doc.save()
               .then(doc => res.send({ success: `updated ${doc._id} successfully` }))
               .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))
