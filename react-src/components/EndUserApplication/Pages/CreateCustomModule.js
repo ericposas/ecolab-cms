@@ -78,7 +78,7 @@ class CreateCustomModule extends Component {
           return resolve(true)
         } else {
           console.log('wrong dimensions')
-          toast.error(`Incorrect logo dimensions. Please upload an image that is at least ${FileWidth}px wide and ${FileHeight}px tall.`, {
+          toast.error(`Incorrect image / custom module dimensions. Please upload an image that is at least ${FileWidth}px wide and ${FileHeight}px tall.`, {
             autoClose: 5000
           })
           return resolve(false)
