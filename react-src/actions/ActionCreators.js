@@ -408,7 +408,7 @@ const deleteTour = (id, callback) => {
 const updateTourModule = ({
   tour_id, tourName,
   company_id, division_id, industry_id, segment_id,
-  company_name, division_name, industry_name, segment_name,
+  company_name, division_name, industry_name, segment_name, enabled
   }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: UPDATING_TOUR, payload: true })
@@ -416,6 +416,7 @@ const updateTourModule = ({
         name: tourName,
         company_id, division_id, industry_id, segment_id,
         company_name, division_name, industry_name, segment_name,
+        enabled
       })
       .then(data => {
         if (data.data.success) {

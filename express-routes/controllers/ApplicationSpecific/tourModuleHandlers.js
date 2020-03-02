@@ -72,23 +72,24 @@ const getOneTourModule = (req, res) => {
 const updateTourModule = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
-    if (req.params.id) {
+    if (req.params.id && req.session.appuserid) {
       const { id } = req.params
       console.log(id)
       TourModule.findOne({ _id: id })
         .then(doc => {
           console.log(doc)
           if (doc) {
-            doc.name = req.body.name,
+            doc.name = req.body.name ? req.body.name : doc.name,
             doc.creator_id = Types.ObjectId(req.session.appuserid)
-            doc.company_id = Types.ObjectId(req.body.company_id)
-            doc.company_name = req.body.company_name
-            doc.division_id = Types.ObjectId(req.body.division_id)
-            doc.division_name = req.body.division_name
-            doc.industry_id = Types.ObjectId(req.body.industry_id)
-            doc.industry_name = req.body.industry_name
-            doc.segment_id = Types.ObjectId(req.body.segment_id)
-            doc.segment_name = req.body.segment_name
+            doc.company_id = req.body.company_id ? Types.ObjectId(req.body.company_id) : doc.company_id
+            doc.company_name = req.body.company_name ? req.body.company_name : doc.company_name
+            doc.division_id = req.body.division_id ? Types.ObjectId(req.body.division_id) : doc.division_id
+            doc.division_name = req.body.division_name ? req.body.division_name : doc.division_name
+            doc.industry_id = req.body.industry_id ? Types.ObjectId(req.body.industry_id) : doc.industry_id
+            doc.industry_name = req.body.industry_name ? req.body.industry_name : doc.industry_name
+            doc.segment_id = req.body.segment_id ? Types.ObjectId(req.body.segment_id) : doc.segment_id
+            doc.segment_name = req.body.segment_name ? req.body.segment_name : doc.segment_name
+            doc.enabled = req.body.enabled != doc.enabled ? req.body.enabled : doc.enabled
             doc.save()
               .then(doc => res.send({ success: `updated ${doc._id} successfully` }))
               .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))
@@ -96,7 +97,7 @@ const updateTourModule = (req, res) => {
         })
         .catch(err => res.send({ error: 'error occurred finding tour doc' }))
     } else {
-      res.send({ error: 'no id param sent' })
+      res.send({ error: 'no id param sent or not logged in' })
     }
   }
 }

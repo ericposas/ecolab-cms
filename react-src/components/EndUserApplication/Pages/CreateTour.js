@@ -12,6 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { CSSTransition } from 'react-transition-group'
 import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import TextFieldWithEcoStylesDark from '../UIcomponents/TextFieldWithEcoStylesDark'
+import { FormControlLabelCustom, GreenSwitch } from '../UIcomponents/CustomWithStyles'
 import EcoLabColors from '../Colors/EcoLabColors'
 import axios from 'axios'
 
@@ -25,6 +26,20 @@ const dummyIndustry = { _id: 4872394983278, name: CHOOSE_INDUSTRY, segments: [] 
 const dummySegment = { _id: 759729874829, name: CHOOSE_SEGMENT, offerings: [] }
 
 class CreateTour extends Component {
+
+  state = {
+    tourName: '',
+    tourNameError: true,
+    companySelected: CHOOSE_COMPANY,
+    divisionSelected: dummyDivision,
+    industrySelected: dummyIndustry,
+    segmentSelected: dummySegment,
+    tourEnabled: (
+      (this.props.TourSelectedForEdit && this.props.placement == 'edit-tour')
+      ? this.props.TourSelectedForEdit.enabled
+      : true
+    )
+  }
 
   componentDidMount() {
     const { checkAppUserAuth, setAppUserData, AppUserData, history,
@@ -57,15 +72,6 @@ class CreateTour extends Component {
     console.log(this.state)
   }
 
-  state = {
-    tourName: '',
-    tourNameError: true,
-    companySelected: CHOOSE_COMPANY,
-    divisionSelected: dummyDivision,
-    industrySelected: dummyIndustry,
-    segmentSelected: dummySegment,
-  }
-
   handleTourSubmit = () => {
     switch (this.props.placement) {
       case 'edit-tour':
@@ -80,6 +86,7 @@ class CreateTour extends Component {
           industry_name: this.state.industrySelected.name,
           segment_id: this.state.segmentSelected._id,
           segment_name: this.state.segmentSelected.name,
+          enabled: this.state.tourEnabled
         },
         () => {
           // this.props.history.push('/view-tours')
@@ -187,6 +194,22 @@ class CreateTour extends Component {
             this.props.placement != 'edit-tour'
             ? <div className='page-title'>Create a Tour</div>
             : <div className='page-title'>Edit {this.props.TourSelectedForEdit ? this.props.TourSelectedForEdit.name : ''}</div>
+          }
+          {
+            this.props.placement == 'edit-tour'
+            ? <>
+                <FormControlLabelCustom
+                  label={this.state.tourEnabled ? 'enabled' : 'disabled'}
+                  control={
+                    <GreenSwitch
+                      checked={this.state.tourEnabled}
+                      onChange={() => this.setState({ tourEnabled: !this.state.tourEnabled })}
+                      color='default'
+                      />
+                  }
+                />
+              </>
+            : null
           }
           <div className='section-title'>Choose Company</div>
           <select
@@ -312,7 +335,10 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION && this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT}
+            in={
+              (this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION && this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT) ||
+              (this.props.TourSelectedForEdit && this.props.placement == 'edit-tour' && this.props.TourSelectedForEdit.enabled != this.state.tourEnabled)
+            }
             timeout={500}
             classNames='item'>
             <>
