@@ -60,7 +60,7 @@ _dotenv["default"].config();
 
 var _process$env = process.env,
     ENV = _process$env.ENV,
-    MODE = _process$env.MODE,
+    NODE_ENV = _process$env.NODE_ENV,
     MONGO_USER = _process$env.MONGO_USER,
     MONGO_PASSWORD = _process$env.MONGO_PASSWORD,
     DATABASE = _process$env.DATABASE;
@@ -93,7 +93,7 @@ app.use((0, _expressSession["default"])({
   resave: true,
   rolling: true,
   saveUninitialized: true,
-  cookie: MODE == 'development' ? {
+  cookie: NODE_ENV == 'development' ? {
     httpOnly: false
   } : {
     secure: true
