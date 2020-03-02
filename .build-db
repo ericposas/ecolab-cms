@@ -1,0 +1,5 @@
+#!/bin/bash
+
+node utils/insert-divisions.js
+node utils/insert-industries.js
+node utils/insert-segments.js
