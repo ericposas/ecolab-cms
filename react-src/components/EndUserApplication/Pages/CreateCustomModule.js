@@ -10,6 +10,7 @@ import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import { ToastContainer, toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
 import EcoLabColors from '../Colors/EcoLabColors'
+import { FormControlLabelCustom, GreenSwitch } from '../UIcomponents/CustomWithStyles'
 import axios from 'axios'
 import uuid from 'uuid'
 
@@ -19,13 +20,26 @@ const FileHeight = 1200
 class CreateCustomModule extends Component {
 
   state = {
-    customModuleName: '',
-    customModuleNameError: true,
+    customModuleName: (
+      this.props.CustomModuleSelectedForEdit && this.props.placement == 'edit-custom-module'
+      ? this.props.CustomModuleSelectedForEdit.name
+      : ''
+    ),
+    customModuleNameError: (
+      this.props.CustomModuleSelectedForEdit && this.props.placement == 'edit-custom-module'
+      ? false
+      : true
+    ),
     imageLoadedPercent: 0,
     imageUploaded: false,
     imageFilePath: '',
     correctImageDimensions: null,
-    skipUpload: false
+    skipUpload: false,
+    customModuleEnabled: (
+      this.props.CustomModuleSelectedForEdit && this.props.placement == 'edit-custom-module'
+      ? this.props.CustomModuleSelectedForEdit.enabled
+      : true
+    )
   }
 
   componentDidMount() {
@@ -128,7 +142,12 @@ class CreateCustomModule extends Component {
     switch (this.props.placement) {
       case 'edit-custom-module': {
         let toastId = toast(<div>Updating custom module...</div>, { type: toast.TYPE.WARNING, autoClose: 5000 })
-        updateCustomModule({ id: CustomModuleSelectedForEdit._id, name: this.state.customModuleName, image_url: this.state.imageFilePath }, () => {
+        updateCustomModule({
+          id: CustomModuleSelectedForEdit._id,
+          name: this.state.customModuleName,
+          image_url: this.state.imageFilePath,
+          enabled: this.state.customModuleEnabled
+        }, () => {
           this.props.displayEditModal(false)
           getCustomModules()
           toast.dismiss(toastId)
@@ -170,7 +189,9 @@ class CreateCustomModule extends Component {
                   variant='contained'
                   textcolor={'#FFF'}
                   backgroundcolor={EcoLabColors.blue}
-                  onClick={() => history.push('/')}>Dashboard</ButtonWithEcoStyles>
+                  onClick={() => history.push('/')}>
+                    Dashboard
+                </ButtonWithEcoStyles>
                 <ButtonWithEcoStyles
                   marginleft='10px'
                   textcolor={'#FFF'}
@@ -181,6 +202,22 @@ class CreateCustomModule extends Component {
                 </ButtonWithEcoStyles>
                 <br/>
                 <br/>
+              </>
+            : null
+          }
+          {
+            this.props.placement == 'edit-custom-module'
+            ? <>
+                <FormControlLabelCustom
+                  label={this.state.customModuleEnabled ? 'enabled' : 'disabled'}
+                  control={
+                    <GreenSwitch
+                      checked={this.state.customModuleEnabled}
+                      onChange={() => this.setState({ customModuleEnabled: !this.state.customModuleEnabled })}
+                      color='default'
+                      />
+                  }
+                />
               </>
             : null
           }
@@ -244,7 +281,7 @@ class CreateCustomModule extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.imageUploaded}
+            in={(this.props.CustomModuleSelectedForEdit && this.state.customModuleName != this.props.CustomModuleSelectedForEdit.name) || (this.props.CustomModuleSelectedForEdit && this.state.customModuleEnabled != this.props.CustomModuleSelectedForEdit.enabled) || this.state.imageUploaded}
             timeout={500}
             classNames='item'>
               <>

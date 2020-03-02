@@ -11,7 +11,7 @@ const createCompany = (req, res) => {
         logo_image_url: req.body.logo,
         customer_names: req.body.customer_names,
         notes: req.body.notes ? req.body.notes : '',
-        enabled: req.body.enabled ? req.body.enabled : false,
+        // enabled: req.body.enabled ? req.body.enabled : false,
         creator_id: Types.ObjectId(req.session.appuserid)
       })
       .save()

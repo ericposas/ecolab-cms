@@ -248,10 +248,10 @@ const deleteCompany = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
-const submitCreateCompanyData = ({ name, logo, customer_names, notes, enabled }, callback) => {
+const submitCreateCompanyData = ({ name, logo, customer_names, notes }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: true })
-    axios.post(`/companies`, { name, logo, customer_names, notes, enabled })
+    axios.post(`/companies`, { name, logo, customer_names, notes })
       .then(data => {
         dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: false })
         if (data.data.success) {
@@ -491,10 +491,10 @@ const deleteCustomModule = (id, callback) => {
       })
   }
 }
-const updateCustomModule = ({ id, name, image_url }, callback) => {
+const updateCustomModule = ({ id, name, image_url, enabled }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: UPDATING_CUSTOM_MODULE, payload: true })
-    axios.put(`/custommodules/update/${id}`, { name, image_url })
+    axios.put(`/custommodules/update/${id}`, { name, image_url, enabled })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: UPDATING_CUSTOM_MODULE, payload: false })

@@ -55,14 +55,15 @@ const getOneCustomModule = (req, res) => {
 const updateCustomModule = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
-    if (req.params.id && req.body.name && req.body.image_url) {
+    if (req.params.id) {
       const { id } = req.params
       console.log(id)
       CustomModule.findOne({ _id: id })
         .then(doc => {
           if (doc) {
-            doc.name = req.body.name
-            if (req.body.image_url != '') doc.image_url = req.body.image_url
+            doc.name = req.body.name && req.body.name.trim() != '' ? req.body.name : doc.name
+            doc.image_url = req.body.image_url && req.body.image_url.trim() != '' ? req.body.image_url : doc.image_url
+            doc.enabled = req.body.enabled
             doc.save()
               .then(doc => res.send({ success: `updated ${doc._id} successfully` }))
               .catch(err => res.send({ error: `error occurred updating ${doc._id}` }))

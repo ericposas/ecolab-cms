@@ -13,6 +13,7 @@ import ButtonWithEcoStyles from '../UIcomponents/ButtonWithEcoStyles'
 import EcoLabColors from '../Colors/EcoLabColors'
 import { ToastContainer, toast } from 'react-toastify'
 import { CSSTransition } from 'react-transition-group'
+import { GreenSwitch, FormControlLabelCustom } from '../UIcomponents/CustomWithStyles'
 import axios from 'axios'
 import uuid from 'uuid'
 
@@ -21,20 +22,44 @@ const FileWidth = 960
 class CreateCompany extends Component {
 
   state = {
-    companyEnabled: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.enabled : false,
-    companyName: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.name : '',
-    companyNameError: this.props.CompanySelectedForEdit ? false : true,
+    companyEnabled: (
+      (this.props.CompanySelectedForEdit && this.props.placement == 'edit-company')
+      ? this.props.CompanySelectedForEdit.enabled
+      : false
+    ),
+    companyName: (
+      (this.props.CompanySelectedForEdit && this.props.placement == 'edit-company')
+      ? this.props.CompanySelectedForEdit.name
+      : ''
+    ),
+    companyNameError: (
+      (this.props.CompanySelectedForEdit && this.props.placement == 'edit-company')
+      ? false
+      : true
+    ),
     companyLogoLoadedPercent: 0,
-    companyLogoUploaded: this.props.CompanySelectedForEdit ? true : false,
+    companyLogoUploaded: (
+      (this.props.CompanySelectedForEdit && this.props.placement == 'edit-company')
+      ? true
+      : false
+    ),
     companyLogoFilePath: '',
-    customerNameFields: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.customer_names : [],
-    noteFieldValue: this.props.CompanySelectedForEdit ? this.props.CompanySelectedForEdit.notes : '',
+    customerNameFields: (
+      (this.props.CompanySelectedForEdit && this.props.placement == 'edit-company')
+      ? this.props.CompanySelectedForEdit.customer_names
+      : []
+    ),
+    noteFieldValue: (
+      (this.props.CompanySelectedForEdit && this.props.placement == 'edit-company')
+      ? this.props.CompanySelectedForEdit.notes
+      : ''
+    ),
     showDeleteModal: false,
     lastPageVisited: null,
     skipUpload: false,
     correctLogoDimensions: null
   }
-
+  
   componentDidMount() {
     const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
@@ -180,7 +205,7 @@ class CreateCompany extends Component {
           logo: companyLogoFilePath,
           customer_names: customerNameFields.filter(value => value != ''),
           notes: noteFieldValue,
-          enabled: this.state.companyEnabled,
+          // enabled: this.state.companyEnabled,
         },
         () => {
           if (this.props.match.params.lastLocation == 'create-tour') {
@@ -196,23 +221,6 @@ class CreateCompany extends Component {
 
   render() {
     const { SavingCompanyData, CompanyDataSaved, CompanyDataError, history } = this.props
-    const greenValue = 500
-    const GreenSwitch = withStyles({
-      switchBase: {
-        color: '#dfdfdf',
-        '&checked': {
-          color: EcoLabColors.green
-        },
-        '&$checked + $track': {
-          backgroundColor: green[greenValue]
-        }
-      },
-      checked: {
-        color: EcoLabColors.green
-      },
-      track: {}
-    })(Switch)
-
     return (
       <>
         <ToastContainer/>
@@ -258,7 +266,7 @@ class CreateCompany extends Component {
           {
             this.props.placement == 'edit-company'
             ? <>
-                <FormControlLabel
+                <FormControlLabelCustom
                   label={this.state.companyEnabled ? 'enabled' : 'disabled'}
                   control={
                     <GreenSwitch
