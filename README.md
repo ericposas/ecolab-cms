@@ -12,4 +12,3 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - Add function of "enabled/disabled" for modules (will disable on the tablet/screen view)
