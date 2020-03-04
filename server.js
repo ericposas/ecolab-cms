@@ -51,8 +51,8 @@ mongoose.connection.on('connected', () => {
 
 let mongoConnectionString = (
   ENV == 'local'
-  ? `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority`
-  : `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/ecolab?authSource=admin&retryWrites=true&w=majority`
+  ? `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@cluster0-taijg.mongodb.net/${DATABASE}?retryWrites=true&w=majority`
+  : `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@127.0.0.1:27017/${DATABASE}?authSource=admin&retryWrites=true&w=majority`
 )
 mongoose.connect(mongoConnectionString, {
   useNewUrlParser: true,
