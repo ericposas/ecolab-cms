@@ -17,7 +17,12 @@ class CompanyInList extends Component {
   render() {
     const { company } = this.props
     return (
-      <div className='company-in-list'>
+      <div
+        style={{
+          opacity: company.enabled ? 1 : 0.35
+        }}
+        className='company-in-list'
+        >
         <div
           className='company-in-list-x-symbol'
           onClick={() => this.handleShowDeleteModal(company._id)}>&#10006;</div>

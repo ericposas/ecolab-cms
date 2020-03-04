@@ -84,7 +84,12 @@ class ViewCustomModules extends Component {
                       in={cmod != null}
                       timeout={500}
                       classNames='item'>
-                      <div className='custom-module-in-list'>
+                      <div
+                        style={{
+                          opacity: cmod.enabled ? 1 : 0.35
+                        }}
+                        className='custom-module-in-list'
+                        >
                         <div
                           className='custom-module-x-btn'
                           onClick={() => {

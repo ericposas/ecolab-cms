@@ -1,8 +1,25 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { mapState, mapDispatch } from '../../../mapStateMapDispatch'
+import axios from 'axios'
 
 class TourInList extends Component {
+
+  state = {
+    companyEnabled: false
+  }
+
+  componentDidMount() {
+    axios.get(`/companies/${this.props.tour.company_id}`)
+      .then(data => {
+        let company = data.data.success
+        this.setState({
+          companyEnabled: company.enabled
+        },
+        () => console.log(this.state.companyEnabled))
+      })
+      .catch(err => console.log(err))
+  }
 
   handleShowDeleteModal = id => {
     this.props.displayDeleteModal(true)
@@ -17,7 +34,11 @@ class TourInList extends Component {
   render() {
     const { tour } = this.props
     return (
-      <div className='tour-in-list'>
+      <div
+        style={{
+          opacity: tour.enabled && this.state.companyEnabled ? 1 : 0.35
+        }}
+        className='tour-in-list'>
         <div
           className='tour-in-list-x-symbol'
           onClick={() => this.handleShowDeleteModal(tour._id)}>&#10006;</div>

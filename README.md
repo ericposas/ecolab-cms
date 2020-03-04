@@ -12,5 +12,3 @@
     - /EcoLabApp will hold all components, reducers, etc. pertaining to the ecolab application, not the admin CMS
 
 ##TODO
-  - dim or dull out 'disabled' modules / tours / companies
-  - check all 'disabled' flags when populating dropdown(s) (when creating a 'Tour' for example)

@@ -90,7 +90,12 @@ class ViewWebModules extends Component {
                     in={module != null}
                     timeout={500}
                     classNames='item'>
-                    <div className='web-module-in-list'>
+                    <div
+                      style={{
+                        opacity: module.enabled ? 1 : 0.35
+                      }}
+                      className='web-module-in-list'
+                      >
                       <div
                         className='x-symbol web-module-x-btn'
                         onClick={() => {

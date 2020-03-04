@@ -221,7 +221,7 @@ class CreateTour extends Component {
                   {
                     [{ _id: 8394032098423098, name: CHOOSE_COMPANY }]
                       .concat({ _id: 38402387589238947, name: CREATE_NEW_COMPANY })
-                      .concat(Companies).map(company => {
+                      .concat(Companies.filter(co => co.enabled == true)).map(company => {
                         if (company.name == CREATE_NEW_COMPANY && this.props.placement == 'edit-tour') {
                           return null
                         } else {
