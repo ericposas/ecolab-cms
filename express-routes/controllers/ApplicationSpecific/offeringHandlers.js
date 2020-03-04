@@ -19,6 +19,7 @@ const updateOffering = (req, res) => {
     if (req.params.id) {
       Offering.find({ _id: req.params.id })
         .then(doc => {
+          doc.name = req.body.name ? req.body.name : doc.name
           doc.parent_segment = req.body.parent_segment ? req.body.parent_segment : doc.parent_segment
           doc.browser_url = req.body.browser_url ? req.body.browser_url : doc.browser_url
           doc.tablet_thumb_url = req.body.tablet_thumb_url ? req.body.tablet_thumb_url : doc.tablet_thumb_url
