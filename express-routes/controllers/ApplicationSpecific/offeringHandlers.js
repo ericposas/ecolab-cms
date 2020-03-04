@@ -13,6 +13,15 @@ const getOfferingByParentSegment = (req, res) => {
   }
 }
 
+const getAllOfferings = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    Offering.find()
+      .then(data => res.send({ success: data }))
+      .catch(err => res.send({ error: 'could not GET offerings' }))
+  }
+}
+
 const updateOffering = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
@@ -35,5 +44,7 @@ const updateOffering = (req, res) => {
 }
 
 export {
-  getOfferingByParentSegment
+  getOfferingByParentSegment,
+  updateOffering,
+  getAllOfferings
 }
