@@ -6,6 +6,6 @@ import {
 } from '../../controllers/ApplicationSpecific/offeringHandlers'
 
 offeringRoutes.post('/bySegmentName', getOfferingByParentSegment)
-offeringRoutes.put('/:id', updateOffering)
+offeringRoutes.put('/update/:id', updateOffering)
 
 export default offeringRoutes
