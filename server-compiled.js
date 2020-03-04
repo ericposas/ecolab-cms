@@ -38,6 +38,8 @@ var _industryRoutes = _interopRequireDefault(require("./express-routes/routes/Ap
 
 var _segmentRoutes = _interopRequireDefault(require("./express-routes/routes/ApplicationSpecific/segmentRoutes"));
 
+var _offeringRoutes = _interopRequireDefault(require("./express-routes/routes/ApplicationSpecific/offeringRoutes"));
+
 var _tourModuleRoutes = _interopRequireDefault(require("./express-routes/routes/ApplicationSpecific/tourModuleRoutes"));
 
 var _customModuleRoutes = _interopRequireDefault(require("./express-routes/routes/ApplicationSpecific/customModuleRoutes"));
@@ -117,7 +119,8 @@ app.use('/custommodules', _customModuleRoutes["default"]); // Divisions, Industr
 
 app.use('/divisions', _divisionRoutes["default"]);
 app.use('/industries', _industryRoutes["default"]);
-app.use('/segments', _segmentRoutes["default"]); // File upload
+app.use('/segments', _segmentRoutes["default"]);
+app.use('/offerings', _offeringRoutes["default"]); // File upload
 
 app.post('/upload', upload.single('file'), function (req, res) {
   console.log(req.session);
