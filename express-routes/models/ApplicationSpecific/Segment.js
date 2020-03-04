@@ -10,10 +10,6 @@ const Segment = model('Segment', new Schema({
     type: String,
     default: ''
   },
-  offering_ids: {
-    type: Array,
-    default: []
-  },
   tablet_thumb_url: {
     type: String,
     default: ''

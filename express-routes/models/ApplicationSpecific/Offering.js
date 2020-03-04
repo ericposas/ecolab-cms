@@ -1,4 +1,5 @@
-import { model, Schema } from 'mongoose'
+// import { model, Schema } from 'mongoose'
+const { model, Schema } = require('mongoose')
 
 const Offering = model('Offering', new Schema({
   name: {
@@ -8,8 +9,8 @@ const Offering = model('Offering', new Schema({
     dropdups: true
   },
   parent_segment: {
-    type: Array,
-    default: []
+    type: String,
+    default: ''
   },
   browser_url: {
     type: String,
@@ -33,4 +34,5 @@ const Offering = model('Offering', new Schema({
   }
 }))
 
-export default Offering
+// export default Offering
+module.exports = Offering

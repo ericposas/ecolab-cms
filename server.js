@@ -23,6 +23,7 @@ import companyRoutes from './express-routes/routes/ApplicationSpecific/companyRo
 import divisionRoutes from './express-routes/routes/ApplicationSpecific/divisionRoutes'
 import industryRoutes from './express-routes/routes/ApplicationSpecific/industryRoutes'
 import segmentRoutes from './express-routes/routes/ApplicationSpecific/segmentRoutes'
+import offeringRoutes from './express-routes/routes/ApplicationSpecific/offeringRoutes'
 import tourModuleRoutes from './express-routes/routes/ApplicationSpecific/tourModuleRoutes'
 import customModuleRoutes from './express-routes/routes/ApplicationSpecific/customModuleRoutes'
 
@@ -93,6 +94,7 @@ app.use('/custommodules', customModuleRoutes)
 app.use('/divisions', divisionRoutes)
 app.use('/industries', industryRoutes)
 app.use('/segments', segmentRoutes)
+app.use('/offerings', offeringRoutes)
 
 // File upload
 app.post('/upload', upload.single('file'), (req, res) => {

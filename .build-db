@@ -3,3 +3,4 @@
 node utils/insert-divisions.js
 node utils/insert-industries.js
 node utils/insert-segments.js
+node utils/insert-offerings.js

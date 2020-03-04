@@ -1,0 +1,41 @@
+Light, Consumer Packaged Goods
+Light, Beverage Processing
+Light, Dairy Processing
+Light, Meat Poultry and Seafood Processing
+Light, Brewery & Winery
+Light, Grain & Oilseed Processing
+Light, Biofuels & Ethanol
+Light, Sugar Processing
+Light, Mech/Elec/Eqt Mfg.
+Light, Plastic Products
+Light, General Manufacturing
+Light, Pharmaceutical
+Light, Corrugated Box
+Light, Wood Products
+Light, General Electronics
+Light, Microelectronics
+Light, Rail Transportation
+Light, Aerospc Defense Mfg
+Light, Automotive
+Light, Tire & Rubber Products
+Light, Agricultural & Construction Equipment
+Light, Commercial Buildings
+Light, New Construction
+Light, Education Facilities
+Light, Hospitals & Health
+Light, Hotels and Resorts
+Light, District Energy
+Light, General Gov't
+Light, Long Term Care Facil
+Light, Data Centers
+Light, Casinos
+Heavy, Coal Fired
+Heavy, Gas Fired
+Heavy, Geothermal
+Heavy, Nuclear
+Heavy, Industrial Gases
+Heavy, Ammonia & Fertilizer
+Heavy, Specialty Chemicals
+Heavy, Aluminum
+Heavy, Steel Mills
+Heavy, Investment Casting
