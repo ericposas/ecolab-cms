@@ -73,7 +73,7 @@ _mongoose["default"].connection.on('connected', function () {
   console.log('connected!');
 });
 
-var mongoConnectionString = ENV == 'local' ? "mongodb+srv://".concat(MONGO_USER, ":").concat(MONGO_PASSWORD, "@cluster0-taijg.mongodb.net/ecolab?retryWrites=true&w=majority") : "mongodb://".concat(MONGO_USER, ":").concat(MONGO_PASSWORD, "@127.0.0.1:27017/ecolab?authSource=admin&retryWrites=true&w=majority");
+var mongoConnectionString = ENV == 'local' ? "mongodb+srv://".concat(MONGO_USER, ":").concat(MONGO_PASSWORD, "@cluster0-taijg.mongodb.net/").concat(DATABASE, "?retryWrites=true&w=majority") : "mongodb://".concat(MONGO_USER, ":").concat(MONGO_PASSWORD, "@127.0.0.1:27017/").concat(DATABASE, "?authSource=admin&retryWrites=true&w=majority");
 
 _mongoose["default"].connect(mongoConnectionString, {
   useNewUrlParser: true,
