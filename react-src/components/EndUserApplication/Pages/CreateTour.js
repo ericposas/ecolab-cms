@@ -237,7 +237,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={ this.state.tourName != '' this.props.placement == 'edit-tour' }
+            in={ this.state.tourName != '' || this.props.placement == 'edit-tour' }
             timeout={500}
             classNames='item'
             >
@@ -271,7 +271,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.tourNameError == false || this.props.placement == 'edit-tour'}
+            in={this.state.companySelected != CHOOSE_COMPANY}
             timeout={500}
             classNames='item'>
             <>
@@ -300,7 +300,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={(this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION) || this.props.placement == 'edit-tour'}
+            in={(this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION)}
             timeout={500}
             classNames='item'>
             <>
@@ -325,7 +325,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={(this.state.industrySelected != null && this.state.industrySelected.name != CHOOSE_INDUSTRY) || this.props.placement == 'edit-tour'}
+            in={(this.state.industrySelected != null && this.state.industrySelected.name != CHOOSE_INDUSTRY)}
             timeout={500}
             classNames='item'>
             <>
@@ -350,7 +350,15 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={ || this.props.placement == 'edit-tour'}
+            in={
+              (this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION && this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT) ||
+              (
+                this.state.tourEnabled != this.props.TourSelectedForEdit.enabled &&
+                this.state.divisionSelected == dummyDivision &&
+                this.state.industrySelected == dummyIndustry &&
+                this.state.segmentSelected == dummySegment
+              )
+            }
             timeout={500}
             classNames='item'>
             <>
