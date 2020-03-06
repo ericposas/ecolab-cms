@@ -351,10 +351,22 @@ class CreateTour extends Component {
             appear
             unmountOnExit
             in={
-              (this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION && this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT) ||
+              (
+                this.state.divisionSelected != null &&
+                this.state.divisionSelected.name != CHOOSE_DIVISION &&
+                this.state.segmentSelected != null &&
+                this.state.segmentSelected.name != CHOOSE_SEGMENT
+              ) ||
               (
                 this.props.TourSelectedForEdit &&
                 this.state.tourEnabled != this.props.TourSelectedForEdit.enabled &&
+                this.state.divisionSelected == dummyDivision &&
+                this.state.industrySelected == dummyIndustry &&
+                this.state.segmentSelected == dummySegment
+              ) ||
+              (
+                this.props.TourSelectedForEdit &&
+                this.state.tourName != this.props.TourSelectedForEdit.name && this.state.tourName != '' &&
                 this.state.divisionSelected == dummyDivision &&
                 this.state.industrySelected == dummyIndustry &&
                 this.state.segmentSelected == dummySegment
