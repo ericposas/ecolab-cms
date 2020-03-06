@@ -4,8 +4,9 @@ import WebModule from '../../models/ApplicationSpecific/WebModule'
 const createWebModule = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
-    if (req.body.browser_url) {
+    if (req.body.name && req.body.browser_url) {
       WebModule({
+        name: req.body.name,
         browser_url: req.body.browser_url,
         creator_id: Types.ObjectId(req.session.appuserid)
       })
@@ -66,6 +67,7 @@ const updateWebModule = (req, res) => {
       WebModule.findOne({ _id: id })
         .then(doc => {
           if (doc) {
+            doc.name = req.body.name ? req.body.name : doc.name
             doc.browser_url = req.body.browser_url ? req.body.browser_url : doc.browser_url
             doc.enabled = req.body.enabled != doc.enabled ? req.body.enabled : doc.enabled
             doc.save()

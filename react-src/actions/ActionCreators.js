@@ -120,10 +120,10 @@ const setSelectedUserForEditing = user => ({ type: SET_SELECTED_USER_FOR_EDITING
 const setSelectedAdminForEditing = admin => ({ type: SET_SELECTED_ADMIN_FOR_EDITING, payload: admin })
 // Eco Lab
 // Web Module
-const saveWebModule = (browser_url, callback) => {
+const saveWebModule = ({ name, browser_url }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_WEB_MODULE, payload: true })
-    axios.post('/webmodules', { browser_url })
+    axios.post('/webmodules', { name, browser_url })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: SAVING_WEB_MODULE, payload: false })
@@ -183,10 +183,10 @@ const deleteWebModule = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
-const updateWebModule = ({ id, browser_url, enabled }, callback) => {
+const updateWebModule = ({ id, name, browser_url, enabled }, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: UPDATING_WEB_MODULE, payload: true })
-    axios.put(`/webmodules/update/${id}`, { browser_url, enabled })
+    axios.put(`/webmodules/update/${id}`, { name, browser_url, enabled })
       .then(data => {
         if (data.data.success) {
           dispatch({ type: UPDATING_WEB_MODULE, payload: false })

@@ -81,14 +81,14 @@ const updateTourModule = (req, res) => {
           if (doc) {
             doc.name = req.body.name ? req.body.name : doc.name,
             doc.creator_id = Types.ObjectId(req.session.appuserid)
-            doc.company_id = req.body.company_id ? Types.ObjectId(req.body.company_id) : doc.company_id
-            doc.company_name = req.body.company_name ? req.body.company_name : doc.company_name
-            doc.division_id = req.body.division_id ? Types.ObjectId(req.body.division_id) : doc.division_id
-            doc.division_name = req.body.division_name ? req.body.division_name : doc.division_name
-            doc.industry_id = req.body.industry_id ? Types.ObjectId(req.body.industry_id) : doc.industry_id
-            doc.industry_name = req.body.industry_name ? req.body.industry_name : doc.industry_name
-            doc.segment_id = req.body.segment_id ? Types.ObjectId(req.body.segment_id) : doc.segment_id
-            doc.segment_name = req.body.segment_name ? req.body.segment_name : doc.segment_name
+            doc.company_id = req.body.company_id && req.body.company_name != 'Choose company' ? Types.ObjectId(req.body.company_id) : doc.company_id
+            doc.company_name = req.body.company_name && req.body.company_name != 'Choose company' ? req.body.company_name : doc.company_name
+            doc.division_id = req.body.division_id && req.body.division_name != 'Choose division' ? Types.ObjectId(req.body.division_id) : doc.division_id
+            doc.division_name = req.body.division_name && req.body.division_name != 'Choose division' ? req.body.division_name : doc.division_name
+            doc.industry_id = req.body.industry_id && req.body.industry_name != 'Choose industry' ? Types.ObjectId(req.body.industry_id) : doc.industry_id
+            doc.industry_name = req.body.industry_name && req.body.industry_name != 'Choose industry' ? req.body.industry_name : doc.industry_name
+            doc.segment_id = req.body.segment_id && req.body.segment_name != 'Choose segment' ? Types.ObjectId(req.body.segment_id) : doc.segment_id
+            doc.segment_name = req.body.segment_name && req.body.segment_name != 'Choose segment' ? req.body.segment_name : doc.segment_name
             doc.enabled = req.body.enabled != doc.enabled ? req.body.enabled : doc.enabled
             doc.save()
               .then(doc => res.send({ success: `updated ${doc._id} successfully` }))

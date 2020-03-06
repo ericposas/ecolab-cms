@@ -1,6 +1,11 @@
 import { model, Schema } from 'mongoose'
 
 const WebModule = model('WebModule', new Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
   browser_url: {
     type: String,
     required: true,

@@ -11,7 +11,7 @@ const styles = {
 }
 
 const ClassNames = props => {
-  console.log({...props})
+  // console.log({...props})
   return (
     <Button
       { ...props }

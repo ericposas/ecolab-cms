@@ -28,8 +28,16 @@ const dummySegment = { _id: 759729874829, name: CHOOSE_SEGMENT, offerings: [] }
 class CreateTour extends Component {
 
   state = {
-    tourName: '',
-    tourNameError: true,
+    tourName: (
+      (this.props.TourSelectedForEdit && this.props.placement == 'edit-tour')
+      ? this.props.TourSelectedForEdit.name
+      : ''
+    ),
+    tourNameError: (
+      this.props.placement == 'edit-tour'
+      ? false
+      : true
+    ),
     companySelected: CHOOSE_COMPANY,
     divisionSelected: dummyDivision,
     industrySelected: dummyIndustry,
@@ -45,31 +53,25 @@ class CreateTour extends Component {
     const { checkAppUserAuth, setAppUserData, AppUserData, history,
             getCompanies, getDivisions, getIndustries, getSegments } = this.props
     checkAppUserAuth(data => {
-      console.log(data.data)
+      // console.log(data.data)
       const { auth, fullaccess, peer, name, email } = data.data
       if (!auth) history.push('/login')
       else {
         if (!AppUserData.auth) {
           setAppUserData(auth, fullaccess, peer, name, email)
         }
-        // getCompanies()
         getCompanies(() => {
           getDivisions(() => {
             getIndustries(() => {
               getSegments()
-              console.log('getting segments..')
             })
-            console.log('getting industries..')
           })
-          console.log('getting divisions..')
         })
-        console.log('getting companies..')
       }
     })
   }
 
   componentDidUpdate() {
-    console.log(this.state)
   }
 
   handleTourSubmit = () => {
@@ -89,7 +91,6 @@ class CreateTour extends Component {
           enabled: this.state.tourEnabled
         },
         () => {
-          // this.props.history.push('/view-tours')
           this.props.displayEditModal(false)
           this.props.getTours()
         })
@@ -115,7 +116,11 @@ class CreateTour extends Component {
   handleTourNameChange = e => {
     this.setState({
       tourName: e.target.value,
-      tourNameError: e.target.value != '' ? false : true
+      tourNameError: (
+        e.target.value != ''
+        ? false
+        : true
+      )
     })
   }
 
@@ -211,34 +216,10 @@ class CreateTour extends Component {
               </>
             : null
           }
-          <div className='section-title'>Choose Company</div>
-          <select
-            value={this.state.companySelected ? this.state.companySelected.name : ''}
-            onChange={this.handleCompanySelector}>
-            {
-              Companies
-              ? <>
-                  {
-                    [{ _id: 8394032098423098, name: CHOOSE_COMPANY }]
-                      .concat({ _id: 38402387589238947, name: CREATE_NEW_COMPANY })
-                      .concat(Companies.filter(co => co.enabled == true)).map(company => {
-                        if (company.name == CREATE_NEW_COMPANY && this.props.placement == 'edit-tour') {
-                          return null
-                        } else {
-                          return <option key={company._id} value={company.name}>{company.name}</option>
-                        }
-                    })
-                  }
-                </>
-              : null
-            }
-          </select>
-          <br/>
-          <br/>
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.companySelected != '' && this.state.companySelected != CHOOSE_COMPANY}
+            in={true}
             timeout={500}
             classNames='item'>
               <>
@@ -256,13 +237,47 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.tourNameError == false}
+            in={ this.state.tourName != '' this.props.placement == 'edit-tour' }
+            timeout={500}
+            classNames='item'
+            >
+            <>
+              <div className='section-title'>Choose Company</div>
+              <select
+                value={this.state.companySelected ? this.state.companySelected.name : ''}
+                onChange={this.handleCompanySelector}>
+                {
+                  Companies
+                  ? <>
+                  {
+                    [{ _id: 8394032098423098, name: CHOOSE_COMPANY }]
+                      .concat({ _id: 38402387589238947, name: CREATE_NEW_COMPANY })
+                      .concat(Companies.filter(co => co.enabled == true)).map(company => {
+                        if (company.name == CREATE_NEW_COMPANY && this.props.placement == 'edit-tour') {
+                          return null
+                        } else {
+                          return <option key={company._id} value={company.name}>{company.name}</option>
+                        }
+                      })
+                    }
+                    </>
+                  : null
+                }
+              </select>
+            </>
+          </CSSTransition>
+          <br/>
+          <br/>
+          <CSSTransition
+            appear
+            unmountOnExit
+            in={this.state.tourNameError == false || this.props.placement == 'edit-tour'}
             timeout={500}
             classNames='item'>
             <>
               <div className='section-title'>Choose Division</div>
               <select
-                value={this.state.divisionSelected ?  this.state.divisionSelected.name : ''}
+                value={this.state.divisionSelected ? this.state.divisionSelected.name : ''}
                 onChange={this.handleDivisionSelector}>
                 <option value={''}>{this.state.divisionSelected ? this.state.divisionSelected.name : ''}</option>
                 {
@@ -285,7 +300,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION}
+            in={(this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION) || this.props.placement == 'edit-tour'}
             timeout={500}
             classNames='item'>
             <>
@@ -310,7 +325,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.industrySelected != null && this.state.industrySelected.name != CHOOSE_INDUSTRY}
+            in={(this.state.industrySelected != null && this.state.industrySelected.name != CHOOSE_INDUSTRY) || this.props.placement == 'edit-tour'}
             timeout={500}
             classNames='item'>
             <>
@@ -335,10 +350,7 @@ class CreateTour extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={
-              (this.state.divisionSelected != null && this.state.divisionSelected.name != CHOOSE_DIVISION && this.state.segmentSelected != null && this.state.segmentSelected.name != CHOOSE_SEGMENT) ||
-              (this.props.TourSelectedForEdit && this.props.placement == 'edit-tour' && this.props.TourSelectedForEdit.enabled != this.state.tourEnabled)
-            }
+            in={ || this.props.placement == 'edit-tour'}
             timeout={500}
             classNames='item'>
             <>

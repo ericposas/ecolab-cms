@@ -28,9 +28,14 @@ class TourInList extends Component {
 
   handleOnSelect = id => {
     const { getOneTour, displayEditModal } = this.props
-    getOneTour(id, () => displayEditModal(true))
+    getOneTour(
+      id,
+      () => {
+        displayEditModal(true)
+      }
+    )
   }
-
+  
   render() {
     const { tour } = this.props
     return (

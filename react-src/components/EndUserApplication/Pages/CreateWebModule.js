@@ -21,6 +21,11 @@ class CreateWebModule extends Component {
       ? this.props.WebModuleSelectedForEdit.enabled
       : true
     ),
+    nameField: (
+      (this.props.WebModuleSelectedForEdit && this.props.placement == 'edit-webmodule')
+      ? this.props.WebModuleSelectedForEdit.name
+      : ''
+    ),
     urlField: (
       (this.props.WebModuleSelectedForEdit && this.props.placement == 'edit-webmodule')
       ? this.props.WebModuleSelectedForEdit.browser_url
@@ -41,7 +46,14 @@ class CreateWebModule extends Component {
     })
   }
 
-  handleInput = e => {
+  handleNameInput = e => {
+    this.setState({
+      ...this.state,
+      nameField: e.target.value
+    })
+  }
+
+  handleUrlInput = e => {
     this.setState({
       ...this.state,
       urlField: e.target.value
@@ -54,14 +66,18 @@ class CreateWebModule extends Component {
       if (this.props.placement == 'edit-webmodule') {
         updateWebModule({
           id: WebModuleSelectedForEdit._id,
-          browser_url: this.state.urlField,
+          name: this.state.nameField.trim(),
+          browser_url: this.state.urlField.trim(),
           enabled: this.state.webModuleEnabled
         }, () => {
           this.props.displayEditModal(false)
           getWebModules()
         })
       } else {
-        saveWebModule(this.state.urlField, () => history.push('/view-web-modules'))
+        saveWebModule({
+          name: this.state.nameField.trim(),
+          browser_url: this.state.urlField.trim(),
+        }, () => history.push('/view-web-modules'))
       }
     } else {
       toast.error('invalid URL - please include full path, e.g. (http://www.google.com)', { autoClose: 3500 })
@@ -129,16 +145,24 @@ class CreateWebModule extends Component {
             : null
           }
           <br/>
+          <div className='section-title'>Name:</div>
           <TextFieldWithEcoStylesDark
-            // label='web module URL'
             variant='outlined'
             style={{ width: this.props.placement == 'edit-webmodule' ? '90%' : '50%', borderRadius: '2px' }}
-            onChange={this.handleInput}
+            onChange={this.handleNameInput}
+            value={this.state.nameField}/>
+          <br/>
+          <br/>
+          <div className='section-title'>URL:</div>
+          <TextFieldWithEcoStylesDark
+            variant='outlined'
+            style={{ width: this.props.placement == 'edit-webmodule' ? '90%' : '50%', borderRadius: '2px' }}
+            onChange={this.handleUrlInput}
             value={this.state.urlField}/>
           <br/>
           <br/>
           {
-            this.state.urlField != ''
+            this.state.urlField != '' && this.state.nameField
             ?
               this.props.placement == 'edit-webmodule'
               ? <ButtonWithEcoStyles textcolor='white' backgroundcolor={EcoLabColors.blue} onClick={this.handleSubmit} variant='contained' color='primary'>Update Web Module</ButtonWithEcoStyles>
