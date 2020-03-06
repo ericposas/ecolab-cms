@@ -8,9 +8,9 @@ const Offering = model('Offering', new Schema({
     unique: true,
     dropdups: true
   },
-  parent_segment: {
-    type: String,
-    default: ''
+  divisions: {
+    type: Array,
+    default: []
   },
   browser_url: {
     type: String,
