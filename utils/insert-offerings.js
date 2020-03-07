@@ -68,7 +68,7 @@ let offerings = [
 const insertEntry = async offering => {
   await Offering.create({
     name: offering.name,
-    divisions: offering.divisions
+    segments: offering.segments
   })
   console.log(`created ${offering} successfully`);
 }

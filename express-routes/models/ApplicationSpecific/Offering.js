@@ -8,7 +8,7 @@ const Offering = model('Offering', new Schema({
     unique: true,
     dropdups: true
   },
-  divisions: {
+  segments: {
     type: Array,
     default: []
   },

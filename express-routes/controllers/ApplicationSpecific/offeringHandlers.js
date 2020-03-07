@@ -13,6 +13,16 @@ import Offering from '../../models/ApplicationSpecific/Offering'
 //   }
 // }
 
+const getOfferingById = (req, res) => {
+  if (!req.session.appuserauth) res.send({ error: 'not authorized' })
+  else {
+    console.log(req.params.id)
+    Offering.find({ _id: req.params.id })
+      .then(data => res.send({ success: data }))
+      .catch(err => res.send({ error: 'could not get offering' }))
+  }
+}
+
 const getAllOfferings = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
@@ -47,5 +57,6 @@ export {
   // getOfferingByParentSegment,
   // getOfferingByParentSegmentId,
   updateOffering,
-  getAllOfferings
+  getAllOfferings,
+  getOfferingById
 }
