@@ -8,8 +8,7 @@ const Company = model('Company', new Schema({
     dropdups: true
   },
   logo_image_url: {
-    type: String,
-    required: true
+    type: String
   },
   customer_names: {
     type: Array,

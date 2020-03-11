@@ -5,20 +5,24 @@ import TourModule from '../../models/ApplicationSpecific/TourModule'
 const createCompany = (req, res) => {
   if (!req.session.appuserauth) res.send({ error: 'not authorized' })
   else {
-    if (req.body.name && req.body.logo && req.body.customer_names) {
+    console.log(req.body)
+    if (req.body.name != null) {
       Company({
         name: req.body.name,
-        logo_image_url: req.body.logo,
-        customer_names: req.body.customer_names,
+        logo_image_url: req.body.logo ? req.body.logo : null,
+        customer_names: req.body.customer_names ? req.body.customer_names : null,
         notes: req.body.notes ? req.body.notes : '',
         // enabled: req.body.enabled ? req.body.enabled : false,
         creator_id: Types.ObjectId(req.session.appuserid)
       })
       .save()
       .then(() => res.send({ success: 'company profile saved' }))
-      .catch(err => res.send({ error: 'db err, possible dup key' }))
+      .catch(err => {
+        console.log(err)
+        res.send({ error: err })
+      })
     } else {
-      res.send({ error: 'incorrect params provided' })
+      res.send({ error: 'need at least a company name provided' })
     }
   }
 }

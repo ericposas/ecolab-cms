@@ -31,8 +31,8 @@ class CompanyInList extends Component {
         <div className='company-in-list-customer-names'>
           <ul>
             {
-              company.customer_names.map(name => (
-                <li key={`${company}-${name}`}>{name}</li>
+              company.customer_names.map((name, idx) => (
+                <li key={`${company}-${name}-${idx}`}>{name}</li>
               ))
             }
           </ul>

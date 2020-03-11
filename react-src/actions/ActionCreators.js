@@ -248,16 +248,22 @@ const deleteCompany = (id, callback) => {
       .catch(err => console.log(err))
   }
 }
-const submitCreateCompanyData = ({ name, logo, customer_names, notes }, callback) => {
+const submitCreateCompanyData = (companyData, callback) => {
   return (dispatch, getState) => {
     dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: true })
-    axios.post(`/companies`, { name, logo, customer_names, notes })
+    axios.post(`/companies`,
+      {
+        name: companyData.name ? companyData.name : null,
+        logo: companyData.logo ? companyData.logo : null,
+        customer_names: companyData.customer_names ? companyData.customer_names : null,
+        notes: companyData.notes ? companyData.notes : null
+      })
       .then(data => {
         dispatch({ type: SAVING_COMPANY_DATA_TO_DB, payload: false })
         if (data.data.success) {
           if (callback) callback()
         } else {
-          toast.error('Error saving company, possible duplicate..', { autoClose: 3500 })
+          toast.error(data.data.error, { autoClose: 3500 })
           console.log(`error: ${data.data.error}`)
         }
       })

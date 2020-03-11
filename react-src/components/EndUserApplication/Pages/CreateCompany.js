@@ -59,7 +59,7 @@ class CreateCompany extends Component {
     skipUpload: false,
     correctLogoDimensions: null
   }
-  
+
   componentDidMount() {
     const { checkAppUserAuth, setAppUserData, AppUserData, history } = this.props
     checkAppUserAuth(data => {
@@ -189,9 +189,9 @@ class CreateCompany extends Component {
         updateCompanyData({
           id: CompanySelectedForEdit ? CompanySelectedForEdit._id : null,
           name: companyName.trim(),
-          logo: companyLogoFilePath,
-          customer_names: customerNameFields.filter(value => value != ''),
-          notes: noteFieldValue,
+          logo: companyLogoFilePath ? companyLogoFilePath : '',
+          customer_names: customerNameFields ? customerNameFields.filter(value => value != '') : [],
+          notes: noteFieldValue ? noteFieldValue : '',
           enabled: this.state.companyEnabled,
         },
         () => {
@@ -202,9 +202,9 @@ class CreateCompany extends Component {
       default:
         submitCreateCompanyData({
           name: companyName.trim(),
-          logo: companyLogoFilePath,
-          customer_names: customerNameFields.filter(value => value != ''),
-          notes: noteFieldValue,
+          logo: companyLogoFilePath ? companyLogoFilePath : '',
+          customer_names: customerNameFields ? customerNameFields.filter(value => value != '') : [],
+          notes: noteFieldValue ? noteFieldValue : '',
           // enabled: this.state.companyEnabled,
         },
         () => {
@@ -322,7 +322,7 @@ class CreateCompany extends Component {
                     : null
                   }
                   {
-                    this.props.placement == 'edit-company' && this.state.skipUpload == false
+                    this.state.skipUpload == false
                     ? <>
                         <ButtonWithEcoStyles
                           onClick={() => this.setState({ companyLogoUploaded: true, skipUpload: true }) }
@@ -354,7 +354,7 @@ class CreateCompany extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.companyLogoUploaded}
+            in={this.state.companyName != ''}
             timeout={500}
             classNames='item'
             >
@@ -407,7 +407,7 @@ class CreateCompany extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.customerNameFields.length > 0 && this.state.customerNameFields[0] != ''}
+            in={this.state.companyName != ''}
             timeout={500}
             classNames='item'
             >
@@ -426,7 +426,7 @@ class CreateCompany extends Component {
           <CSSTransition
             appear
             unmountOnExit
-            in={this.state.customerNameFields.length > 0 && this.state.customerNameFields[0] != ''}
+            in={this.state.companyName != ''}
             timeout={500}
             classNames='item'>
             <ButtonWithEcoStyles
