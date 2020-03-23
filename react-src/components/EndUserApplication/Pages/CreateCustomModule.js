@@ -14,8 +14,8 @@ import { FormControlLabelCustom, GreenSwitch } from '../UIcomponents/CustomWithS
 import axios from 'axios'
 import uuid from 'uuid'
 
-const FileWidth = 1920
-const FileHeight = 1200
+const FileWidth = 1570
+const FileHeight = 1140
 
 class CreateCustomModule extends Component {
 
@@ -73,12 +73,12 @@ class CreateCustomModule extends Component {
         const width  = img.naturalWidth
         const height = img.naturalHeight
         window.URL.revokeObjectURL(img.src)
-        if (width >= FileWidth && height >= FileHeight) {
+        if (width == FileWidth && height == FileHeight) {
           console.log('correct dimensions')
           return resolve(true)
         } else {
           console.log('wrong dimensions')
-          toast.error(`Incorrect image / custom module dimensions. Please upload an image that is at least ${FileWidth}px wide and ${FileHeight}px tall.`, {
+          toast.error(`Incorrect image dimensions. Please upload an image that is exactly ${FileWidth}px wide and ${FileHeight}px tall.`, {
             autoClose: 5000
           })
           return resolve(false)
